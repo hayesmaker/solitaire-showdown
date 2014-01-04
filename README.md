@@ -14,7 +14,15 @@ node app.js
 
 To View:
 
-http://localhost:3000
+goto http://localhost:3000
+
+Unit Testing:
+
+karma start
+
+or
+
+goto http://localhost:3000/js/test/jasmine/SpecRunner.html
 
 
 
