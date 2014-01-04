@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+
+
+   <script src="/js/src/lib/requirejs/js/require.js" data-main="/js/src/app/app"></script>
+
+  </body>
+</html>

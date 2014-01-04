@@ -1,0 +1,36 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.card-container {
+    background-color: floralwhite;
+    border: black 3px solid;
+    width: 100px;
+    height: 136px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.tl-container {
+    position: relative;
+    padding: 5px 0 0 5px;
+}
+
+.main-container {
+    position: relative;
+    text-align: center;
+    font-size: 65px;
+    top: 10px;
+}
+
+.br-container {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    padding: 0 5px 5px 0;
+}

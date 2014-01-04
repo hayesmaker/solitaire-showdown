@@ -1,0 +1,68 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import 'icon-style';
+@import 'fonts-style';
+
+body {
+  padding: 0;
+  margin: 0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.default {
+  font-family: "chunkfiveroman";
+  font-size: 1.5em;
+}
+
+.intro {
+  padding: 0 0 20px 0;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.hgroup {
+  display: inline-block;
+}
+
+.go-around {
+  float: left;
+}
+
+.card-container {
+  background-color: floralwhite;
+  border: black 3px solid;
+  width: 100px;
+  height: 136px;
+  border-radius: 15px;
+  position: relative;
+  margin: 0 10px 0 0;
+}
+
+.tl-container {
+  position: relative;
+  padding: 5px 0 0 5px;
+}
+
+.main-container {
+  position: relative;
+  text-align: center;
+  font-size: 65px;
+}
+
+.br-container {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  padding: 0 5px 5px 0;
+}
+
+.svga {
+  width: 800px;
+  height: 600px;
+}

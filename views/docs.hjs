@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+
+  <h1 class="default">{{ title }}</h1>
+    <div class="intro">
+        <div class="card-container go-around">
+                <div class="tl-container default">A<span class="icon-spades"></span></div>
+                <div class="main-container"><span class="icon-spades"></span></div>
+                <div class="br-container default"><span class="icon-spades"></span>A</div>
+            </div>
+        <div>
+            <p>Welcome to {{ title }}</p>
+            <div>
+            This game, included since MSN Messenger version 6, is based on the Solitaire game that is part of Windows. It is online, 2 player, and features 2 decks (a triple deck, and a special 13-card pile). Each player must race to remove cards of the special 13-card pile, and put their cards on the shared piles/suit stacks (e.g. putting an ace of any suit on the pile, but putting 2's of a suit may only be possible after the ace of the suit is currently on the pile, not covered by any other cards). There are eight different suit stacks possible. Other differences between this and normal Solitaire are that not just Kings, but any card can be put on a blank row stack, and there are four black row stacks to put on instead of seven. The game ends if one player removes all cards of the 13-card pile, or when both players are "stuck" and cannot remove/put up any more cards, and manually end the game using the End Game button. This game is similar to the game nertz.
+            </div>
+        </div>
+
+    </div>
+    <img class="svga" src="images/screenshot.jpg"></img>
+  </body>
+</html>
