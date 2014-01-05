@@ -1,26 +1,20 @@
-solitaire-showdown
-==================
+# solitaire-showdown
+
 
 Project to rewrite Solitaire Showdown, The 1v1 multiplayer solitaire game which used to be on MSN Messenger.
 
 
-Install:
---------
+### Install:
 
 npm install
 
-Run:
-----
+### Run:
 
 node app.js
+goto http://localhost:300
 
-To View:
---------
 
-goto http://localhost:3000
-
-Unit Testing:
--------------
+### Unit Testing:
 
 karma start
 
