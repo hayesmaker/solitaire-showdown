@@ -88,9 +88,9 @@ define(
 
             if (i < 26) {
               if (i % 2 === 0) {
-                self.player1.dealSpecialCard(card, self.boardController.getAllAcePileDropPoints());
+                self.player1.dealSpecialCard(card, self.boardController.getAllRowStackDropPoints());
               } else {
-                self.player2.dealSpecialCard(card, self.boardController.getAllAcePileDropPoints());
+                self.player2.dealSpecialCard(card, self.boardController.getAllRowStackDropPoints());
               }
             }
         });
