@@ -8,11 +8,10 @@ define(
     'jasmineSignals',
     'modules/module',
     'modules/rules/controller',
-    'modules/rules/view',
     'modules/rules/model',
     'testHelpers/mocks'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, spyOnSignal, Module, Rules, View, Model, Mocks) {
+  function(_, Class, Phaser, TweenMax, PIXI, spyOnSignal, Module, Rules, Model, Mocks) {
 
     /**
      * rules
@@ -42,20 +41,10 @@ define(
           expect(rules.model).toBeDefined();
         });
 
-        it("Rules View is created", function() {
-          expect(rules.view).toBeDefined();
-        });
-
         it("Rules component can be initiated with game", function() {
           var game = jasmine.createSpyObj('game', ['boot']);
           rules.init(game);
           expect(rules.game).toBeDefined();
-        });
-
-        it("Rules component inits Rules View ith game", function() {
-          var game = jasmine.createSpyObj('game', ['boot']);
-          rules.init(game);
-          expect(rules.view.game).toBeDefined();
         });
 
       });

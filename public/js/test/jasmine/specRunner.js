@@ -73,7 +73,6 @@ require(['jquery', 'jasmine-html'], function ($, jasmine) {
   specs.push('spec/hayesmaker/solitaire/game2/modules/game/viewSpec.js');
   specs.push('spec/hayesmaker/solitaire/game2/modules/game/modelSpec.js');
   specs.push('spec/hayesmaker/solitaire/game2/modules/game/controllerSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/rules/viewSpec.js');
   specs.push('spec/hayesmaker/solitaire/game2/modules/rules/modelSpec.js');
   specs.push('spec/hayesmaker/solitaire/game2/modules/rules/controllerSpec.js');
   specs.push('spec/hayesmaker/solitaire/game2/modules/player/viewSpec.js');

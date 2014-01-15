@@ -94,23 +94,28 @@ define(['class', 'jasmineSignals', 'signals'], function(Class, spyOnSignal, Sign
 
           sprite: function(x, y, label) {
             return {
-              frameName: jasmine.createSpy("frameName"),
+              frameName: jasmine.createSpy("frameName spy"),
 
               input: {
 
-                enableDrag: jasmine.createSpy("input :: enableDrag")
+                enableDrag: jasmine.createSpy("enableDrag spy")
 
               }
             };
           },
 
+          text: function(x, y, text, format) {
+
+
+          },
+
           graphics: function(x, y) {
             //do nothing;
             return {
-              beginFill: jasmine.createSpy("beginFill"),
-              lineStyle: jasmine.createSpy("lineStyle"),
-              drawRect: jasmine.createSpy("drawRect"),
-              endFill: jasmine.createSpy("endFill")
+              beginFill: jasmine.createSpy("beginFill spy"),
+              lineStyle: jasmine.createSpy("lineStyle spy"),
+              drawRect: jasmine.createSpy("drawRect spy"),
+              endFill: jasmine.createSpy("endFill spy")
             };
           }
         }

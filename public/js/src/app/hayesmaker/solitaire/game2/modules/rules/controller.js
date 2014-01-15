@@ -7,13 +7,12 @@ define(
     'pixijs',
     'signals',
     'modules/module',
-    'modules/rules/view',
     'modules/rules/model',
     'modules/player/controller',
     'components/card',
     'utils/cardsHelper'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, Signal, Module, View, Model, Player, Card, CardsHelper) {
+  function(_, Class, Phaser, TweenMax, PIXI, Signal, Module, Model, Player, Card, CardsHelper) {
 
     var RulesController = Module.extend({
 
@@ -22,7 +21,6 @@ define(
        */
       constructor: function() {
         this.model = new Model(this);
-        this.view = new View(this);
       },
 
       /**
@@ -31,8 +29,6 @@ define(
        */
       init: function(game) {
         RulesController.super.init.call(this, game);
-
-        this.view.init(game);
 
         this.onInitialCardsDealt = new Signal();
         this.onSpecialCardsDealt = new Signal();
