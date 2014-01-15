@@ -10,7 +10,7 @@ require.config({
     'jasmineSignals': 'lib/jasmine/jasmine-signals',
 
     //app deps
-    'class' : '../../src/lib/classjs/js/class',
+    'class' : '../../src/lib/classjs/js/Class',
     'phaser': '../../src/lib/phaser/js/phaser-solo',
     'signals': '../../src/lib/signals/js/signals',
     'pixijs' : '../../src/lib/pixijs/js/pixi.dev',

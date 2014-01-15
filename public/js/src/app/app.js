@@ -1,7 +1,7 @@
 requirejs.config({
   baseUrl: 'js/src/',
   paths: {
-    'class' : 'lib/classjs/js/class',
+    'class' : 'lib/classjs/js/Class',
     'phaser': 'lib/phaser/js/phaser-solo',
     'signals': 'lib/signals/js/signals',
     'pixijs' : 'lib/pixijs/js/pixi.dev',
