@@ -4,39 +4,17 @@ define(
     'class',
     'phaser',
     'TweenMax',
-    'pixijs'
+    'pixijs',
+    'modules/droppableStack/model'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI) {
+  function(_, Class, Phaser, TweenMax, PIXI, DroppableStackModel) {
 
-    var AcePileModel = Class.extend({
+    var AcePileModel = DroppableStackModel.extend({
 
-      constructor: function() {
-        this.box = {
-          x: 0,
-          y: 0,
-          width: 0,
-          height: 0
-        };
-
-        this.dropZoneEnabled = false;
-        this.dropPoint = {
-          x: 0,
-          y: 0
-        };
-      },
-
-      setDropZoneEnabled: function(bool) {
-        this.dropZoneEnabled = bool;
-      },
-
-      setBox: function(x, y, width, height) {
-        this.box.x = x;
-        this.box.y = y;
-        this.box.width = width;
-        this.box.height = height;
-        this.dropPoint.x = x;
-        this.dropPoint.y = y;
+      constructor: function(controller) {
+        AcePileModel.super.constructor.call(this, controller);
       }
+
 
     });
 

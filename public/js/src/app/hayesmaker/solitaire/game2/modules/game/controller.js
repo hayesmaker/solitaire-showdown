@@ -83,7 +83,7 @@ define(
         });
 
         _.each(specialDeck, function(card, i) {
-
+          card.isSpecial = true;
           card.cardLanded.add(self.boardController.addCardToRowStack, self.boardController);
 
             if (i < 26) {

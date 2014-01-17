@@ -8,14 +8,14 @@ define(
     'modules/acePile/view',
     'testHelpers/mocks'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, AcePile, Mocks) {
+  function(_, Class, Phaser, TweenMax, PIXI, AcePileView, Mocks) {
 
     var view, game;
 
     describe("AcePile.View tests", function() {
 
       beforeEach(function() {
-        view = new AcePile();
+        view = new AcePileView();
         game = Mocks.mockGame;
         view.init(game);
       });

@@ -48,6 +48,64 @@ define(
 
       describe("Method Tests", function() {
 
+        var card;
+
+        beforeEach(function() {
+          card = Mocks.getCard('ah');
+        });
+
+        afterEach(function() {
+          card = null;
+        });
+
+        it("When addCard is called, card.landed signal is registered", function() {
+          controller.addCard(card);
+          expect(card.cardLanded.getNumListeners()).toBe(1);
+        });
+
+        it("When add card is called, addCard is called on the model", function() {
+          var spy = spyOn(controller.model, 'addCard');
+
+          controller.addCard(card);
+
+          expect(spy).toHaveBeenCalledWith(card);
+
+          //this.view.dealCard(card);
+        });
+
+        it("When add card is called, dealCard is called on the view", function() {
+          var spy = spyOn(controller.view, 'dealCard');
+
+          controller.addCard(card);
+
+          expect(spy).toHaveBeenCalledWith(card);
+        });
+
+
+        it("When specialCardPlaced is called, card becomes non special", function() {
+
+          var spy = spyOn(controller.view, 'removeCard');
+
+          card.isSpecial = true;
+          controller.specialCardPlaced(card);
+
+          expect(card.isSpecial).toBe(false);
+
+        });
+
+        it("When specialCardPlaced is called, removeCard is called on the view", function() {
+
+          var spy = spyOn(controller.view, 'removeCard');
+
+          card.isSpecial = true;
+          controller.specialCardPlaced(card);
+
+          expect(spy).toHaveBeenCalled();
+
+        });
+
+
+
       });
 
 

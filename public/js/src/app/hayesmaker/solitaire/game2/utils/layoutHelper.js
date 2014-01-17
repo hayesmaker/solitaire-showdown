@@ -15,7 +15,7 @@ define(
       },
 
       setDropPoints: function(dropPoints) {
-        console.log('setDropPoints', dropPonts);
+        console.log('LayoutHelper :: setDropPoints', dropPoints);
         this.dropPoints = dropPoints;
       },
 

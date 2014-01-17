@@ -5,23 +5,15 @@ define(
     'phaser',
     'TweenMax',
     'pixijs',
-    'modules/view'
+    'modules/view',
+    'modules/droppableStack/view'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, View) {
+  function(_, Class, Phaser, TweenMax, PIXI, View, DroppableStackView) {
 
-    var AcePileView = View.extend({
+    var AcePileView = DroppableStackView.extend({
 
       constructor: function(controller) {
-        View.super.constructor.call(this, controller);
-      },
-
-
-      drawStack: function(model) {
-        var graphics = this.game.add.graphics(0,0);
-        graphics.beginFill(0x00ff00, 0.2);
-        graphics.lineStyle(2, 0xff0000 , 1);
-        graphics.drawRect(model.x, model.y, model.width, model.height);
-        graphics.endFill();
+        AcePileView.super.constructor.call(this, controller);
       }
 
 

@@ -14,6 +14,9 @@ define(
       constructor: function(controller, origin) {
         SpecialPileView.super.constructor.call(this, controller);
         this.origin = origin;
+
+        this.pileNumText;
+        this.pileNum = 13;
       },
 
       drawStack: function(box) {
@@ -24,7 +27,7 @@ define(
         graphics.drawRect(box.x, box.y, box.width, box.height);
         graphics.endFill();
 
-        var text = "13";
+        var text = this.pileNum;
         var style =
         {
             font: "60px Arial",
@@ -32,7 +35,8 @@ define(
             align: "left"
         };
 
-        var t =  this.game.add.text(box.x - 80, box.y + 10, text, style);
+        this.pileNumText =  this.game.add.text(box.x - 80, box.y + 10, text, style);
+
       },
 
       dealCard: function(card) {
@@ -40,6 +44,13 @@ define(
         card.showFace();
         //controller?
         card.enableDrag();
+      },
+
+      removeCard: function() {
+
+        this.pileNum --;
+        this.pileNumText.setText(this.pileNum);
+
       }
 
       /**

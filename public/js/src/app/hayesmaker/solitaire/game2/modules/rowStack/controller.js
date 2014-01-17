@@ -5,36 +5,18 @@ define(
     'phaser',
     'TweenMax',
     'pixijs',
-    'modules/module',
     'modules/rowStack/model',
-    'modules/rowStack/view'
+    'modules/rowStack/view',
+    'modules/droppableStack/controller'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, Module, Model, View) {
+  function(_, Class, Phaser, TweenMax, PIXI, RowStackModel, RowStackView, DroppableStackController) {
 
-    /**
-     * @type {*|extend|extend|void|Object|extend}
-     */
-    var RowStackController = Module.extend({
+    var RowStackController = DroppableStackController.extend({
 
       constructor: function() {
-        this.model = new Model(this);
-        this.view = new View(this);
-
-      },
-
-      init: function(game, box) {
-        RowStackController.super.init.call(this, game);
-        this.view.init(game);
-
-        this.model.setBox(box.x, box.y, box.width, box.height);
-      },
-
-      renderView: function() {
-        this.view.drawStack(this.model.box);
-      },
-
-      setDropZoneEnabled: function(bool) {
-        this.model.setDropZoneEnabled(bool);
+        //RowStackController.super.constructor.call(this);
+        this.model = new RowStackModel(this);
+        this.view = new RowStackView(this);
       },
 
       addCard: function() {
@@ -44,10 +26,6 @@ define(
       removeCard: function() {
         this.model.removeCardHeightFromDropPoint();
       }
-
-
-
-
 
     });
 

@@ -6,26 +6,16 @@ define(
     'TweenMax',
     'pixijs',
     'modules/view',
-    'components/card'
+    'components/card',
+    'modules/droppableStack/view'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, View, Card) {
+  function(_, Class, Phaser, TweenMax, PIXI, View, Card, DroppableStackView) {
 
-    var RowStackView = View.extend({
+    var RowStackView = DroppableStackView.extend({
 
       constructor: function(controller) {
-        View.super.constructor.call(this, controller);
-      },
-
-
-      drawStack: function(model) {
-        var graphics = this.game.add.graphics(0,0);
-        graphics.beginFill(0x00ff00, 0.2);
-        graphics.lineStyle(2, 0xff0000 , 1);
-        graphics.drawRect(model.x, model.y, model.width, model.height);
-        graphics.endFill();
+        RowStackView.super.constructor.call(this, controller);
       }
-
-
 
 
     });

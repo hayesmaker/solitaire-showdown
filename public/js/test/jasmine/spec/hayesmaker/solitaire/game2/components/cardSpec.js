@@ -80,6 +80,10 @@ define(
         expect(card.droppedRowStackIndex).toBeNaN();
       });
 
+      it("card is special set to false", function() {
+        expect(card.isSpecial).toBe(false);
+      });
+
       describe("Initialisation", function() {
 
         beforeEach(function() {

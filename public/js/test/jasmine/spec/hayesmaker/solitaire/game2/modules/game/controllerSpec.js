@@ -150,8 +150,13 @@ define(
 
             });
 
+            it("When initialCardsDealt is called, special cards are set to special", function() {
 
+              controller.initialCardsDealt([], cards);
 
+              expect(cards[0].isSpecial).toBe(true);
+
+            });
           });
 
         });

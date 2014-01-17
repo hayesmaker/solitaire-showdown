@@ -45,12 +45,17 @@ define(
       },
 
       addCard: function(card) {
-        //test
+        card.cardLanded.add(this.specialCardPlaced, this);
         this.model.addCard(card);
-
-        console.log('SpecialPileController :: addCard');
         this.view.dealCard(card);
 
+      },
+
+      specialCardPlaced: function(card) {
+          if (card.isSpecial) {
+              card.isSpecial = false;
+              this.view.removeCard();
+          }
       }
 
 
