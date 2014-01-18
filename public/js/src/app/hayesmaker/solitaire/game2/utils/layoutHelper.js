@@ -16,7 +16,7 @@ define(
 
       setDropPoints: function(dropPoints) {
         console.log('LayoutHelper :: setDropPoints', dropPoints);
-        this.dropPoints = dropPoints;
+        this.dropPoints = _.clone(dropPoints);
       },
 
       /**
@@ -24,6 +24,7 @@ define(
        * @param point
        */
       getNearestDropPoint: function(point) {
+        console.log('getNearestDropPoint :: this.dropPoints', this.dropPoints);
         var distances = [];
         for (var i = 0; i < this.dropPoints.length; i++) {
           var dropPoint = this.dropPoints[i];

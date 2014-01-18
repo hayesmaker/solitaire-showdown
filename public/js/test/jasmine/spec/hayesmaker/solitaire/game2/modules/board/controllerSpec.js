@@ -96,6 +96,20 @@ define(
             expect(dropPoints[2]).toEqual({x: 670, y: 50});
             expect(dropPoints[3]).toEqual({x: 770, y: 50});
           });
+
+          it("Given that all acePiles are enabled, whenI call getAllAcePileDropPoints, I get an array of drop points", function() {
+            controller.enableAllAcePiles();
+            var dropPoints = controller.getAllAcePileDropPoints();
+            expect(dropPoints[0]).toEqual({x: 300, y: 380});
+            expect(dropPoints[1]).toEqual({x: 390, y: 380});
+            expect(dropPoints[2]).toEqual({x: 480, y: 380});
+            expect(dropPoints[3]).toEqual({x: 570, y: 380});
+            expect(dropPoints[4]).toEqual({x: 660, y: 380});
+            expect(dropPoints[5]).toEqual({x: 750, y: 380});
+            expect(dropPoints[6]).toEqual({x: 840, y: 380});
+            expect(dropPoints[7]).toEqual({x: 930, y: 380});
+
+          });
         });
       });
 

@@ -23,7 +23,7 @@ define(
         this.sprite = null;
         this.drawerPileClicked = new Signal();
         this.cardLanded = new Signal();
-        this.dropPoints = [];
+        //this.dropPoints = [];
         this.droppedRowStackIndex = NaN;
         this.isAce = name[0] === 'a';
         this.isSpecial = false;
@@ -37,7 +37,9 @@ define(
       },
 
       setDropPoints: function(dropPoints) {
-        this.dropPoints = this.layoutHelper.dropPoints = _.clone(dropPoints);
+        //this.dropPoints = _.clone(dropPoints);
+        this.layoutHelper.setDropPoints(dropPoints)
+
       },
 
       showFace: function() {

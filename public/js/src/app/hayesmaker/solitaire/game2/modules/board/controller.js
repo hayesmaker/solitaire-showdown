@@ -95,19 +95,32 @@ define(
         }
       },
 
+      enableAllAcePiles: function() {
+        for (var i = 0; i < this.model.acePiles.length; i++) {
+          var acePile = this.model.acePiles[i];
+          acePile.setDropZoneEnabled(true);
+        }
+      },
+
       getAllRowStackDropPoints: function() {
         var dropPoints = [];
         for (var i = 0; i < this.model.rowStacks.length; i++) {
+
           dropPoints.push(this.model.rowStacks[i].model.dropPoint);
         }
         return dropPoints;
       },
 
       getAllAcePileDropPoints: function() {
+
+        console.log('getAllAcePileDropPoints :: this.model.acePiles', this.model.acePiles);
+
         var dropPoints = [];
         for (var i = 0; i < this.model.acePiles.length; i++) {
           dropPoints.push(this.model.acePiles[i].model.dropPoint);
         }
+
+        return dropPoints;
       },
 
       addCardToRowStack: function(card, index) {

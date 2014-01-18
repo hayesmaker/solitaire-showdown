@@ -41,6 +41,9 @@ define(
       dealSpecialCard: function(card, dropPoints) {
         //test
         //console.log('dealSpecialCard', card);
+
+        console.log('dealSpecialCard :: ', dropPoints);
+
         card.setDropPoints(dropPoints);
         this.specialPile.addCard(card);
 

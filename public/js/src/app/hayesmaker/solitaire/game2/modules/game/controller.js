@@ -76,21 +76,23 @@ define(
           card.cardLanded.add(self.boardController.addCardToRowStack, self.boardController);
 
           if (i % 2 === 0) {
+
             self.player1.dealCard(card, self.boardController.getAllRowStackDropPoints());
+
           } else {
+
             self.player2.dealCard(card, self.boardController.getAllRowStackDropPoints());
+
           }
         });
 
         _.each(specialDeck, function(card, i) {
           card.isSpecial = true;
-          card.cardLanded.add(self.boardController.addCardToRowStack, self.boardController);
-
             if (i < 26) {
               if (i % 2 === 0) {
-                self.player1.dealSpecialCard(card, self.boardController.getAllRowStackDropPoints());
+                self.player1.dealSpecialCard(card, self.boardController.getAllAcePileDropPoints());
               } else {
-                self.player2.dealSpecialCard(card, self.boardController.getAllRowStackDropPoints());
+                self.player2.dealSpecialCard(card, self.boardController.getAllAcePileDropPoints());
               }
             }
         });
@@ -101,7 +103,7 @@ define(
        * Phaser.Game Framework methods, scope to 'this' becomes the Phaser.Game instance inside these methods.
        */
       preload: function() {
-        console.log('preload game', this.game);
+        console.log('preload game', this.game, 'this: ', this);
         this.game.load.atlas('atlas', 'images/solitaire-showdown-assets.png', 'images/solitaire-showdown-assets.json');
       },
 

@@ -72,10 +72,6 @@ define(
         expect(card.cardLanded).toBeDefined();
       });
 
-      it("dropPoints array is created", function() {
-        expect(card.dropPoints).toEqual([]);
-      });
-
       it("droppedRowStackIndex is NaN", function() {
         expect(card.droppedRowStackIndex).toBeNaN();
       });
