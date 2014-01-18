@@ -52,10 +52,19 @@ define(
       },
 
       specialCardPlaced: function(card) {
+
+        /*
+        if (!card.dropSuccesful)
+        {
+          return;
+        }
+        else {
           if (card.isSpecial) {
-              card.isSpecial = false;
-              this.view.removeCard();
+            card.isSpecial = false;
+            this.view.removeCard();
           }
+        }
+        */
       }
 
 

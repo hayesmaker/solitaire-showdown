@@ -81,29 +81,53 @@ define(
           expect(spy).toHaveBeenCalledWith(card);
         });
 
-
-        it("When specialCardPlaced is called, card becomes non special", function() {
+        /*
+        it("When specialCardPlaced is called, and card is dropped succesfully, card becomes non special", function() {
 
           var spy = spyOn(controller.view, 'removeCard');
-
+          card.dropSuccesful = true;
           card.isSpecial = true;
           controller.specialCardPlaced(card);
 
-          expect(card.isSpecial).toBe(false);
+          //expect(card.isSpecial).toBe(false);
 
         });
+        */
 
-        it("When specialCardPlaced is called, removeCard is called on the view", function() {
+        /*
+        it("When specialCardPlaced is called, and card is dropped succesfully, removeCard is called on the vie w", function() {
 
           var spy = spyOn(controller.view, 'removeCard');
-
+          card.dropSuccesful = true;
           card.isSpecial = true;
           controller.specialCardPlaced(card);
 
-          expect(spy).toHaveBeenCalled();
+          //expect(spy).toHaveBeenCalled();
+
+        });
+        */
+
+        it("When specialCardPlaced is called, and card is dropped succesfully, card remains in special pile", function() {
+
+          var spy = spyOn(controller.view, 'removeCard');
+          card.dropSuccesful = false;
+          card.isSpecial = true;
+          controller.specialCardPlaced(card);
+
+          expect(card.isSpecial).toBe(true);
 
         });
 
+        it("When specialCardPlaced is called, and card is not dropped succesfully, removeCard is not called", function() {
+
+          var spy = spyOn(controller.view, 'removeCard');
+          card.dropSuccesful = false;
+          card.isSpecial = true;
+          controller.specialCardPlaced(card);
+
+          expect(spy).not.toHaveBeenCalled();
+
+        });
 
 
       });

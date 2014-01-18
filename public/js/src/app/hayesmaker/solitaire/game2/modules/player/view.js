@@ -24,9 +24,14 @@ define(
 
       draw3Cards: function(cards) {
         _.each(cards, function(card, i) {
+
           card.drawCard(i);
-          card.enableDrag();
           card.disableClick();
+
+          if (i === 2) {
+            card.enableDrag();
+          }
+
         });
       }
 

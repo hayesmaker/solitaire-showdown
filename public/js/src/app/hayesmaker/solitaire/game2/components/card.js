@@ -23,10 +23,15 @@ define(
         this.sprite = null;
         this.drawerPileClicked = new Signal();
         this.cardLanded = new Signal();
-        //this.dropPoints = [];
         this.droppedRowStackIndex = NaN;
         this.isAce = name[0] === 'a';
         this.isSpecial = false;
+        this.originPos = {x: 0, y: 0};
+
+        this.dropSuccesful = false;
+
+
+
       },
 
       init: function(game, point) {
@@ -58,6 +63,10 @@ define(
         this.sprite.input.enableDrag(false, true);
         this.sprite.events.onDragStop.add(this.onDragStop, this);
         this.sprite.events.onDragStart.add(this.onDragStart, this);
+
+        this.originPos = {x: this.sprite.x, y: this.sprite.y};
+
+
       },
 
       enableClick: function() {
@@ -77,15 +86,22 @@ define(
         ThrowPropsPlugin.track(sprite, 'x,y');
       },
 
-      onDragStart: function(card) {
+      onDragStart: function(sprite) {
         var self = this;
         this.dragInterval = setInterval(function() {
-          self.onDragUpdate(card);
+          self.onDragUpdate(sprite);
         }, 100);
       },
 
       onDragStop: function(sprite) {
         var tweenDuration = 0.5;
+
+        if (!this.layoutHelper.dropPoints.length) {
+          this.layoutHelper.dropPoints = [this.originPos];
+        } else {
+          this.dropSuccesful = true;
+        }
+
         var seekerTween = new TweenMax(sprite, tweenDuration, {
           throwProps:{
             resistance:100,
@@ -147,8 +163,12 @@ define(
       },
 
       onThrowTweenCompleted: function(card) {
-        console.log('onThrowTweenCompleted', card.droppedRowStackIndex);
-        card.cardLanded.dispatch(card, card.droppedRowStackIndex);
+        //console.log('onThrowTweenCompleted', card.droppedRowStackIndex);
+        card.cardLanded.dispatch(card);
+
+        card.dropSuccesful = false;
+        card.layoutHelper.dropPoints = [];
+
       },
 
       onMouseDown: function(sprite) {

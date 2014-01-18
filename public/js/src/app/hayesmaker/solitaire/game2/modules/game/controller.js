@@ -73,26 +73,29 @@ define(
         var self = this;
         _.each(cards, function(card, i) {
 
-          card.cardLanded.add(self.boardController.addCardToRowStack, self.boardController);
+          card.cardLanded.add(self.boardController.onCardLanded, self.boardController);
 
           if (i % 2 === 0) {
 
-            self.player1.dealCard(card, self.boardController.getAllRowStackDropPoints());
+            self.player1.dealCard(card, []);
 
           } else {
 
-            self.player2.dealCard(card, self.boardController.getAllRowStackDropPoints());
+            self.player2.dealCard(card, []);
 
           }
         });
 
         _.each(specialDeck, function(card, i) {
           card.isSpecial = true;
+
+          card.cardLanded.add(self.boardController.onCardLanded, self.boardController);
+
             if (i < 26) {
               if (i % 2 === 0) {
-                self.player1.dealSpecialCard(card, self.boardController.getAllAcePileDropPoints());
+                self.player1.dealSpecialCard(card, []);
               } else {
-                self.player2.dealSpecialCard(card, self.boardController.getAllAcePileDropPoints());
+                self.player2.dealSpecialCard(card, []);
               }
             }
         });

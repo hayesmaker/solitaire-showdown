@@ -80,6 +80,10 @@ define(
         expect(card.isSpecial).toBe(false);
       });
 
+      it("card origin position is set to 0,0", function() {
+        expect(card.originPos).toEqual({x: 0, y: 0});
+      });
+
       describe("Initialisation", function() {
 
         beforeEach(function() {
@@ -141,6 +145,8 @@ define(
               useHandCursor: null,
               enableDrag: jasmine.createSpy('enableDrag')
             },
+            x: 10,
+            y: 10,
             events: {
               onInputUp: new Signal(),
               onInputDown: new Signal(),
@@ -150,7 +156,7 @@ define(
 
           });
 
-          card.init(game, {x: 0, y: 0});
+          card.init(game, {x: 10, y: 10});
         });
 
         it("setDropPoints: When I pass dropPoints to this method layoutHelper dropPoints and dropPoints should update", function() {
@@ -194,6 +200,11 @@ define(
 
           expect(card.onDragStart).toHaveBeenCalledWith(card);
         });
+
+        it("enableDrag: when dragging is enabled, store the origin position", function() {
+         card.enableDrag();
+          expect(card.originPos).toEqual({x: 10, y: 10});
+        });;
 
         it("enableDrag: when dragging is stopped, call onDragStop", function() {
           spyOn(card, 'onDragStop');
@@ -282,6 +293,7 @@ define(
 
         //todo onDragStopTest
 
+        /*
         it("onThrowTweenCompleted: when card lands dispatch cardLanded signal with it's row stack index", function() {
 
           var signal = spyOnSignal(card.cardLanded);
@@ -291,6 +303,36 @@ define(
           card.onThrowTweenCompleted(card);
 
           expect(signal).toHaveBeenDispatchedWith(card, 2);
+
+        });
+        */
+
+        it("onThrowTweenCompleted: reset card variables on card landed", function() {
+          /*
+           card.dropSuccesful = false;
+           card.layoutHelper.dropPoints = [];
+           */
+          card.dropSuccesful = true;
+
+          card.onThrowTweenCompleted(card);
+
+          expect(card.dropSuccesful).toBe(false);
+
+
+        });
+
+        it("onThrowTweenCompleted: reset card variables on card landed", function() {
+          /*
+           card.dropSuccesful = false;
+           card.layoutHelper.dropPoints = [];
+           */
+          card.dropSuccesful = true;
+          card.setDropPoints([{x: 0, y: 0}, {x: 100, y: 0}]);
+
+          card.onThrowTweenCompleted(card);
+
+          expect(card.layoutHelper.dropPoints.length).toBe(0);
+
 
         });
 

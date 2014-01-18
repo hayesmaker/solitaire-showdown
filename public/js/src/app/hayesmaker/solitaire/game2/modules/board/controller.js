@@ -123,9 +123,10 @@ define(
         return dropPoints;
       },
 
-      addCardToRowStack: function(card, index) {
-        console.log('BoardController :: addCardToRowStack', index);
-        this.model.rowStacks[index].addCard();
+      onCardLanded: function(card) {
+        console.log('BoardController :: addCardToRowStack', card);
+
+        //this.model.rowStacks[index].addCard();
       }
 
 
