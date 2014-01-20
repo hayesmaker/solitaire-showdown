@@ -87,7 +87,6 @@ define(
           });
 
           it("When startGame is called, dealCards is called on the rules module", function() {
-            //var spy = spyOn(controller.rulesController, 'dealCards');
             controller.startGame();
             expect(spy5).toHaveBeenCalled();
           });
@@ -98,7 +97,6 @@ define(
 
           describe("Cards are dealt evenly to each player", function() {
             beforeEach(function() {
-              //var card = jasmine.createSpyObj('card', ['init', 'enableClick', 'onDrawerPileClicked']);
               cards = [Mocks.mockCard, Mocks.mockCard, Mocks.mockCard, Mocks.mockCard, Mocks.mockCard];
             });
 
@@ -120,11 +118,14 @@ define(
 
         describe("2. Game starts with a triple deck of shuffled cards dealt evenly to each player's draw pile.", function() {
 
-          var cards;
+          var cards, onCardLandedSpy, onDetectAvailableSlotsSpy;
 
           describe("A Special pile is dealt to each player", function() {
             beforeEach(function() {
               cards = Mocks.mockDeck;
+
+              onCardLandedSpy = spyOn(controller.boardController, 'onCardLanded');
+              onDetectAvailableSlotsSpy = spyOn(controller.boardController, 'onDetectAvailableSlots');
             });
 
             afterEach(function() {
@@ -157,11 +158,58 @@ define(
               expect(cards[0].isSpecial).toBe(true);
 
             });
+
+            it("When normal cards are dealt, card cardLanded signal listener is registered", function() {
+
+              controller.initialCardsDealt(cards, []);
+
+              _.each(cards, function(card) {
+                card.cardLanded.dispatch(card);
+              });
+
+              expect(onCardLandedSpy.calls.length).toBe(52);
+            });
+
+            it("When normal cards are dealt, card detectAvailableSlots signal listener is registered", function() {
+
+              controller.initialCardsDealt(cards, []);
+
+              _.each(cards, function(card) {
+                card.detectAvailableSlots.dispatch(card);
+              });
+
+              expect(onDetectAvailableSlotsSpy.calls.length).toBe(52);
+            });
+
+            it("When special cards are dealt, card cardLanded signal listener is registered", function() {
+
+              controller.initialCardsDealt([], cards);
+
+              _.each(cards, function(card) {
+                card.cardLanded.dispatch(card);
+              });
+
+              expect(onCardLandedSpy.calls.length).toBe(52);
+            });
+
+            it("When special cards are dealt, card detectAvailableSlots signal listener is registered", function() {
+
+              controller.initialCardsDealt([], cards);
+
+              _.each(cards, function(card) {
+                card.detectAvailableSlots.dispatch(card);
+              });
+
+              expect(onDetectAvailableSlotsSpy.calls.length).toBe(52);
+
+            });
           });
+
 
         });
 
         describe("3. Cards are drawn 3 at a time from the draw pile when a player clicks on it, or removes all 3 of the current shown cards", function() {
+
 
         });
       });

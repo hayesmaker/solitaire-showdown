@@ -12,11 +12,16 @@ define(
 
       constructor: function() {
         this.dropPoints = [];
+        this.dropStacks = [];
       },
 
       setDropPoints: function(dropPoints) {
         //console.log('LayoutHelper :: setDropPoints', dropPoints);
         this.dropPoints = _.clone(dropPoints);
+      },
+
+      setDropStacks: function(dropStacks) {
+        this.dropStacks = _.clone(dropStacks);
       },
 
       /**
@@ -30,6 +35,17 @@ define(
           var dropPoint = this.dropPoints[i];
           var distance = this.distanceBetween(point, {x:dropPoint.x, y:dropPoint.y});
           distances.push({point: dropPoint, distance: distance, index : i});
+        }
+        var closestPoint =_.min(distances, 'distance');
+        return closestPoint;
+      },
+
+      getNearestDropPointAndStack: function(point) {
+        var distances = [];
+        for (var i = 0; i < this.dropStacks.length; i++) {
+          var dropPoint = this.dropStacks[i].model.dropPoint;
+          var distance = this.distanceBetween(point, {x:dropPoint.x, y:dropPoint.y});
+          distances.push({point: dropPoint, distance: distance, index : i, stack: this.dropStacks[i]});
         }
         var closestPoint =_.min(distances, 'distance');
         return closestPoint;

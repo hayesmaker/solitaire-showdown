@@ -22,14 +22,61 @@ define(
         this.autoTurn = autoTurn;
         this.sprite = null;
         this.drawerPileClicked = new Signal();
+        this.detectAvailableSlots = new Signal();
         this.cardLanded = new Signal();
-        this.droppedRowStackIndex = NaN;
         this.isAce = name[0] === 'a';
         this.isSpecial = false;
         this.originPos = {x: 0, y: 0};
 
         this.dropSuccesful = false;
+        this.droppedStack = null;
 
+        this.isPlayer1 = false;
+        this.isPlayer2 = false;
+
+        if (name.indexOf('a') > -1) {
+          this.value = 1;
+        } else if (name.indexOf('2') > -1) {
+          this.value = 2;
+        } else if (name.indexOf('3') > -1) {
+          this.value = 3;
+        } else if (name.indexOf('4') > -1) {
+          this.value = 4;
+        } else if (name.indexOf('5') > -1) {
+          this.value = 5;
+        } else if (name.indexOf('6') > -1) {
+          this.value = 6;
+        } else if (name.indexOf('7') > -1) {
+          this.value = 7;
+        } else if (name.indexOf('8') > -1) {
+          this.value = 8;
+        } else if (name.indexOf('9') > -1) {
+          this.value = 9;
+        } else if (name.indexOf('10') > -1) {
+          this.value = 10;
+        } else if (name.indexOf('j') > -1) {
+          this.value = 11;
+        } else if (name.indexOf('q') > -1) {
+          this.value = 12;
+        } else if (name.indexOf('k') > -1) {
+          this.value = 13;
+        }
+
+        if (name.indexOf('s') > -1) {
+          this.suit = 's';
+          this.isBlack = true;
+        } else if (name.indexOf('h') > -1) {
+          this.suit = 'h';
+          this.isRed = true;
+        } else if (name.indexOf('c') > -1) {
+          this.suit = 'c';
+          this.isBlack = true;
+        } else if (name.indexOf('d') > -1) {
+          this.suit = 'd';
+          this.isRed = true;
+        }
+
+        this.nextCards = [];
 
 
       },
@@ -41,10 +88,18 @@ define(
         this.sprite.inputEnabled = true;
       },
 
+      /**
+       * @deprecated
+       * use dropStacks
+       * @param dropPoints
+       */
       setDropPoints: function(dropPoints) {
-        //this.dropPoints = _.clone(dropPoints);
-        this.layoutHelper.setDropPoints(dropPoints)
+        this.layoutHelper.setDropPoints(dropPoints);
 
+      },
+
+      setDropStacks: function(dropStacks) {
+        this.layoutHelper.setDropStacks(dropStacks);
       },
 
       showFace: function() {
@@ -66,6 +121,12 @@ define(
 
         this.originPos = {x: this.sprite.x, y: this.sprite.y};
 
+        this.detectAvailableSlots.dispatch(this);
+
+      },
+
+      disableDrag: function() {
+        this.sprite.input.disableDrag();
 
       },
 
@@ -98,8 +159,9 @@ define(
 
         if (!this.layoutHelper.dropPoints.length) {
           this.layoutHelper.dropPoints = [this.originPos];
+          this.dropSuccesful = false;
         } else {
-          this.dropSuccesful = true;
+          //this.dropSuccesful = true;
         }
 
         var seekerTween = new TweenMax(sprite, tweenDuration, {
@@ -126,6 +188,9 @@ define(
           seekerTween.seek(tweenDuration, true);
         } catch(e) {
           console.log('card not thrown');
+
+          this.resetCardVars();
+
           return;
         }
 
@@ -133,12 +198,12 @@ define(
         var y = seekerTween.target.y;
         seekerTween.seek(0).kill();
 
-        var closestDropPoint = this.layoutHelper.getNearestDropPoint({
+        var closestDropPoint = this.layoutHelper.getNearestDropPointAndStack({
           x: x,
           y: y
         });
 
-        this.droppedRowStackIndex = closestDropPoint.index;
+        this.droppedStack = closestDropPoint.stack;
 
         TweenMax.to(sprite, tweenDuration, {
           throwProps:{
@@ -166,8 +231,7 @@ define(
         //console.log('onThrowTweenCompleted', card.droppedRowStackIndex);
         card.cardLanded.dispatch(card);
 
-        card.dropSuccesful = false;
-        card.layoutHelper.dropPoints = [];
+        //card.resetCardVars();
 
       },
 
@@ -178,6 +242,31 @@ define(
       onMouseUp: function(sprite) {
         //throw "not implemented";
         this.drawerPileClicked.dispatch(this);
+      },
+
+      resetCardVars: function() {
+        this.dropSuccesful = false;
+        this.layoutHelper.dropPoints = [];
+        this.layoutHelper.dropStacks = [];
+      },
+
+      setNextCards: function(cards) {
+        for (var i = 0; i < cards.length; i++) {
+          this.nextCards.push(cards[i]);
+        }
+      },
+
+      enableNextCard: function() {
+
+        if (this.nextCards.length) {
+          var nextCard = this.nextCards.pop();
+          nextCard.enableDrag();
+          nextCard.setNextCards(this.nextCards);
+        } else {
+          console.log('no next cards');
+        }
+
+
       }
 
     });

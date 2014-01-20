@@ -15,7 +15,7 @@ define(
         SpecialPileView.super.constructor.call(this, controller);
         this.origin = origin;
 
-        this.pileNumText;
+        this.pileNumText = '';
         this.pileNum = 13;
       },
 

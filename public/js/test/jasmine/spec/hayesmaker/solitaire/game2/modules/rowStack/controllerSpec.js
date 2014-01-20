@@ -6,9 +6,10 @@ define(
     'TweenMax',
     'pixijs',
     'modules/rowStack/controller',
+    'components/card',
     'testHelpers/mocks'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, RowStackController, Mocks) {
+  function(_, Class, Phaser, TweenMax, PIXI, RowStackController, Card, Mocks) {
 
     describe("RowStack.Controller Tests", function() {
 
@@ -68,12 +69,29 @@ define(
 
         });
 
+        describe("Check row stack is available for dropping a specific card", function() {
+
+          beforeEach(function() {
+
+          });
+
+          it("When I call checkAvailable and the row stack is empty, this row stack is available", function() {
+
+            controller.checkAvailable('kh');
+            expect(controller.model.dropZoneEnabled).toBe(true);
+          });
+
+          it("Given that I have a red 7, and the last card is a black 8, then this row stack is available", function() {
+
+            var lastCard = new Card('8s', true);
+            var myCard = new Card('7d', true);
+
+            controller.addCard(lastCard);
+            controller.checkAvailable(myCard);
+            expect(controller.model.dropZoneEnabled).toBe(true);
+
+          });
+        });
       });
-
-
-
-
     });
-
-
   });

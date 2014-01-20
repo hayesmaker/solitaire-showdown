@@ -9,9 +9,11 @@ define(['class', 'jasmineSignals', 'signals'], function(Class, spyOnSignal, Sign
         enableClick: function() {  },
         drawerPileClicked: new Signal(),
         cardLanded: new Signal(),
+        detectAvailableSlots: new Signal(),
         showFace: jasmine.createSpy('showFace spy'),
         enableDrag: jasmine.createSpy('enableDrag spy'),
-        onDragStop: jasmine.createSpy('onDragStop spy')
+        onDragStop: jasmine.createSpy('onDragStop spy'),
+        setNextCards: jasmine.createSpy('setNextCards spy')
       };
     };
 
@@ -19,11 +21,13 @@ define(['class', 'jasmineSignals', 'signals'], function(Class, spyOnSignal, Sign
     return {
       mockCard: {
           name: 'ah',
-            init: function() {  },
+          init: function() {  },
           setDropPoints: function() {},
           enableClick: function() {  },
           drawerPileClicked: new Signal(),
-          cardLanded: new Signal()
+
+          cardLanded: new Signal(),
+          detectAvailableSlots: new Signal()
       },
 
       getCard: function(name) {

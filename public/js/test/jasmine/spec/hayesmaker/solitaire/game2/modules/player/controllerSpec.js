@@ -66,6 +66,7 @@ define(
         expect(controller.model.drawPile).toEqual([mockCard]);
       });
 
+
       it("When a card is dealt to this player, make sure view gets updated with it", function() {
         var spy = spyOn(controller.view, 'dealCard');
         controller.dealCard(mockCard);

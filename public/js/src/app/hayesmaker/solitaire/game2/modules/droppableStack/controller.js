@@ -37,6 +37,17 @@ define(
 
       setDropZoneEnabled: function(bool) {
         this.model.setDropZoneEnabled(bool);
+      },
+
+      checkAvailable: function(cardName) {
+
+
+
+
+      },
+
+      addCard: function(card) {
+        this.model.cards.push(card);
       }
 
     });

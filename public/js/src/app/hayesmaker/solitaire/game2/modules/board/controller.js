@@ -124,10 +124,73 @@ define(
       },
 
       onCardLanded: function(card) {
-        console.log('BoardController :: addCardToRowStack', card);
+        console.log('BoardController :: onCardLanded', card);
 
         //this.model.rowStacks[index].addCard();
+
+        if (card.dropSuccesful) {
+          card.resetCardVars();
+          card.disableDrag();
+          card.enableNextCard();
+        }
+
+      },
+
+      onDetectAvailableSlots: function(card) {
+        console.log('onDetectAvailableSlots', card);
+
+        var dropPoints = [];
+        var dropStacks = [];
+        var i, stackModel, stack;
+
+        if (card.isPlayer1) {
+
+          for (i = 0; i < 4; i ++) {
+
+            stackModel = this.model.rowStacks[i].model;
+            stack = this.model.rowStacks[i];
+            stack.checkAvailable(card);
+
+
+            if (stackModel.dropZoneEnabled) {
+              dropStacks.push(stack);
+              dropPoints.push(stackModel.dropPoint);
+
+            }
+          }
+
+        }
+
+        if (card.isPlayer2) {
+
+          for (i = 4; i < 8; i ++) {
+
+            stackModel = this.model.rowStacks[i].model;
+            stack = this.model.rowStacks[i];
+
+            stack.checkAvailable(card);
+            if (stackModel.dropZoneEnabled) {
+              dropStacks.push(stack);
+              dropPoints.push(stackModel.dropPoint);
+
+            }
+
+          }
+
+        }
+
+        if (dropPoints.length) {
+          card.dropSuccesful = true;
+        }
+
+        card.setDropPoints(dropPoints);
+        card.setDropStacks(dropStacks);
+
+
+
       }
+
+
 
 
 

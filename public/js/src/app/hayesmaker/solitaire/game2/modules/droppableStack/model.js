@@ -27,6 +27,8 @@ define(
           x: 0,
           y: 0
         };
+
+        this.cards = [];
       },
 
       setDropZoneEnabled: function(bool) {
@@ -40,6 +42,10 @@ define(
         this.box.height = height;
         this.dropPoint.x = x;
         this.dropPoint.y = y;
+      },
+
+      getLastCard: function() {
+        return this.cards[this.cards.length-1];
       }
 
 

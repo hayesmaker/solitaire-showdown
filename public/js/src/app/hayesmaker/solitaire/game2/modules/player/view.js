@@ -20,9 +20,11 @@ define(
         card.init(this.game, this.origin);
         card.enableClick();
         card.drawerPileClicked.add(this.controller.onDrawerPileClicked, this.controller);
+
       },
 
       draw3Cards: function(cards) {
+
         _.each(cards, function(card, i) {
 
           card.drawCard(i);
@@ -30,6 +32,7 @@ define(
 
           if (i === 2) {
             card.enableDrag();
+            card.setNextCards([cards[0], cards[1]]);
           }
 
         });
