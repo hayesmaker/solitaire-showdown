@@ -15,7 +15,7 @@ define(
   function(_, Class, Phaser, TweenMax, PIXI, Module, Model, View, RowStackController, AcePileController, SpecialPileController) {
 
     /**
-     * @type {*|extend|extend|void|Object|extend}
+     * @type {BoardController}
      */
     var BoardController = Module.extend({
 
@@ -135,8 +135,7 @@ define(
       },
 
       onDetectAvailableSlots: function(card) {
-        console.log(this, 'onDetectAvailableSlots for:', card.name);
-
+        console.log('[BoardController] :: onDetectAvailableSlots :: card.name', card.name, 'card.isPlayer1', card.isPlayer1);
         var dropPoints = [];
         var dropStacks = [];
         var i, stackModel, stack;
@@ -197,7 +196,7 @@ define(
           card.dropSuccessful = true;
         }
 
-
+        console.log("[BoardController] :: setDropStacks :: ", dropStacks);
         card.setDropPoints(dropPoints);
         card.setDropStacks(dropStacks);
 

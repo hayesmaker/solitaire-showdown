@@ -69,47 +69,31 @@ define(
        * @param cards
        */
       initialCardsDealt: function(cards, specialDeck) {
-
         var self = this;
+        console.log('[GameController] :: initialCardsDealt :: specialDeck=', specialDeck);
         _.each(cards, function(card, i) {
-
           card.cardLanded.add(self.boardController.onCardLanded, self.boardController);
           card.detectAvailableSlots.add(self.boardController.onDetectAvailableSlots, self.boardController);
-
-          var enable = true;
-
           console.log('cards', cards.length);
-
           if (i % 2 === 0) {
-
-            console.log('card dealt to player 1', card.name, i);
-
             self.player1.dealCard(card, []);
             card.isPlayer1 = true;
-
           } else {
-
             self.player2.dealCard(card, []);
             card.isPlayer2 = true;
-
-            //console.log('card dealt to player 2', card.name, i);
-
           }
         });
-
         _.each(specialDeck, function(card, i) {
           card.isSpecial = true;
-
           card.cardLanded.add(self.boardController.onCardLanded, self.boardController);
           card.detectAvailableSlots.add(self.boardController.onDetectAvailableSlots, self.boardController);
-
             if (i < 26) {
               if (i % 2 === 0) {
-                self.player1.dealSpecialCard(card);
                 card.isPlayer1 = true;
+                self.player1.dealSpecialCard(card, []);
               } else {
-                self.player2.dealSpecialCard(card);
                 card.isPlayer2 = true;
+                self.player2.dealSpecialCard(card, []);
               }
             }
         });

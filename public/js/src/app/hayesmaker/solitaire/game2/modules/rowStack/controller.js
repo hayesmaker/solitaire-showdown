@@ -20,6 +20,7 @@ define(
       },
 
       addCard: function(card) {
+        console.log(this, "addCard :: card.name=", card.name);
         RowStackController.super.addCard.call(this, card);
         this.model.addCardHeightToDropPoint();
 
@@ -41,6 +42,8 @@ define(
           if (card.value === lastCard.value - 1) {
             if (card.isRed && lastCard.isBlack) {
               this.setDropZoneEnabled(true);
+            } else if (card.isRed && lastCard.isRed) {
+              //this.setDropZoneEnabled(false);
             }
           }
         }
