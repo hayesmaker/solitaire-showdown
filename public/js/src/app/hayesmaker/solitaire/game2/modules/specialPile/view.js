@@ -40,6 +40,7 @@ define(
       },
 
       dealCard: function(card) {
+        console.log("[SpecialPileView] :: dealCard :: ", card.name);
         card.init(this.game, this.origin);
         card.showFace();
         //controller?
