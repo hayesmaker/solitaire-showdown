@@ -9,9 +9,10 @@ define(
     'modules/acePile/model',
     'modules/acePile/view',
     'modules/acePile/controller',
-    'testHelpers/mocks'
+    'testHelpers/mocks',
+    'components/card'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, Module, AcePileModel, AcePileView, AcePileController, Mocks) {
+  function(_, Class, Phaser, TweenMax, PIXI, Module, AcePileModel, AcePileView, AcePileController, Mocks, Card) {
 
     describe("AcePile.Controller Tests", function() {
 
@@ -59,6 +60,22 @@ define(
         it("When I disable dropZoneEnabled, model is updated", function() {
           controller.setDropZoneEnabled(false);
           expect(controller.model.dropZoneEnabled).toBe(false);
+        });
+
+        describe("CheckAvailable Tests", function() {
+          beforeEach(function() {
+
+          });
+
+          it("This AcePile is empty, and I have an Ace, then this pile should be available", function() {
+            var card = new Card('ah', true);
+            controller.checkAvailable(card);
+            expect(controller.model.cards.length).toBe(0);
+            expect(controller.model.dropZoneEnabled).toBe(true);
+          });
+
+
+
         });
 
       });

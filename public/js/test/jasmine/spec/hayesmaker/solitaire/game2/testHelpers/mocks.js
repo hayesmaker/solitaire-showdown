@@ -4,16 +4,21 @@ define(['class', 'jasmineSignals', 'signals'], function(Class, spyOnSignal, Sign
     var Card = function(name) {
       return {
         name: name,
-        init: function() {  },
-        setDropPoints: function() {},
-        enableClick: function() {  },
+        init: jasmine.createSpy('init spy'),
+        setDropPoints: jasmine.createSpy('setDropPoints spy'),
+        enableClick: jasmine.createSpy('enableClick spy'),
+        disableDrag: jasmine.createSpy('disableDrag spy'),
+        addToStack: jasmine.createSpy('addToStack spy'),
+        enableNextCard: jasmine.createSpy('enableNextCard spy'),
         drawerPileClicked: new Signal(),
         cardLanded: new Signal(),
         detectAvailableSlots: new Signal(),
         showFace: jasmine.createSpy('showFace spy'),
         enableDrag: jasmine.createSpy('enableDrag spy'),
         onDragStop: jasmine.createSpy('onDragStop spy'),
-        setNextCards: jasmine.createSpy('setNextCards spy')
+        setNextCards: jasmine.createSpy('setNextCards spy'),
+        resetCardVars: jasmine.createSpy('resetCardVars spy')
+
       };
     };
 

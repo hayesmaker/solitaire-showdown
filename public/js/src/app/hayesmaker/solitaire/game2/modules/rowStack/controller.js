@@ -22,6 +22,7 @@ define(
       addCard: function(card) {
         RowStackController.super.addCard.call(this, card);
         this.model.addCardHeightToDropPoint();
+
       },
 
       removeCard: function() {
@@ -30,47 +31,21 @@ define(
 
       checkAvailable: function(card) {
 
-        RowStackController.super.checkAvailable.call(this, card.name);
-
-        console.log('checkAvailable', this.model.cards, this.model.dropZoneEnabled);
+        RowStackController.super.checkAvailable.call(this, card);
 
         if (!this.model.cards.length) {
           this.setDropZoneEnabled(true);
         } else {
           var lastCard = this.model.getLastCard();
           console.log('lastCardName', lastCard.name);
-
           if (card.value === lastCard.value - 1) {
-
             if (card.isRed && lastCard.isBlack) {
-
               this.setDropZoneEnabled(true);
-
-            } else if (card.isRed && lastCard.isRed) {
-
-              //this.setDropZoneEnabled(false);
-
             }
-
-
           }
-
-
-
-
-
         }
 
-
-
-
-
-
-
-
-
-
-
+        console.log('checkAvailable', this.model.cards, this.model.dropZoneEnabled);
       }
 
     });

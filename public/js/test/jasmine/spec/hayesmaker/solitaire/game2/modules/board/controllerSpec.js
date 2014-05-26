@@ -7,9 +7,10 @@ define(
     'pixijs',
     'modules/module',
     'modules/board/controller',
-    'testHelpers/mocks'
+    'testHelpers/mocks',
+    'components/card'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, Module, BoardController, Mocks) {
+  function(_, Class, Phaser, TweenMax, PIXI, Module, BoardController, Mocks, Card) {
 
 
       //todo next
@@ -68,6 +69,68 @@ define(
         });
 
         describe("getAllRowStackDropPoints Method", function() {
+
+          describe("onCardLanded tests", function() {
+
+            var card;
+
+            beforeEach(function() {
+              card = Mocks.getCard('ah');
+            });
+
+            it("given that card drop was successful, card vars are reset", function() {
+              card.dropSuccessful = true;
+              controller.onCardLanded(card);
+              expect(card.resetCardVars).toHaveBeenCalled();
+            });
+
+            it("given that card drop was successful, dragging is disabled", function() {
+              card.dropSuccessful = true;
+              controller.onCardLanded(card);
+              expect(card.disableDrag).toHaveBeenCalled();
+            });
+
+            it("given that card drop was successful, card is added to stack", function() {
+              card.dropSuccessful = true;
+              controller.onCardLanded(card);
+              expect(card.addToStack).toHaveBeenCalled();
+            });
+
+            /*
+            it("given that card drop was successful, next card dragging is enabled", function() {
+              card.dropSuccessful = true;
+              controller.onCardLanded(card);
+              expect(card.enableNextCard).toHaveBeenCalled();
+            });
+            */
+
+            it("given that card drop was not successful, card vars are not reset", function() {
+              card.dropSuccessful = false;
+              controller.onCardLanded(card);
+              expect(card.resetCardVars).not.toHaveBeenCalled();
+            });
+
+            it("given that card drop was not successful, dragging is not disabled", function() {
+              card.dropSuccessful = false;
+              controller.onCardLanded(card);
+              expect(card.disableDrag).not.toHaveBeenCalled();
+            });
+
+            it("given that card drop was not successful, card is added not to stack", function() {
+              card.dropSuccessful = false;
+              controller.onCardLanded(card);
+              expect(card.addToStack).not.toHaveBeenCalled();
+            });
+
+            /*
+            it("given that card drop was not successful, next card dragging is not enabled", function() {
+              card.dropSuccessful = false;
+              controller.onCardLanded(card);
+              expect(card.enableNextCard).not.toHaveBeenCalled();
+            });
+            */
+          });
+
           it("Given that rowStack 1 is enabled, when I call getAllRowStackDropPoints, I get correct array of drop points", function() {
             controller.model.rowStacks[0].model.dropZoneEnabled = true;
             var dropPoints = controller.getAllRowStackDropPoints();
@@ -108,6 +171,81 @@ define(
             expect(dropPoints[5]).toEqual({x: 750, y: 380});
             expect(dropPoints[6]).toEqual({x: 840, y: 380});
             expect(dropPoints[7]).toEqual({x: 930, y: 380});
+
+          });
+        });
+
+        /**
+         * onDetectAvailableSlots: function(card) {
+            var dropPoints = [];
+            var dropStacks = [];
+            var i, stackModel, stack;
+            if (card.isPlayer1) {
+              for (i = 0; i < 4; i ++) {
+                stackModel = this.model.rowStacks[i].model;
+                stack = this.model.rowStacks[i];
+                stack.checkAvailable(card);
+                if (stackModel.dropZoneEnabled) {
+                  dropStacks.push(stack);
+                  dropPoints.push(stackModel.dropPoint);
+                }
+              }
+            }
+            if (card.isPlayer2) {
+              for (i = 4; i < 8; i ++) {
+                stackModel = this.model.rowStacks[i].model;
+                stack = this.model.rowStacks[i];
+                stack.checkAvailable(card);
+                if (stackModel.dropZoneEnabled) {
+                  dropStacks.push(stack);
+                  dropPoints.push(stackModel.dropPoint);
+                }
+              }
+            }
+            if (dropStacks.length) {
+              card.dropSuccessful = true;
+            }
+            card.setDropPoints(dropPoints);
+            card.setDropStacks(dropStacks);
+          }
+         */
+
+        describe("onDetectAvailableSlots Tests", function() {
+          beforeEach(function() {
+
+          });
+
+          it("Given I am player 1 and all rowStacks are empty, then all player 1's rowStacks should be enabled", function() {
+
+            var card = new Card('2h', true);
+            card.isPlayer1 = true;
+
+            var spy = spyOn(card, 'setDropStacks');
+
+            controller.onDetectAvailableSlots(card);
+
+            expect(spy).toHaveBeenCalled();
+            expect(spy.mostRecentCall.args[0].length).toBe(4);
+            _.each(spy.mostRecentCall.args[0], function(rowStackController) {
+              expect(rowStackController.model.dropZoneEnabled).toBe(true);
+            });
+
+          });
+
+          it("Given I am player 2 and all rowStacks are empty, then all player 2's rowStacks should be enabled", function() {
+
+            var card = new Card('2h', true);
+            card.isPlayer2 = true;
+
+            var spy = spyOn(card, 'setDropStacks');
+
+            controller.onDetectAvailableSlots(card);
+
+            expect(spy).toHaveBeenCalled();
+            expect(spy.mostRecentCall.args[0].length).toBe(4);
+            _.each(spy.mostRecentCall.args[0], function(rowStackController) {
+              expect(rowStackController.model.dropZoneEnabled).toBe(true);
+            });
 
           });
         });

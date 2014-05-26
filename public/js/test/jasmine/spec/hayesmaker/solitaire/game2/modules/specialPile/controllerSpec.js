@@ -107,10 +107,10 @@ define(
         });
         */
 
-        it("When specialCardPlaced is called, and card is dropped succesfully, card remains in special pile", function() {
+        it("When specialCardPlaced is called, and card is dropped successfully, card remains in special pile", function() {
 
           var spy = spyOn(controller.view, 'removeCard');
-          card.dropSuccesful = false;
+          card.dropSuccessful = false;
           card.isSpecial = true;
           controller.specialCardPlaced(card);
 
@@ -118,10 +118,10 @@ define(
 
         });
 
-        it("When specialCardPlaced is called, and card is not dropped succesfully, removeCard is not called", function() {
+        it("When specialCardPlaced is called, and card is not dropped successfully, removeCard is not called", function() {
 
           var spy = spyOn(controller.view, 'removeCard');
-          card.dropSuccesful = false;
+          card.dropSuccessful = false;
           card.isSpecial = true;
           controller.specialCardPlaced(card);
 

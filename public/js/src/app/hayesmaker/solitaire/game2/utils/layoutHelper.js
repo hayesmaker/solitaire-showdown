@@ -16,11 +16,12 @@ define(
       },
 
       setDropPoints: function(dropPoints) {
-        //console.log('LayoutHelper :: setDropPoints', dropPoints);
+        console.log('[LayoutHelper] :: setDropPoints', dropPoints);
         this.dropPoints = _.clone(dropPoints);
       },
 
       setDropStacks: function(dropStacks) {
+        console.log("[LayoutHelper] setDropStacks :: ", dropStacks);
         this.dropStacks = _.clone(dropStacks);
       },
 
@@ -29,7 +30,7 @@ define(
        * @param point
        */
       getNearestDropPoint: function(point) {
-        //console.log('getNearestDropPoint :: this.dropPoints', this.dropPoints);
+        console.log('getNearestDropPoint :: this.dropPoints', this.dropPoints);
         var distances = [];
         for (var i = 0; i < this.dropPoints.length; i++) {
           var dropPoint = this.dropPoints[i];

@@ -32,20 +32,19 @@ define(
         this.specialPile.startGame();
       },
 
-      dealCard: function(card, dropPoints) {
-        card.setDropPoints(dropPoints);
+      dealCard: function(card) {
+        //card.setDropPoints(dropPoints);
         this.model.addToDrawPile(card);
         this.view.dealCard(card);
       },
 
-      dealSpecialCard: function(card, dropPoints) {
+      dealSpecialCard: function(card) {
         //test
         //console.log('dealSpecialCard', card);
 
-        console.log('dealSpecialCard :: ', dropPoints);
-
-        card.setDropPoints(dropPoints);
+        //card.setDropPoints(dropPoints);
         this.specialPile.addCard(card);
+
 
       },
 

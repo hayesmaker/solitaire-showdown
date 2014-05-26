@@ -105,10 +105,10 @@ define(
 
             if (i < 26) {
               if (i % 2 === 0) {
-                self.player1.dealSpecialCard(card, []);
+                self.player1.dealSpecialCard(card);
                 card.isPlayer1 = true;
               } else {
-                self.player2.dealSpecialCard(card, []);
+                self.player2.dealSpecialCard(card);
                 card.isPlayer2 = true;
               }
             }

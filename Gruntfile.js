@@ -11,6 +11,7 @@ module.exports = function(grunt){
     jshint: {
       all: ['Gruntfile.js', 'public/js/src/app/**/*.js', 'public/js/test/jasmine/spec/**/*.js']
     },
+
     typescript: {
       base: {
         src: ['public/ts/**/*.ts'],
@@ -25,6 +26,7 @@ module.exports = function(grunt){
         }
       }
     },
+
     compass: {
       dist: {
         options: {

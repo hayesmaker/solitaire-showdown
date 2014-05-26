@@ -53,8 +53,10 @@ define(
 
       specialCardPlaced: function(card) {
 
+        console.log(this, 'specialCardPlaced ::', card);
+
         /*
-        if (!card.dropSuccesful)
+        if (!card.dropSuccessful)
         {
           return;
         }

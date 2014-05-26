@@ -90,6 +90,8 @@ define(
             controller.checkAvailable(myCard);
             expect(controller.model.dropZoneEnabled).toBe(true);
 
+
+
           });
         });
       });

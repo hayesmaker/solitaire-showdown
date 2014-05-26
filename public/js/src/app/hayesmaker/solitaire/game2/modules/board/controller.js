@@ -126,18 +126,16 @@ define(
       onCardLanded: function(card) {
         console.log('BoardController :: onCardLanded', card);
 
-        //this.model.rowStacks[index].addCard();
-
-        if (card.dropSuccesful) {
+        if (card.dropSuccessful) {
           card.resetCardVars();
           card.disableDrag();
+          card.addToStack();
           card.enableNextCard();
         }
-
       },
 
       onDetectAvailableSlots: function(card) {
-        console.log('onDetectAvailableSlots', card);
+        console.log(this, 'onDetectAvailableSlots for:', card.name);
 
         var dropPoints = [];
         var dropStacks = [];
@@ -145,23 +143,42 @@ define(
 
         if (card.isPlayer1) {
 
-          for (i = 0; i < 4; i ++) {
-
-            stackModel = this.model.rowStacks[i].model;
-            stack = this.model.rowStacks[i];
+          for (i = 0; i < 8; i++) {
+            stackModel = this.model.acePiles[i].model;
+            stack = this.model.acePiles[i];
             stack.checkAvailable(card);
 
+            console.log('AcePile', i, ' available: ', stack.model.dropZoneEnabled);
 
             if (stackModel.dropZoneEnabled) {
               dropStacks.push(stack);
-              dropPoints.push(stackModel.dropPoint);
 
             }
           }
 
+          for (i = 0; i < 4; i ++) {
+            stackModel = this.model.rowStacks[i].model;
+            stack = this.model.rowStacks[i];
+            stack.checkAvailable(card);
+
+            if (stackModel.dropZoneEnabled) {
+              dropStacks.push(stack);
+              dropPoints.push(stackModel.dropPoint);
+            }
+          }
         }
 
         if (card.isPlayer2) {
+
+          for (i = 0; i < 8; i ++) {
+            stackModel = this.model.acePiles[i].model;
+            stack = this.model.acePiles[i];
+            stack.checkAvailable(card);
+
+            if (stackModel.dropZoneEnabled) {
+              dropStacks.push(stack);
+            }
+          }
 
           for (i = 4; i < 8; i ++) {
 
@@ -172,28 +189,19 @@ define(
             if (stackModel.dropZoneEnabled) {
               dropStacks.push(stack);
               dropPoints.push(stackModel.dropPoint);
-
             }
-
           }
-
         }
 
-        if (dropPoints.length) {
-          card.dropSuccesful = true;
+        if (dropStacks.length) {
+          card.dropSuccessful = true;
         }
+
 
         card.setDropPoints(dropPoints);
         card.setDropStacks(dropStacks);
 
-
-
       }
-
-
-
-
-
 
     });
 

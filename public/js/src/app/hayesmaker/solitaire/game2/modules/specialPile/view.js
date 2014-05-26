@@ -48,7 +48,7 @@ define(
 
       removeCard: function() {
 
-        this.pileNum --;
+        this.pileNum--;
         this.pileNumText.setText(this.pileNum);
 
       }

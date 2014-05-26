@@ -28,7 +28,7 @@ define(
         this.isSpecial = false;
         this.originPos = {x: 0, y: 0};
 
-        this.dropSuccesful = false;
+        this.dropSuccessful = false;
         this.droppedStack = null;
 
         this.isPlayer1 = false;
@@ -88,18 +88,12 @@ define(
         this.sprite.inputEnabled = true;
       },
 
-      /**
-       * @deprecated
-       * use dropStacks
-       * @param dropPoints
-       */
-      setDropPoints: function(dropPoints) {
-        this.layoutHelper.setDropPoints(dropPoints);
-
-      },
-
       setDropStacks: function(dropStacks) {
         this.layoutHelper.setDropStacks(dropStacks);
+      },
+
+      setDropPoints: function(dropPoints) {
+        this.layoutHelper.setDropPoints(dropPoints);
       },
 
       showFace: function() {
@@ -157,11 +151,11 @@ define(
       onDragStop: function(sprite) {
         var tweenDuration = 0.5;
 
-        if (!this.layoutHelper.dropPoints.length) {
+        if (!this.layoutHelper.dropStacks.length) {
           this.layoutHelper.dropPoints = [this.originPos];
-          this.dropSuccesful = false;
+          this.dropSuccessful = false;
         } else {
-          //this.dropSuccesful = true;
+          //this.dropSuccessful = true;
         }
 
         var seekerTween = new TweenMax(sprite, tweenDuration, {
@@ -202,6 +196,11 @@ define(
           x: x,
           y: y
         });
+
+        if (!closestDropPoint.x)
+        {
+          throw new Error("No DropPoints defined");
+        }
 
         this.droppedStack = closestDropPoint.stack;
 
@@ -245,7 +244,7 @@ define(
       },
 
       resetCardVars: function() {
-        this.dropSuccesful = false;
+        this.dropSuccessful = false;
         this.layoutHelper.dropPoints = [];
         this.layoutHelper.dropStacks = [];
       },
@@ -265,8 +264,10 @@ define(
         } else {
           console.log('no next cards');
         }
+      },
 
-
+      addToStack: function() {
+        this.droppedStack.addCard(this);
       }
 
     });

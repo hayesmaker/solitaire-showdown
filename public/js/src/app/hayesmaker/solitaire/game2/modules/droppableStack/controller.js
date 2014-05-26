@@ -39,14 +39,13 @@ define(
         this.model.setDropZoneEnabled(bool);
       },
 
-      checkAvailable: function(cardName) {
-
-
-
-
+      checkAvailable: function(card) {
+        console.log('DroppableStackController :: checkAvailable', card);
+        this.setDropZoneEnabled(false);
       },
 
       addCard: function(card) {
+        console.log('DroppableStackController :: addCard ', card)
         this.model.cards.push(card);
       }
 
