@@ -20,7 +20,7 @@ define(
       },
 
       addCard: function(card) {
-        console.log(this, "addCard :: card.name=", card.name);
+        console.log('[RowStackController] addCard :: card.name=', card.name);
         RowStackController.super.addCard.call(this, card);
         this.model.addCardHeightToDropPoint();
       },
@@ -33,7 +33,7 @@ define(
 
         RowStackController.super.checkAvailable.call(this, card.name);
 
-        console.log(this, 'checkAvailable :: model.cards=', this.model.cards, 'model.dropZoneEnabled=', this.model.dropZoneEnabled);
+        console.log('[RowStackController] checkAvailable :: model.cards=', this.model.cards, 'model.dropZoneEnabled=', this.model.dropZoneEnabled);
 
         if (!this.model.cards.length) {
           this.setDropZoneEnabled(true);

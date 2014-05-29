@@ -41,13 +41,20 @@ define(
       },
 
       getNearestDropPointAndStack: function(point) {
+
         var distances = [];
+
+        console.log('[LayoutHelper] :: getNearestDropPointAndStack1 :: distances=', distances);
+
         for (var i = 0; i < this.dropStacks.length; i++) {
           var dropPoint = this.dropStacks[i].model.dropPoint;
           var distance = this.distanceBetween(point, {x:dropPoint.x, y:dropPoint.y});
           distances.push({point: dropPoint, distance: distance, index : i, stack: this.dropStacks[i]});
         }
+        console.log('[LayoutHelper] :: getNearestDropPointAndStack2 :: distances=', distances);
         var closestPoint =_.min(distances, 'distance');
+        console.log("[LayoutHelper] :: getNearestDropPointAndStack3 :: point=", point, "closestPoint=", closestPoint);;
+
         return closestPoint;
       },
 

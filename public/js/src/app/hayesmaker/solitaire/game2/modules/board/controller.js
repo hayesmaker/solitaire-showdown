@@ -183,7 +183,7 @@ define(
           card.dropSuccesful = true;
         }
 
-        console.log("[BoardController] :: setDropStacks :: ", dropStacks);
+        console.log("[BoardController] :: setDropStacks :: ", dropStacks.length);
         card.setDropPoints(dropPoints);
         card.setDropStacks(dropStacks);
 

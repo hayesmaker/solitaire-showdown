@@ -187,10 +187,8 @@ define(
         try {
           seekerTween.seek(tweenDuration, true);
         } catch(e) {
-          console.log('card not thrown');
-
+          console.log('[ERROR] card not thrown :: return To Origin');
           this.resetCardVars();
-
           return;
         }
 
@@ -198,10 +196,20 @@ define(
         var y = seekerTween.target.y;
         seekerTween.seek(0).kill();
 
+        if (isNaN(x) || isNaN(y))
+        {
+          console.log("[Card] :: isNan === true");
+          x = this.originPos.x;
+          y = this.originPos.y;
+        }
+
         var closestDropPoint = this.layoutHelper.getNearestDropPointAndStack({
           x: x,
           y: y
         });
+
+
+        console.log("[Card] :: closestDropPoint=", closestDropPoint);
 
         this.droppedStack = closestDropPoint.stack;
 

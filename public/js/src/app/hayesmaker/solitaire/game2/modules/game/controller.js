@@ -70,7 +70,7 @@ define(
        */
       initialCardsDealt: function(cards, specialDeck) {
         var self = this;
-        console.log('[GameController] :: initialCardsDealt :: specialDeck=', specialDeck);
+        console.log('[GameController] :: initialCardsDealt :: specialDeck=', specialDeck.length);
         _.each(cards, function(card, i) {
           card.cardLanded.add(self.boardController.onCardLanded, self.boardController);
           card.detectAvailableSlots.add(self.boardController.onDetectAvailableSlots, self.boardController);

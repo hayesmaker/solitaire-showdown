@@ -60,13 +60,9 @@ define(
         });
 
         it("When a card is added, model drop point is updated", function() {
-
           controller.model.dropPoint = {x: 400, y: 300};
-
-          controller.addCard();
-
+          controller.addCard(Mocks.getCard("ah"));
           expect(controller.model.dropPoint.y).toBe(317);
-
         });
 
         describe("Check row stack is available for dropping a specific card", function() {
