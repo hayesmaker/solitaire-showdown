@@ -254,8 +254,8 @@ define(
 
       resetCardVars: function() {
         this.dropSuccesful = false;
-        this.layoutHelper.dropPoints = [];
-        this.layoutHelper.dropStacks = [];
+        this.layoutHelper.dropPoints = [{x:0,y:0}];
+        this.layoutHelper.dropStacks = [{x:0,y:0}];
       },
 
       setNextCards: function(cards) {

@@ -19,7 +19,7 @@ define(
      * rules
      * 1.  Game starts with a triple deck of shuffled cards dealt evenly to each player's draw pile.
      * 2.  //Each player starts with a special 13 card pile from another deck of cards.
-     * 3.  Cards are drawn 3 at a time from the draw pile when a player clicks on it, or removes all 3 of the current shown cards.
+     * 3.  Cards are drawn 3 at a time from the draw pile when a player clicks on it.
      * 4.  Game ends either when 1 player removes all of their special card pile or when both players become 'stuck'.
      * 5.  The winner is the player who has removed most cards from their special card pile when the game ends.
      * 6.  Each player has 4 empty row stacks to which they may move any card.
@@ -208,8 +208,11 @@ define(
 
         });
 
-        describe("3. Cards are drawn 3 at a time from the draw pile when a player clicks on it, or removes all 3 of the current shown cards", function() {
+        describe("3. Cards are drawn 3 at a time from the draw pile when a player clicks on it", function() {
 
+          it("", function() {
+
+          });
 
         });
       });
