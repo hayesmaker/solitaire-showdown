@@ -32,6 +32,10 @@ define(
 
       addCard: function(card) {
         this.cards.push(card);
+      },
+
+      getTopCard: function() {
+        return this.cards.pop();
       }
 
 

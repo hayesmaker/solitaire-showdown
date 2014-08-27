@@ -1,19 +1,27 @@
 define(['class', 'jasmineSignals', 'signals'], function(Class, spyOnSignal, Signal) {
 
+    var DroppableStack = function() {
+      return {
+
+      }
+    };
 
     var Card = function(name) {
       return {
         name: name,
+        dropSuccessful: false,
         init: function() {  },
         setDropPoints: function() {},
         enableClick: function() {  },
+        refreshAvailableDropStacks: new Signal(),
         drawerPileClicked: new Signal(),
         cardLanded: new Signal(),
         detectAvailableSlots: new Signal(),
         showFace: jasmine.createSpy('showFace spy'),
         enableDrag: jasmine.createSpy('enableDrag spy'),
         onDragStop: jasmine.createSpy('onDragStop spy'),
-        setNextCards: jasmine.createSpy('setNextCards spy')
+        setNextCards: jasmine.createSpy('setNextCards spy'),
+        addToStack: jasmine.createSpy('addToStack spy')
       };
     };
 

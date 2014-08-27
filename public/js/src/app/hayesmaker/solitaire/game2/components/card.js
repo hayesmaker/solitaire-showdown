@@ -23,12 +23,18 @@ define(
         this.sprite = null;
         this.drawerPileClicked = new Signal();
         this.detectAvailableSlots = new Signal();
+        /**
+         * untested
+         * unmocked
+         * @type {signals}
+         */
+        this.refreshAvailableDropStacks = new Signal();
         this.cardLanded = new Signal();
         this.isAce = name[0] === 'a';
         this.isSpecial = false;
         this.originPos = {x: 0, y: 0};
 
-        this.dropSuccesful = false;
+        this.dropSuccessful = false;
         this.droppedStack = null;
 
         this.isPlayer1 = false;
@@ -88,14 +94,19 @@ define(
         this.sprite.inputEnabled = true;
       },
 
-      /**
-       * @deprecated
-       * use dropStacks
-       * @param dropPoints
-       */
-      setDropPoints: function(dropPoints) {
-        this.layoutHelper.setDropPoints(dropPoints);
+      addToStack: function() {
+        this.droppedStack.addCard(this);
 
+        console.log('[Card] addToStack :: this=', this);
+
+        this.resetCardVars();
+        this.disableDrag();
+        this.enableNextCard();
+        /*
+         card.resetCardVars();
+         card.disableDrag();
+         card.enableNextCard();
+         */
       },
 
       setDropStacks: function(dropStacks) {
@@ -114,6 +125,7 @@ define(
       },
 
       enableDrag: function() {
+        console.log('[Card] :: enableDrag :: detectAvailableSlots dispatch');
         //this.setDropPoints(dropPoints? dropPoints : [{x:0, y:0}] );
         this.sprite.input.enableDrag(false, true);
         this.sprite.events.onDragStop.add(this.onDragStop, this);
@@ -157,11 +169,11 @@ define(
       onDragStop: function(sprite) {
         var tweenDuration = 0.5;
 
-        if (!this.layoutHelper.dropPoints.length) {
-          this.layoutHelper.dropPoints = [this.originPos];
-          this.dropSuccesful = false;
+        if (!this.layoutHelper.dropStacks.length) {
+          //this.layoutHelper.dropStacks = [this.originPos];
+          throw new Error("drop not succesful");
         } else {
-          //this.dropSuccesful = true;
+          //this.dropSuccessful = true;
         }
 
         var seekerTween = new TweenMax(sprite, tweenDuration, {
@@ -220,6 +232,23 @@ define(
               velocity:"auto", //since we're tracking "x", the tracked value will be calculated and used automatically.
               min:sprite.xMin,
               max:sprite.xMax,
+              /**
+               *
+               [LayoutHelper] :: getNearestDropPointAndStack1 :: distances=
+               Array[0]
+               [LayoutHelper] :: getNearestDropPointAndStack2 :: distances=
+               Array[0]
+               [LayoutHelper] :: getNearestDropPointAndStack3 :: point=
+               Object
+               x: 484.0229118250669
+               y: 17.035749181529674
+               __proto__: Object
+               closestPoint= Infinity
+               [Card] :: closestDropPoint= Infinity
+               Uncaught TypeError: Cannot read property 'x' of undefined localhost:3000/js/src/app/hayesmaker/solitaire/game2/components/card.js:223
+               end:closestDropPoint.point.x
+
+               */
               end:closestDropPoint.point.x
             },
             y:{
@@ -237,10 +266,10 @@ define(
 
       onThrowTweenCompleted: function(card) {
         //console.log('onThrowTweenCompleted', card.droppedRowStackIndex);
+        card.dropSuccessful = true;
         card.cardLanded.dispatch(card);
-
-        //card.resetCardVars();
-
+        //todo test
+        card.refreshAvailableDropStacks.dispatch();
       },
 
       onMouseDown: function(sprite) {
@@ -253,9 +282,10 @@ define(
       },
 
       resetCardVars: function() {
-        this.dropSuccesful = false;
-        this.layoutHelper.dropPoints = [{x:0,y:0}];
-        this.layoutHelper.dropStacks = [{x:0,y:0}];
+        this.dropSuccessful = false;
+        // Could give a default drop point to the array so it is not empty, but then change test to show it.
+        this.layoutHelper.dropPoints = [];
+        this.layoutHelper.dropStacks = [];
       },
 
       setNextCards: function(cards) {
@@ -264,10 +294,18 @@ define(
         }
       },
 
+      /**
+       * this is for draw cards only... Special pile cards are all enabled already... not the best
+       */
       enableNextCard: function() {
+        console.log('[Card] :: enableNextCard :: ', this.nextCards);
 
         if (this.nextCards.length) {
+
           var nextCard = this.nextCards.pop();
+
+          console.log('[Card] enableNextCard :: nextCard=', nextCard);
+
           nextCard.enableDrag();
           nextCard.setNextCards(this.nextCards);
         } else {

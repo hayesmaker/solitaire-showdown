@@ -74,8 +74,8 @@ define(
         expect(card.cardLanded).toBeDefined();
       });
 
-      it("dropSuccesful is false", function() {
-        expect(card.dropSuccesful).toBe(false);
+      it("dropSuccessful is false", function() {
+        expect(card.dropSuccessful).toBe(false);
       });
 
       it("droppedStack is null", function() {
@@ -282,13 +282,6 @@ define(
           expect(card.layoutHelper.dropStacks).toEqual(dropPoints);
         });
 
-        it("setDropPoints: When I pass dropPoints to this method layoutHelper dropPoints and dropPoints should update", function() {
-          var dropPoints = [{x: 100, y: 200}, {x: 100, y: 200}, {x: 100, y: 200}, {x: 100, y: 200}, {x: 100, y: 200}];
-          card.setDropPoints(dropPoints);
-          expect(card.layoutHelper.dropPoints).toEqual(dropPoints);
-
-        });
-
         it("showFace: when I call showFace I should see the card's face", function() {
           card.showFace();
           expect(card.sprite.frameName).toBe('card-26.png');
@@ -446,13 +439,13 @@ define(
 
         });
 
-        it("resetCardVars: dropSuccesful is reset when called", function() {
-          card.dropSuccesful = true;
+        it("resetCardVars: dropSuccessful is reset when called", function() {
+          card.dropSuccessful = true;
           card.resetCardVars();
-          expect(card.dropSuccesful).toBe(false);
+          expect(card.dropSuccessful).toBe(false);
         });
 
-        it("resetCardVars: dropSuccesful is reset when called", function() {
+        it("resetCardVars: dropSuccessful is reset when called", function() {
           card.setDropStacks([{mock:'mock'}]);
           card.resetCardVars();
           expect(card.layoutHelper.dropStacks.length).toBe(0);

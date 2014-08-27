@@ -10,9 +10,8 @@ define(
     'modules/game/view',
     'modules/board/controller',
     'modules/rules/controller',
-    'modules/player/controller'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, Module, Model, View, BoardController, RulesController, PlayerController) {
+  function(_, Class, Phaser, TweenMax, PIXI, Module, Model, View, BoardController, RulesController) {
 
     var GameController = Module.extend({
 
@@ -30,6 +29,8 @@ define(
        * init initialise this module with the Phaser.Game instance
        *
        * nb: pointer to 'this' required in Phaser.Game methods: preload, create, update & render
+       * because the context of this becomes the Phaser.Game object in these
+       * methods.
        *
        * @param game
        */
@@ -39,16 +40,21 @@ define(
         this.game.controller = this;
 
         this.rulesController = new RulesController();
+
         this.rulesController.init(game);
-        this.rulesController.onInitialCardsDealt.add(this.initialCardsDealt, this);
+
 
         this.boardController = new BoardController();
+
+        this.rulesController.onInitialCardsDealt.add(this.boardController.initialCardsDealt, this.boardController);
+
         this.boardController.init(game);
 
-        this.player1 = new PlayerController({x: 100, y: 50});
-        this.player1.init(this.game);
-        this.player2 = new PlayerController({x: 100, y: 500});
-        this.player2.init(this.game);
+
+
+        /*
+
+        */
       },
 
       /**
@@ -58,46 +64,17 @@ define(
         this.rulesController.create3Decks();
         this.rulesController.createSpecialDeck();
         this.boardController.drawBoard();
+        this.boardController.startGame();
         this.boardController.enableAllRowStacks();
-        this.player1.startGame();
-        this.player2.startGame();
         this.rulesController.dealCards();
       },
 
-      /**
-       * 'initialCardsDealt' signal inside rules.controller
-       * @param cards
-       */
-      initialCardsDealt: function(cards, specialDeck) {
-        var self = this;
-        console.log('[GameController] :: initialCardsDealt :: specialDeck=', specialDeck);
-        _.each(cards, function(card, i) {
-          card.cardLanded.add(self.boardController.onCardLanded, self.boardController);
-          card.detectAvailableSlots.add(self.boardController.onDetectAvailableSlots, self.boardController);
-          var enable = true;
-          console.log('cards', cards.length);
-          if (i % 2 === 0) {
-            self.player1.dealCard(card, []);
-            card.isPlayer1 = true;
-          } else {
-            self.player2.dealCard(card, []);
-            card.isPlayer2 = true;
-          }
-        });
-        _.each(specialDeck, function(card, i) {
-          card.isSpecial = true;
-          card.cardLanded.add(self.boardController.onCardLanded, self.boardController);
-          card.detectAvailableSlots.add(self.boardController.onDetectAvailableSlots, self.boardController);
-            if (i < 26) {
-              if (i % 2 === 0) {
-                card.isPlayer1 = true;
-                self.player1.dealSpecialCard(card, []);
-              } else {
-                card.isPlayer2 = true;
-                self.player2.dealSpecialCard(card, []);
-              }
-            }
-        });
+
+
+      onRefreshAvailableDropStacks : function() {
+        console.log('[GameController] :: onRefreshAvailableDropStacks');
+
+
 
       },
 

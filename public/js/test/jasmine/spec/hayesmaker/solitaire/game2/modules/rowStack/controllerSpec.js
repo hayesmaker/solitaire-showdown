@@ -87,6 +87,19 @@ define(
             expect(controller.model.dropZoneEnabled).toBe(true);
 
           });
+
+
+          it("Given that I have a red 7, and the last card on the stack is a red 8, then this row stack should not be available", function() {
+            var card1 = new Card('8h', true);
+            var card2 = new Card('7h', true);
+
+            controller.addCard(card1);
+            controller.checkAvailable(card2);
+
+            expect(controller.model.dropZoneEnabled).toBe(false);
+          });
+
+
         });
       });
     });

@@ -32,26 +32,38 @@ define(
         this.specialPile.startGame();
       },
 
-      dealCard: function(card, dropPoints) {
-        card.setDropPoints(dropPoints);
+      /**
+       * @param card
+       */
+      dealCard: function(card) {
         this.model.addToDrawPile(card);
         this.view.dealCard(card);
       },
 
-      dealSpecialCard: function(card, dropPoints) {
-        //test
-        //console.log('dealSpecialCard', card);
-
-        console.log('dealSpecialCard :: ', dropPoints);
-
-        card.setDropPoints(dropPoints);
+      /**
+       * @param card
+       */
+      dealSpecialCard: function(card) {
         this.specialPile.addCard(card);
 
       },
 
       onDrawerPileClicked: function(card) {
         this.view.draw3Cards(this.model.get3FromPile());
+      },
+
+      onRefreshAvailableDropStacks: function() {
+        console.log('[PlayerController] :: onRefreshAvailableDropStacks');
+        var topSpecialCard = this.specialPile.getTopSpecialCard();
+        var topVisibleDrawCard = this.model.getNextVisibleDrawCard();
+        console.log('onRefreshAvailableDrawStacks :: topSpecial=', topSpecialCard, 'topVisible=', topVisibleDrawCard);
+
+
+
+
       }
+
+
 
 
 

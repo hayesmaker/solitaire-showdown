@@ -54,7 +54,7 @@ define(
       specialCardPlaced: function(card) {
 
         /*
-        if (!card.dropSuccesful)
+        if (!card.dropSuccessful)
         {
           return;
         }
@@ -65,8 +65,14 @@ define(
           }
         }
         */
-      }
+      },
 
+      getTopSpecialCard: function() {
+
+        var topCard = this.model.getTopCard();
+        console.log('[SpecialPileController] :: getTopSpecialCard', topCard.name);
+        return topCard;
+      }
 
 
 

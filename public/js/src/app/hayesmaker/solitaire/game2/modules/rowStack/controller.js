@@ -30,50 +30,23 @@ define(
       },
 
       checkAvailable: function(card) {
-
         RowStackController.super.checkAvailable.call(this, card.name);
-
         console.log('[RowStackController] checkAvailable :: model.cards=', this.model.cards, 'model.dropZoneEnabled=', this.model.dropZoneEnabled);
-
         if (!this.model.cards.length) {
+          console.log('[RowStackController] checkAvailable :: model.cards is empty set DropZoneEnabled to true');
           this.setDropZoneEnabled(true);
         } else {
           var lastCard = this.model.getLastCard();
-          console.log('lastCardName', lastCard.name);
-
+          console.log('[RowStackController] checkAvailable :: model.cards is not empty... checking rules to decide if available');
           if (card.value === lastCard.value - 1) {
-
             if (card.isRed && lastCard.isBlack) {
-
               this.setDropZoneEnabled(true);
-
             } else if (card.isRed && lastCard.isRed) {
-
               this.setDropZoneEnabled(false);
-
             }
-
-
           }
-
-
-
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
       }
-
     });
 
     return RowStackController;
