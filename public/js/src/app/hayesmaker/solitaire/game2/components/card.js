@@ -22,6 +22,10 @@ define(
         this.autoTurn = autoTurn;
         this.sprite = null;
         this.drawerPileClicked = new Signal();
+        /**
+         * @deprecated
+         * @type {signals}
+         */
         this.detectAvailableSlots = new Signal();
         /**
          * untested
@@ -36,6 +40,7 @@ define(
 
         this.dropSuccessful = false;
         this.droppedStack = null;
+        this.originalStack = null;
 
         this.isPlayer1 = false;
         this.isPlayer2 = false;
@@ -94,8 +99,21 @@ define(
         this.sprite.inputEnabled = true;
       },
 
+      cardIsSameSuitAndOneHigher: function(card) {
+
+        console.log('{Card} :: cardIsSameSuitAndOneHigher :: this.value + 1 =', this.value + 1);
+
+        if (card.suit === this.suit && card.value === this.value + 1)
+        {
+          return true;
+        } else {
+          return false;
+        }
+      },
+
       addToStack: function() {
         this.droppedStack.addCard(this);
+        this.originalStack = this.droppedStack;
 
         console.log('[Card] addToStack :: this=', this);
 
@@ -130,11 +148,12 @@ define(
         this.sprite.input.enableDrag(false, true);
         this.sprite.events.onDragStop.add(this.onDragStop, this);
         this.sprite.events.onDragStart.add(this.onDragStart, this);
-
         this.originPos = {x: this.sprite.x, y: this.sprite.y};
+        this.refreshAvailableDropStacks.dispatch();
+      },
 
-        this.detectAvailableSlots.dispatch(this);
-
+      softEnableDrag: function() {
+        this.sprite.input.enableDrag();
       },
 
       disableDrag: function() {
@@ -160,6 +179,7 @@ define(
       },
 
       onDragStart: function(sprite) {
+        this.sprite.bringToTop();
         var self = this;
         this.dragInterval = setInterval(function() {
           self.onDragUpdate(sprite);
@@ -225,6 +245,7 @@ define(
 
         this.droppedStack = closestDropPoint.stack;
 
+
         TweenMax.to(sprite, tweenDuration, {
           throwProps:{
             resistance:100, //increase or decrease this number to add more or less friction/resistance.
@@ -265,11 +286,21 @@ define(
       },
 
       onThrowTweenCompleted: function(card) {
-        //console.log('onThrowTweenCompleted', card.droppedRowStackIndex);
+        console.log('**************************************');
+        console.log('{Card} :: onThrowTweenCompleted :: ', card.name, ' originalStack.index=', card.originalStack);
+        console.log('**************************************');
+
+        if (card.originalStack)
+        {
+          card.originalStack.removeCard(card);
+          card.originalStack = null;
+        }
+
         card.dropSuccessful = true;
         card.cardLanded.dispatch(card);
         //todo test
         card.refreshAvailableDropStacks.dispatch();
+        card.dropSuccessful = false;
       },
 
       onMouseDown: function(sprite) {
@@ -277,12 +308,12 @@ define(
       },
 
       onMouseUp: function(sprite) {
-        //throw "not implemented";
         this.drawerPileClicked.dispatch(this);
       },
 
       resetCardVars: function() {
-        this.dropSuccessful = false;
+        console.log('{Card} :: resetCardVars');
+        //this.dropSuccessful = false;
         // Could give a default drop point to the array so it is not empty, but then change test to show it.
         this.layoutHelper.dropPoints = [];
         this.layoutHelper.dropStacks = [];

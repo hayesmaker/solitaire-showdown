@@ -331,17 +331,6 @@ define(
           expect(card.onDragStop).toHaveBeenCalledWith(card);
         });
 
-        it("enableDrag: when dragging is enabled, send signal to detect available slots", function() {
-          var spy = spyOnSignal(card.detectAvailableSlots);
-
-          card.enableDrag();
-
-          expect(spy).toHaveBeenDispatched();
-        });
-
-
-
-
         it("enableClick: mouse press up event is added", function() {
           spyOn(card, 'onMouseUp');
 
@@ -439,13 +428,15 @@ define(
 
         });
 
+        /*
         it("resetCardVars: dropSuccessful is reset when called", function() {
           card.dropSuccessful = true;
           card.resetCardVars();
           expect(card.dropSuccessful).toBe(false);
         });
+        */
 
-        it("resetCardVars: dropSuccessful is reset when called", function() {
+        it("resetCardVars: dropStacks are reset called", function() {
           card.setDropStacks([{mock:'mock'}]);
           card.resetCardVars();
           expect(card.layoutHelper.dropStacks.length).toBe(0);

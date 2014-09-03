@@ -20,12 +20,16 @@ define(
         this.view = new View(this, origin);
         this.origin = origin;
         this.specialPile = new SpecialPileController(origin);
+        this.boardController = null;
+        this.player = 0;
       },
 
-      init: function(game) {
+      init: function(game, boardController, player) {
         PlayerController.super.init.call(this, game);
+        this.player = player;
         this.view.init(game);
         this.specialPile.init(game);
+        this.boardController = boardController;
       },
 
       startGame: function() {
@@ -53,14 +57,33 @@ define(
       },
 
       onRefreshAvailableDropStacks: function() {
-        console.log('[PlayerController] :: onRefreshAvailableDropStacks');
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>');
         var topSpecialCard = this.specialPile.getTopSpecialCard();
         var topVisibleDrawCard = this.model.getNextVisibleDrawCard();
-        console.log('onRefreshAvailableDrawStacks :: topSpecial=', topSpecialCard, 'topVisible=', topVisibleDrawCard);
+        console.log('{PlayerController} onRefreshAvailableDrawStacks :: topSpecial=', topSpecialCard && topSpecialCard.name, 'topVisible=', topVisibleDrawCard && topVisibleDrawCard.name);
+        console.log('>>>>>>>>>>>>>>>>>>>>>>>>');
+
+        if (topSpecialCard)
+        {
+            //var rowStacks
+          this.reCheckAvailableStacks(topSpecialCard);
+          //
+        }
+
+        if (topVisibleDrawCard)
+        {
+          this.reCheckAvailableStacks(topVisibleDrawCard);
+          //topVisibleDrawCard.enableDrag();
+        }
 
 
+        this.boardController.model.checkAllDrawPilesForMoves(this.player);
 
 
+      },
+
+      reCheckAvailableStacks: function(card) {
+        this.boardController.model.checkAvailableStacks(card);
       }
 
 

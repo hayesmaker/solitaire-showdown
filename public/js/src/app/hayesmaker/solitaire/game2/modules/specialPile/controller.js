@@ -52,6 +52,21 @@ define(
       },
 
       specialCardPlaced: function(card) {
+        console.log('{SpecialPileController} :: specialCardPlaced', card.name, card.dropSuccessful);
+        if (!card.dropSuccessful)
+        {
+          return;
+        } else {
+          var card = this.model.removeCard();
+          //card.isSpecial = false;
+
+          console.log('{SpecialPileController} :: specialCardPlaced :: card=', card);
+
+          this.view.removeCard();
+        }
+
+
+
 
         /*
         if (!card.dropSuccessful)

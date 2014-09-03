@@ -13,17 +13,24 @@ define(
       constructor: function() {
         this.drawPile = [];
         this.visible = [];
+        this.unused = [];
       },
 
       get3FromPile: function() {
-        var next3 = [];
-        var len = this.drawPile.length >= 3 ? 3 : this.drawPile.length;
-        for (var i = 0; i < len; i ++) {
+        var i, len;
+        len = this.unused.length;
+        for (i=0; i < len; i++)
+        {
+          this.unused[i].disableDrag();
+        }
+        this.unused = [];
+        len = this.drawPile.length >= 3 ? 3 : this.drawPile.length;
+        for (i = 0; i < len; i ++) {
           var nextCard = this.drawPile.pop();
-          next3.push(nextCard);
+          this.unused.push(nextCard);
           this.visible.push(nextCard);
         }
-        return next3;
+        return this.unused;
       },
 
       addToDrawPile: function(card) {
@@ -32,14 +39,15 @@ define(
       },
 
       removeFromVisibleDrawPile: function(card) {
-        console.log('[PlayerModel] :: removeFromVisibleDrawPile :: ', card);
+        console.log('{PlayerModel} :: removeFromVisibleDrawPile :: ', card);
         this.visible.pop();
+        card.cardLanded.remove(this.removeFromVisibleDrawPile,this);
       },
 
       getNextVisibleDrawCard: function() {
         if (this.visible.length) {
           var nextVisibleCard = this.visible[this.visible.length-1];
-          console.log('[PlayerModel] :: getNextVisibleDrawCard=', nextVisibleCard.name);
+          console.log('{PlayerModel} :: getNextVisibleDrawCard=', nextVisibleCard.name);
           return nextVisibleCard;
         } else {
           return null;

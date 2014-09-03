@@ -35,6 +35,12 @@ define(
       },
 
       getTopCard: function() {
+        var topCard = this.cards[this.cards.length-1];
+        console.log('this.getTopCard=', topCard.name);
+        return topCard;
+      },
+
+      removeCard: function() {
         return this.cards.pop();
       }
 

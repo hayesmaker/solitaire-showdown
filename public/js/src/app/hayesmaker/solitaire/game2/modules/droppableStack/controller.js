@@ -48,6 +48,10 @@ define(
 
       addCard: function(card) {
         this.model.cards.push(card);
+      },
+
+      removeCard: function(card) {
+        this.model.removeCard(card);
       }
 
     });

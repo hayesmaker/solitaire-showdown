@@ -25,25 +25,24 @@ define(
         this.model.addCardHeightToDropPoint();
       },
 
-      removeCard: function() {
+      removeCard: function(card) {
+        console.log('{RowStackController} :: removeCard :: ', card.name);
+        RowStackController.super.removeCard.call(this, card);
         this.model.removeCardHeightFromDropPoint();
       },
 
       checkAvailable: function(card) {
         RowStackController.super.checkAvailable.call(this, card.name);
-        console.log('[RowStackController] checkAvailable :: model.cards=', this.model.cards, 'model.dropZoneEnabled=', this.model.dropZoneEnabled);
+        //console.log('[RowStackController] checkAvailable :: model.cards=', this.model.cards, 'model.dropZoneEnabled=', this.model.dropZoneEnabled);
         if (!this.model.cards.length) {
-          console.log('[RowStackController] checkAvailable :: model.cards is empty set DropZoneEnabled to true');
           this.setDropZoneEnabled(true);
         } else {
           var lastCard = this.model.getLastCard();
-          console.log('[RowStackController] checkAvailable :: model.cards is not empty... checking rules to decide if available');
-          if (card.value === lastCard.value - 1) {
-            if (card.isRed && lastCard.isBlack) {
+          //console.log('[RowStackController] checkAvailable :: model.cards is not empty... checking rules to decide if available');
+          if (card.value === lastCard.value - 1 && ((card.isRed && lastCard.isBlack) || (card.isBlack && lastCard.isRed))) {
               this.setDropZoneEnabled(true);
-            } else if (card.isRed && lastCard.isRed) {
-              this.setDropZoneEnabled(false);
-            }
+          } else {
+            this.setDropZoneEnabled(false);
           }
         }
       }

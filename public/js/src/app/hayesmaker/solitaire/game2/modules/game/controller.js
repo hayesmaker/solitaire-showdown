@@ -35,26 +35,13 @@ define(
        * @param game
        */
       init: function(game) {
-
         GameController.super.init.call(this, game);
         this.game.controller = this;
-
         this.rulesController = new RulesController();
-
         this.rulesController.init(game);
-
-
         this.boardController = new BoardController();
-
         this.rulesController.onInitialCardsDealt.add(this.boardController.initialCardsDealt, this.boardController);
-
         this.boardController.init(game);
-
-
-
-        /*
-
-        */
       },
 
       /**

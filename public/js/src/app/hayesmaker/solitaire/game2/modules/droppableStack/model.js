@@ -46,6 +46,16 @@ define(
 
       getLastCard: function() {
         return this.cards[this.cards.length-1];
+      },
+
+      removeCard: function(card)
+      {
+        var cardIndex = this.cards.indexOf(card);
+
+        if (cardIndex >= 0) {
+          this.cards.splice(cardIndex, 1);
+          console.log('{DroppableStack} removeCard :: cardIndex', cardIndex, ' cards=', this.cards);
+        }
       }
 
 

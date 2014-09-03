@@ -22,16 +22,15 @@ define(
       constructor: function() {
         this.model = new Model(this);
         this.view = new View(this);
-        //this.rowStacks = [];
       },
 
       init: function(game) {
         BoardController.super.init.call(this, game);
 
         this.player1 = new PlayerController({x: 100, y: 50});
-        this.player1.init(game);
+        this.player1.init(game, this, 1);
         this.player2 = new PlayerController({x: 100, y: 500});
-        this.player2.init(game);
+        this.player2.init(game, this, 2);
 
         this.view.init(game);
 
@@ -112,9 +111,7 @@ define(
         var self = this;
         _.each(cards, function(card, i) {
           card.cardLanded.add(self.onCardLanded);
-          card.detectAvailableSlots.add(self.onDetectAvailableSlots, self);
           //add test
-
           console.log('cards', cards.length);
           if (i % 2 === 0) {
             card.isPlayer1 = true;
@@ -125,14 +122,11 @@ define(
             card.refreshAvailableDropStacks.add(self.player2.onRefreshAvailableDropStacks, self.player2);
             self.player2.dealCard(card);
           }
-
-          card.refreshAvailableDropStacks.add(self.onRefreshAvailableDropStacks);
         });
+
         _.each(specialDeck, function(card, i) {
           card.isSpecial = true;
           card.cardLanded.add(self.onCardLanded);
-          card.detectAvailableSlots.add(self.onDetectAvailableSlots, self);
-
           //add test
           if (i < 26) {
             if (i % 2 === 0) {
@@ -145,7 +139,6 @@ define(
               self.player2.dealSpecialCard(card);
             }
           }
-          card.refreshAvailableDropStacks.add(self.onRefreshAvailableDropStacks);
         });
 
       },
@@ -191,55 +184,7 @@ define(
           card.addToStack();
         }
 
-      },
-
-      onRefreshAvailableDropStacks: function() {
-        console.log('[BoardController] :: onRefreshAvailableDropStacks');
-
-
-
-      },
-
-      /**
-       * rename to: onDetectAvailableStacksForCard
-       * @param card
-       */
-      onDetectAvailableSlots: function(card) {
-        console.log('[BoardController] :: onDetectAvailableSlots :: card.name', card.name, 'card.isPlayer1', card.isPlayer1);
-        var dropStacks = [];
-        var i, stackModel, stack;
-        if (card.isPlayer1) {
-          for (i = 0; i < 4; i ++) {
-            stackModel = this.model.rowStacks[i].model;
-            stack = this.model.rowStacks[i];
-            stack.checkAvailable(card);
-            if (stackModel.dropZoneEnabled) {
-              dropStacks.push(stack);
-            }
-          }
-        }
-
-        if (card.isPlayer2) {
-          for (i = 4; i < 8; i ++) {
-            stackModel = this.model.rowStacks[i].model;
-            stack = this.model.rowStacks[i];
-            stack.checkAvailable(card);
-            if (stackModel.dropZoneEnabled) {
-              dropStacks.push(stack);
-            }
-          }
-        }
-
-        if (dropStacks.length) {
-          card.dropSuccessful = true;
-        }
-
-        console.log("[BoardController] :: setDropStacks :: ", dropStacks.length);
-        card.setDropStacks(dropStacks);
       }
-
-
-
 
 
 

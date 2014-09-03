@@ -83,14 +83,13 @@ define(
 
         describe("2.  Each player starts with a special 13 card pile from another deck of cards.", function() {
 
-          var cards, onCardLandedSpy, onDetectAvailableSlotsSpy;
+          var cards, onCardLandedSpy;
 
           describe("A Special pile is dealt to each player", function() {
             beforeEach(function() {
               cards = Mocks.mockDeck;
 
               onCardLandedSpy = spyOn(controller, 'onCardLanded');
-              onDetectAvailableSlotsSpy = spyOn(controller, 'onDetectAvailableSlots');
             });
 
             afterEach(function() {
@@ -135,17 +134,6 @@ define(
               expect(onCardLandedSpy.calls.length).toBe(52);
             });
 
-            it("When normal cards are dealt, card detectAvailableSlots signal listener is registered", function() {
-
-              controller.initialCardsDealt(cards, []);
-
-              _.each(cards, function(card) {
-                card.detectAvailableSlots.dispatch(card);
-              });
-
-              expect(onDetectAvailableSlotsSpy.calls.length).toBe(52);
-            });
-
             it("When special cards are dealt, card cardLanded signal listener is registered", function() {
 
               controller.initialCardsDealt([], cards);
@@ -157,17 +145,6 @@ define(
               expect(onCardLandedSpy.calls.length).toBe(52);
             });
 
-            it("When special cards are dealt, card detectAvailableSlots signal listener is registered", function() {
-
-              controller.initialCardsDealt([], cards);
-
-              _.each(cards, function(card) {
-                card.detectAvailableSlots.dispatch(card);
-              });
-
-              expect(onDetectAvailableSlotsSpy.calls.length).toBe(52);
-
-            });
           });
 
 
