@@ -39,9 +39,13 @@ define(
 
       },
 
+      drawStack: function() {
+        this.view.drawStack(this.model.box);
+      },
+
       startGame: function() {
         console.log('SpecialPileController :: startGame');
-        this.view.drawStack(this.model.box);
+
       },
 
       addCard: function(card) {

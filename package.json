@@ -29,6 +29,7 @@
     "karma-coffee-preprocessor": "~0.1.1",
     "karma-phantomjs-launcher": "~0.1.1",
     "karma": "~0.10.8",
-    "karma-growl-reporter": "~0.1.1"
+    "karma-growl-reporter": "~0.1.1",
+    "cloak": "~0.2.6"
   }
 }

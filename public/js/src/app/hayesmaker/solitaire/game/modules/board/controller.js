@@ -5,6 +5,7 @@ define(
     'phaser',
     'TweenMax',
     'pixijs',
+    'signals',
     'modules/module',
     'modules/board/model',
     'modules/board/view',
@@ -12,7 +13,7 @@ define(
     'modules/acePile/controller',
     'modules/player/controller'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, Module, Model, View, RowStackController, AcePileController, PlayerController) {
+  function(_, Class, Phaser, TweenMax, PIXI, Signals, Module, Model, View, RowStackController, AcePileController, PlayerController) {
 
     /**
      * @type {BoardController}
@@ -22,10 +23,14 @@ define(
       constructor: function() {
         this.model = new Model(this);
         this.view = new View(this);
+        this.cloakService = null;
       },
 
-      init: function(game) {
+      init: function(game, cloakService) {
         BoardController.super.init.call(this, game);
+
+        this.cloakService = cloakService;
+        this.cloakService.lobbyPlayerJoined.add(this.onLobbyPlayerJoined, this);
 
         this.player1 = new PlayerController({x: 100, y: 50});
         this.player1.init(game, this, 1);
@@ -74,10 +79,26 @@ define(
           acePile.init(game, box);
           this.model.acePiles.push(acePile);
         }
+      },
 
+      onLobbyPlayerJoined: function(user)
+      {
+        console.log('{BoardController} :: onLobbyPlayerJoined :: user=', user);
 
-
-
+        switch(this.model.playersJoined.length)
+        {
+          case 0 :
+            this.model.joinPlayer(this.player1);
+            this.player1.drawStacks();
+            break;
+          case 1 :
+            this.model.joinPlayer(this.player2);
+            this.player2.drawStacks();
+            break;
+          case 2 :
+            console.warn('{BoardController} :: max players Joined');
+            break;
+        }
       },
 
       drawBoard: function() {
@@ -92,6 +113,9 @@ define(
         for (i = 0; i < this.model.acePiles.length; i++) {
           this.model.acePiles[i].renderView();
         }
+
+
+
       },
 
       /**

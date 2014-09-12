@@ -10,8 +10,9 @@ define(
     'modules/game/view',
     'modules/board/controller',
     'modules/rules/controller',
+    'cloak'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI, Module, Model, View, BoardController, RulesController) {
+  function(_, Class, Phaser, TweenMax, PIXI, Module, Model, View, BoardController, RulesController, cloak) {
 
     var GameController = Module.extend({
 
@@ -22,6 +23,8 @@ define(
 
         this.model = new Model(this);
         this.view = new View(this);
+
+        this.numPlayers = 0;
 
       },
 
@@ -34,23 +37,46 @@ define(
        *
        * @param game
        */
-      init: function(game) {
+      init: function(game, cloakService) {
         GameController.super.init.call(this, game);
+        cloakService.lobbyPlayerJoined.add(this.onLobbyPlayerJoined, this);
         this.game.controller = this;
         this.rulesController = new RulesController();
         this.rulesController.init(game);
         this.boardController = new BoardController();
         this.rulesController.onInitialCardsDealt.add(this.boardController.initialCardsDealt, this.boardController);
-        this.boardController.init(game);
+        this.boardController.init(game, cloakService);
+        this.view.init(game);
+        this.view.countDownComplete.add(this.startGame, this);
+
+      },
+
+      onLobbyPlayerJoined: function(user) {
+        this.numPlayers++;
+        console.log('onLobbyPlayerJoined', this.numPlayers);
+        if (this.numPlayers === 2)
+        {
+          this.startCountDown();
+        }
+      },
+
+      drawGame: function() {
+        this.rulesController.create3Decks();
+        this.rulesController.createSpecialDeck();
+        this.boardController.drawBoard();
+      },
+
+      startCountDown: function() {
+        this.view.drawCountDown();
+        this.view.startCountDown();
       },
 
       /**
        * startGame
        */
       startGame: function() {
-        this.rulesController.create3Decks();
-        this.rulesController.createSpecialDeck();
-        this.boardController.drawBoard();
+
+
         this.boardController.startGame();
         this.boardController.enableAllRowStacks();
         this.rulesController.dealCards();
@@ -75,7 +101,8 @@ define(
 
       create: function() {
         console.log('create game', this.game);
-        this.startGame();
+        this.drawGame();
+
 
 
       },

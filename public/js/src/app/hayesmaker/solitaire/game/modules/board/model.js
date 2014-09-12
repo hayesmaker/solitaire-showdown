@@ -23,8 +23,14 @@ define(
 
         this.rowStacks = [];
         this.acePiles = [];
+        this.playersJoined = [];
 
 
+      },
+
+      joinPlayer: function(player)
+      {
+        this.playersJoined.push(player);
       },
 
       /**
@@ -135,6 +141,8 @@ define(
         });
 
         card.setDropStacks(availableStacks);
+        card.softEnableDrag();
+
 
 
 

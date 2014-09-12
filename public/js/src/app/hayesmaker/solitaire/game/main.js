@@ -18,10 +18,12 @@ define(
         this.gameController = new GameController();
       },
 
-      init: function(game) {
+      init: function(game, cloakService) {
         this.game = game;
+        this.game.state.start('main');
+
         this.game.controller = this.gameController;
-        this.gameController.init(game);
+        this.gameController.init(game, cloakService);
       },
 
       preload: function() {

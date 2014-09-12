@@ -32,6 +32,10 @@ define(
         this.boardController = boardController;
       },
 
+      drawStacks: function() {
+        this.specialPile.drawStack();
+      },
+
       startGame: function() {
         this.specialPile.startGame();
       },
@@ -65,15 +69,12 @@ define(
 
         if (topSpecialCard)
         {
-            //var rowStacks
           this.reCheckAvailableStacks(topSpecialCard);
-          //
         }
 
         if (topVisibleDrawCard)
         {
           this.reCheckAvailableStacks(topVisibleDrawCard);
-          //topVisibleDrawCard.enableDrag();
         }
 
 

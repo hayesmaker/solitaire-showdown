@@ -18,6 +18,7 @@ define(
 
 
       drawStack: function(model) {
+
         var graphics = this.game.add.graphics(0,0);
         graphics.beginFill(0x00ff00, 0.2);
         graphics.lineStyle(2, 0xff0000 , 1);
