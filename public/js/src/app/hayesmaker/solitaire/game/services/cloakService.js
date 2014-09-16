@@ -10,7 +10,9 @@ define(
     var socketService = Class.extend({
 
       constructor: function(){
+        this.lobbyPlayers = [];
         this.lobbyPlayerJoined = new Signal();
+        this.gameStarted = new Signal();
       },
 
       init: function() {
@@ -18,11 +20,25 @@ define(
         var self = this;
 
         cloak.configure({
+
           messages: {
-            bar: function(arg) {
-              console.log('bar from server', arg);
+
+            gameStarted: function(data)
+            {
+              console.log('{Cloak} :: gameStarted :: ', data);
+              var i, len = data.users.length;
+              for (i = 0; i < len; i++)
+              {
+                if (self.lobbyPlayers.indexOf(data.users[i].id) < 0)
+                {
+                  self.lobbyPlayers.push(data.users[i]);
+                  self.lobbyPlayerJoined.dispatch(data.users[i]);
+                }
+              }
+              self.gameStarted.dispatch(data.gameData);
             }
           },
+
           serverEvents: {
             connecting: function() {
               console.log('{Cloak} :: Connecting');
@@ -42,22 +58,9 @@ define(
 
             error: function(err) {
               console.log('{Cloak} :: Error ::', err);
-            },
-
-            lobbyMemberJoined: function(arg) {
-              var id = arg.id;
-              var name = arg.name;
-              console.log('{Cloak} :: Player Joined Lobby :: ', id, name);
-
-              self.lobbyPlayerJoined.dispatch({id: id, name: name});
-            },
-
-            getAllMembers: function(users)
-            {
-              console.log('{Cloak} :: getAllMembers :: users=', users);
             }
+
           }
-          //add
         });
       },
 

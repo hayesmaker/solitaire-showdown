@@ -1,7 +1,6 @@
 require.config({
   baseUrl: '',
   paths: {
-    //test deps
     'app' : '../../src/app',
     'jasmine': 'lib/jasmine/jasmine',
     'jasmine-html': 'lib/jasmine/jasmine-html',
@@ -9,7 +8,6 @@ require.config({
     'jquery' : 'lib/jquery/jquery-2.0.3',
     'jasmineSignals': 'lib/jasmine/jasmine-signals',
 
-    //app deps
     'class' : '../../src/lib/classjs/js/Class',
     'phaser': '../../src/lib/phaser/js/phaser-solo',
     'signals': '../../src/lib/signals/js/signals',
@@ -17,11 +15,13 @@ require.config({
     'TweenMax' : '../../src/lib/greensocks/uncompressed/TweenMax',
     'TweenPlugins' : '../../src/lib/greensocks/uncompressed/plugins',
     'lodash' : '../../src/lib/lodash/js/lodash',
-    'game' : '../../src/app/hayesmaker/solitaire/game2',
-    'modules' : '../../src/app/hayesmaker/solitaire/game2/modules',
-    'components' : '../../src/app/hayesmaker/solitaire/game2/components',
-    'utils' : '../../src/app/hayesmaker/solitaire/game2/utils',
-    'testHelpers' : 'spec/hayesmaker/solitaire/game2/testHelpers'
+    'socketio' : '../../src/lib/socketio/js/socket.io',
+    'cloak' : '../../src/lib/cloak/js/cloak',
+    'game' : '../../src/app/hayesmaker/solitaire/game',
+    'modules' : '../../src/app/hayesmaker/solitaire/game/modules',
+    'components' : '../../src/app/hayesmaker/solitaire/game/components',
+    'utils' : '../../src/app/hayesmaker/solitaire/game/utils',
+    'testHelpers' : 'spec/hayesmaker/solitaire/game/testHelpers'
   },
   shim: {
     'jasmineSignals' : {
@@ -68,28 +68,28 @@ require(['jquery', 'jasmine-html'], function ($, jasmine) {
   };
 
   var specs = [];
-  specs.push('spec/hayesmaker/solitaire/game2/mainSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/components/cardSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/game/viewSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/game/modelSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/game/controllerSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/rules/modelSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/rules/controllerSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/player/viewSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/player/modelSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/player/controllerSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/board/viewSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/board/modelSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/board/controllerSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/rowStack/viewSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/rowStack/modelSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/rowStack/controllerSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/acePile/viewSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/acePile/modelSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/acePile/controllerSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/specialPile/viewSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/specialPile/modelSpec.js');
-  specs.push('spec/hayesmaker/solitaire/game2/modules/specialPile/controllerSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/mainSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/components/cardSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/game/viewSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/game/modelSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/game/controllerSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/rules/modelSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/rules/controllerSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/player/viewSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/player/modelSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/player/controllerSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/board/viewSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/board/modelSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/board/controllerSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/rowStack/viewSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/rowStack/modelSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/rowStack/controllerSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/acePile/viewSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/acePile/modelSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/acePile/controllerSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/specialPile/viewSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/specialPile/modelSpec.js');
+  specs.push('spec/hayesmaker/solitaire/game/modules/specialPile/controllerSpec.js');
 
   $(function () {
     require(specs, function () {

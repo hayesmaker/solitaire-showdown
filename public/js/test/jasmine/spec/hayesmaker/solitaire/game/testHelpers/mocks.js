@@ -1,11 +1,5 @@
 define(['class', 'jasmineSignals', 'signals'], function(Class, spyOnSignal, Signal) {
 
-    var DroppableStack = function() {
-      return {
-
-      }
-    };
-
     var Card = function(name) {
       return {
         name: name,
@@ -100,8 +94,19 @@ define(['class', 'jasmineSignals', 'signals'], function(Class, spyOnSignal, Sign
         new Card('ks')
       ],
 
+      mockCloak: {
+
+        lobbyPlayerJoined: new Signal(),
+        gameStarted: new Signal()
+
+      },
+
 
       mockGame: {
+        state: {
+          start: jasmine.createSpy("start new state spy")
+        },
+
         add: {
 
           sprite: function(x, y, label) {

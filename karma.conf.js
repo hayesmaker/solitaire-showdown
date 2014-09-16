@@ -18,7 +18,7 @@ module.exports = function(config) {
       {pattern: 'src/lib/**/*.js', included: false},
       {pattern: 'test/jasmine/spec/**/*Spec.js', included: false},
       {pattern: 'test/jasmine/lib/**/*.js', included: false},
-      {pattern: 'test/jasmine/spec/hayesmaker/solitaire/game2/testHelpers/*.js', included: false},
+      {pattern: 'test/jasmine/spec/hayesmaker/solitaire/game/testHelpers/*.js', included: false},
       'test/jasmine/karmaMain.js'
     ],
 

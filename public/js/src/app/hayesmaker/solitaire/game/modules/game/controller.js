@@ -39,7 +39,7 @@ define(
        */
       init: function(game, cloakService) {
         GameController.super.init.call(this, game);
-        cloakService.lobbyPlayerJoined.add(this.onLobbyPlayerJoined, this);
+        cloakService.gameStarted.add(this.onGameStarted, this);
         this.game.controller = this;
         this.rulesController = new RulesController();
         this.rulesController.init(game);
@@ -51,19 +51,19 @@ define(
 
       },
 
-      onLobbyPlayerJoined: function(user) {
-        this.numPlayers++;
-        console.log('onLobbyPlayerJoined', this.numPlayers);
-        if (this.numPlayers === 2)
-        {
-          this.startCountDown();
-        }
+      onGameStarted: function(gameData) {
+
+        this.rulesController.setNormalDeck(gameData.pack);
+        this.rulesController.setSpecialDeck(gameData.specialPack);
+
+        this.startCountDown();
       },
 
       drawGame: function() {
-        this.rulesController.create3Decks();
-        this.rulesController.createSpecialDeck();
+        //this.rulesController.create3Decks();
+        //this.rulesController.createSpecialDeck();
         this.boardController.drawBoard();
+
       },
 
       startCountDown: function() {
@@ -75,8 +75,6 @@ define(
        * startGame
        */
       startGame: function() {
-
-
         this.boardController.startGame();
         this.boardController.enableAllRowStacks();
         this.rulesController.dealCards();

@@ -10,6 +10,7 @@ var http = require('http');
 var path = require('path');
 var app = express();
 var cloak = require('cloak');
+var Game = require('./classes/Game');
 
 
 
@@ -53,6 +54,15 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 
 cloak.configure({
   express: server,
+
+  autoCreateRooms: true,
+
+  minRoomMembers: 2,
+
+  defaultRoomSize: 2,
+
+  roomLife: 3600000,
+
   messages: {
     foo: function(arg, user) {
 
@@ -60,10 +70,36 @@ cloak.configure({
       //console.log('Current Users: ' + cloak.getUsers());
     }
   },
+
+  room: {
+    init: function() {
+      this.game = new Game();
+      this.game.init();
+
+    },
+    newMember: function(user) {
+      console.log('**************');
+      console.log('****GAME START ****');
+      console.log('**************');
+
+      console.log('game pack=', this.game.pack);
+
+      user.message('gameStarted', {
+        users: this.cloak.getUsers(true),
+        gameData: this.game
+      });
+
+      //this.cloak.messageAll('getAllMembers', this.cloak.getUsers(true));
+    }
+  },
+
   lobby : {
     newMember: function(user)
     {
-      console.log('Lobby New Member', this.cloak.getLobby());
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      console.log('Lobby New Member :: Waiting for players', this.cloak.getUsers(true));
+      console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+      //this.cloak.messageAll('getAllMembers', this.cloak.getUsers(true));
       //user.cloak.getLobby().messageMembers('getAllMembers', user.cloak.getUsers());
     }
   }

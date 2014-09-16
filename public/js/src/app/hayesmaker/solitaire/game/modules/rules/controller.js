@@ -31,38 +31,22 @@ define(
         RulesController.super.init.call(this, game);
 
         this.onInitialCardsDealt = new Signal();
-        this.onSpecialCardsDealt = new Signal();
       },
 
-      createSpecialDeck: function() {
-
-        this.createDeck(this.model.specialDeck);
-
+      setNormalDeck: function(normalDeck) {
+        var self = this;
+        _.each(normalDeck, function(cardName) {
+          self.model.deck.push(new Card(cardName, false));
+        });
       },
 
-      /**
-       *
-       */
-      create3Decks:function() {
-        this.createDeck(this.model.deck);
-        this.createDeck(this.model.deck);
-        this.createDeck(this.model.deck);
+      setSpecialDeck: function(specialDeck) {
+        var self = this;
+        _.each(specialDeck, function(cardName) {
+          self.model.specialDeck.push(new Card(cardName, false));
+        });
+
       },
-
-      /**
-       *
-       * random deck
-       * @param deck
-       */
-      createDeck: function(deck) {
-        var cardsHelper = new CardsHelper();
-        for (var i = 0; i < 52; i++) {
-          var card = new Card(cardsHelper.getRandom(), false);
-          deck.push(card);
-        }
-      },
-
-
 
       /**
        *

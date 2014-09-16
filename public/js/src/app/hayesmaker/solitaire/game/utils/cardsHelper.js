@@ -1,12 +1,9 @@
 define(
   [
     'lodash',
-    'class',
-    'phaser',
-    'TweenMax',
-    'pixijs'
+    'class'
   ],
-  function(_, Class, Phaser, TweenMax, PIXI) {
+  function(_, Class) {
 
     var CardsHelper = Class.extend({
 

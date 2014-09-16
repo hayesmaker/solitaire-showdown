@@ -21,15 +21,17 @@ requirejs.config({
     'TweenMax' : 'lib/greensocks/uncompressed/TweenMax',
     'TweenPlugins' : 'lib/greensocks/uncompressed/plugins',
     'lodash' : 'lib/lodash/js/lodash',
-    'game' : 'app/hayesmaker/solitaire/game2',
-    'modules' : 'app/hayesmaker/solitaire/game2/modules',
-    'components' : 'app/hayesmaker/solitaire/game2/components',
-    'utils' : 'app/hayesmaker/solitaire/game2/utils',
+    'game' : 'app/hayesmaker/solitaire/game',
+    'modules' : 'app/hayesmaker/solitaire/game/modules',
+    'components' : 'app/hayesmaker/solitaire/game/components',
+    'utils' : 'app/hayesmaker/solitaire/game/utils',
+    'cloak' : 'lib/cloak/js/cloak',
+    'socketio' : 'lib/socketio/js/socket.io',
 
     //tests
     'jquery' : '../test/jasmine/lib/jquery/jquery-2.0.3',
     'jasmineSignals': '../test/jasmine/lib/jasmine/jasmine-signals',
-    'testHelpers' : '../test/jasmine/spec/hayesmaker/solitaire/game2/testHelpers'
+    'testHelpers' : '../test/jasmine/spec/hayesmaker/solitaire/game/testHelpers'
   },
   shim: {
     'class' : {

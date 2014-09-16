@@ -23,8 +23,9 @@ define(
       beforeEach(function() {
         controller = new BoardController();
         game = Mocks.mockGame;
+        cloak = Mocks.mockCloak;
 
-        controller.init(game);
+        controller.init(game, cloak);
       });
 
       afterEach(function() {

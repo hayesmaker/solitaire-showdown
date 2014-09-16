@@ -35,11 +35,13 @@ define(
       var controller;
       var cards;
       var game;
+      var cloak;
 
       beforeEach(function() {
         game = Mocks.mockGame;
+        cloak = Mocks.mockCloak;
         controller = new GameController();
-        controller.init(game);
+        controller.init(game, cloak);
 
       });
 
@@ -69,17 +71,12 @@ define(
           var spy, spy1, spy2, spy3, spy4, spy5;
 
           beforeEach(function() {
-            spy = spyOn(controller.rulesController, 'create3Decks');
+            //spy = spyOn(controller.rulesController, 'create3Decks');
             spy1 = spyOn(controller.boardController, 'drawBoard');
             spy2 = spyOn(controller.boardController, 'enableAllRowStacks');
             spy5 = spyOn(controller.rulesController, 'dealCards');
           });
 
-          it("When startGame is called, create3Decks is called on the rules module", function() {
-
-            controller.startGame();
-            expect(spy).toHaveBeenCalled();
-          });
 
           it("When startGame is called, dealCards is called on the rules module", function() {
             controller.startGame();
