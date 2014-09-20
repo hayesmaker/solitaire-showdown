@@ -68,6 +68,10 @@ cloak.configure({
 
       console.log('Connection from user.id ' + user.id);
       //console.log('Current Users: ' + cloak.getUsers());
+    },
+
+    sendMove: function(arg, user) {
+      console.log('{Cloak} sendMove :: card=', arg);
     }
   },
 

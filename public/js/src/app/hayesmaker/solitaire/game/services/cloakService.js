@@ -64,6 +64,11 @@ define(
         });
       },
 
+      sendMove: function(dropStack, card, player) {
+        console.log('{Cloak} sendMove : ', card, player);
+        cloak.message('sendMove', card.name + "::" + player + "::" + dropStack.index);
+      },
+
       connect: function() {
         cloak.run('http://localhost:3000');
       }

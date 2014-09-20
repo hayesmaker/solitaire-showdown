@@ -134,7 +134,8 @@ define(
         console.log('[BoardController] :: initialCardsDealt :: cards=', cards, 'specialDeck=', specialDeck);
         var self = this;
         _.each(cards, function(card, i) {
-          card.cardLanded.add(self.onCardLanded);
+          card.cardLanded.add(self.onCardLanded, self);
+          card.cardThrown.add(self.onCardThrown, self);
           //add test
           console.log('cards', cards.length);
           if (i % 2 === 0) {
@@ -150,7 +151,8 @@ define(
 
         _.each(specialDeck, function(card, i) {
           card.isSpecial = true;
-          card.cardLanded.add(self.onCardLanded);
+          card.cardLanded.add(self.onCardLanded, self);
+          card.cardThrown.add(self.onCardThrown, self);
           //add test
           if (i < 26) {
             if (i % 2 === 0) {
@@ -202,12 +204,17 @@ define(
         return dropPoints;
       },
 
+      onCardThrown: function(card) {
+        var player = card.isPlayer1? 1 : 2;
+        var stack = card.droppedStack;
+        this.cloakService.sendMove(stack, card, player);
+      },
+
       onCardLanded: function(card) {
         console.log('[BoardController] onCardLanded :: card=', card);
         if (card.dropSuccessful) {
           card.addToStack();
         }
-
       }
 
 

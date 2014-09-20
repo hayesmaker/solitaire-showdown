@@ -33,6 +33,7 @@ define(
          * @type {signals}
          */
         this.refreshAvailableDropStacks = new Signal();
+        this.cardThrown = new Signal();
         this.cardLanded = new Signal();
         this.isAce = name[0] === 'a';
         this.isSpecial = false;
@@ -149,6 +150,7 @@ define(
         this.sprite.events.onDragStop.add(this.onDragStop, this);
         this.sprite.events.onDragStart.add(this.onDragStart, this);
         this.originPos = {x: this.sprite.x, y: this.sprite.y};
+
         this.refreshAvailableDropStacks.dispatch();
       },
 
@@ -283,6 +285,9 @@ define(
           onCompleteParams: [this],
           ease:Power3.easeOut
         });
+
+        this.cardThrown.dispatch(this);
+
       },
 
       onThrowTweenCompleted: function(card) {
