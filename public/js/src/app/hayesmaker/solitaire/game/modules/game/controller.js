@@ -38,6 +38,7 @@ define(
        * @param game
        */
       init: function(game, cloakService) {
+
         GameController.super.init.call(this, game);
         cloakService.gameStarted.add(this.onGameStarted, this);
         this.game.controller = this;
@@ -52,23 +53,22 @@ define(
       },
 
       onGameStarted: function(gameData) {
-
         this.rulesController.setNormalDeck(gameData.pack);
         this.rulesController.setSpecialDeck(gameData.specialPack);
-
         this.startCountDown();
       },
 
       drawGame: function() {
-        //this.rulesController.create3Decks();
-        //this.rulesController.createSpecialDeck();
         this.boardController.drawBoard();
-
       },
 
       startCountDown: function() {
+        this.startGame();
+        /*
+        //keep for countdown
         this.view.drawCountDown();
         this.view.startCountDown();
+        */
       },
 
       /**

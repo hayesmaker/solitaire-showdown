@@ -28,6 +28,8 @@ define(
           y: 0
         };
 
+        this.index = null;
+        this.type = null;
         this.cards = [];
       },
 

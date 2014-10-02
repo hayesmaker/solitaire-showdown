@@ -255,23 +255,6 @@ define(
               velocity:"auto", //since we're tracking "x", the tracked value will be calculated and used automatically.
               min:sprite.xMin,
               max:sprite.xMax,
-              /**
-               *
-               [LayoutHelper] :: getNearestDropPointAndStack1 :: distances=
-               Array[0]
-               [LayoutHelper] :: getNearestDropPointAndStack2 :: distances=
-               Array[0]
-               [LayoutHelper] :: getNearestDropPointAndStack3 :: point=
-               Object
-               x: 484.0229118250669
-               y: 17.035749181529674
-               __proto__: Object
-               closestPoint= Infinity
-               [Card] :: closestDropPoint= Infinity
-               Uncaught TypeError: Cannot read property 'x' of undefined localhost:3000/js/src/app/hayesmaker/solitaire/game2/components/card.js:223
-               end:closestDropPoint.point.x
-
-               */
               end:closestDropPoint.point.x
             },
             y:{

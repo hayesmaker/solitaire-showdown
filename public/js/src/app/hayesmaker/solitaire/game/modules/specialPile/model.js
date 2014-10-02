@@ -42,6 +42,15 @@ define(
 
       removeCard: function() {
         return this.cards.pop();
+      },
+
+      getCardByCardName: function(cardName)
+      {
+        var card = _.find(this.cards, function(card) {
+          return card.name === cardName;
+        });
+        console.log('{SpecialPileModel} :: getCardByCardName :: card found=', card);
+        return card;
       }
 
 

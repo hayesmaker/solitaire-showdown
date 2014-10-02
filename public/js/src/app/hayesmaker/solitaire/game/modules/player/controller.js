@@ -22,11 +22,12 @@ define(
         this.specialPile = new SpecialPileController(origin);
         this.boardController = null;
         this.player = 0;
+        this.isPlayer = null;
       },
 
       init: function(game, boardController, player) {
         PlayerController.super.init.call(this, game);
-        this.player = player;
+        this.player = this.model.player = player;
         this.view.init(game);
         this.specialPile.init(game);
         this.boardController = boardController;
@@ -36,7 +37,19 @@ define(
         this.specialPile.drawStack();
       },
 
-      startGame: function() {
+      setIsMe: function(val)
+      {
+        this.model.isMe = val;
+      },
+
+      setId: function(id)
+      {
+        console.log('{PlayerController} setId :: player,id=', this.player, id);
+        this.model.id = id;
+      },
+
+      startGame: function(isPlayer) {
+        this.isPlayer = isPlayer;
         this.specialPile.startGame();
       },
 
@@ -46,6 +59,9 @@ define(
       dealCard: function(card) {
         this.model.addToDrawPile(card);
         this.view.dealCard(card);
+        if (this.isPlayer) {
+          this.view.enableDrawPileClick(card);
+        }
       },
 
       /**
@@ -56,8 +72,37 @@ define(
 
       },
 
+      draw3Cards: function()
+      {
+        console.log('{PlayerController} :: draw3Cards');
+        this.view.draw3Cards(this.model.get3FromPile(), this.isPlayer);
+      },
+
       onDrawerPileClicked: function(card) {
-        this.view.draw3Cards(this.model.get3FromPile());
+        console.log('{PlayerController} :: onDrawerPileClicked');
+        this.draw3Cards();
+        this.boardController.onDrawPileClicked({
+          player: this.player
+        });
+      },
+
+      /**
+       * @param data
+       * {cardName: "7d", player: 1, dropStackIndexFrom: -1, dropStackFromType: 'special': dropStackIndexTo: 1, type: "rowStack"}
+       */
+      moveCard: function(data) {
+
+        console.log('{PlayerController} :: moveCard :: data=', data);
+        var card;
+        if (data.dropStackFromType === 'special') {
+          card = this.specialPile.model.getCardByCardName(data.cardName);
+        } else if (data.dropStackFromType === 'draw') {
+          card = this.model.getCardByCardName(data.cardName);
+        }
+        var targetStack = this.boardController.getStackByIndex(data.dropStackIndexTo, data.type, data.player);
+        var dropPosition = targetStack.model.dropPoint;
+
+        TweenMax.to(card.sprite, 0.5, {x: dropPosition.x, y: dropPosition.y});
       },
 
       onRefreshAvailableDropStacks: function() {

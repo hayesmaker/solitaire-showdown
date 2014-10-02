@@ -14,6 +14,9 @@ define(
         this.drawPile = [];
         this.visible = [];
         this.unused = [];
+        this.id = 0;
+        this.player = 0;
+        this.isMe = null;
       },
 
       get3FromPile: function() {
@@ -30,7 +33,16 @@ define(
           this.unused.push(nextCard);
           this.visible.push(nextCard);
         }
+        console.log('{PlayerModel} :: get3FromPile :: drawPile.len, cards=', this.drawPile.length, this.unused);
         return this.unused;
+      },
+
+      getCardByCardName: function(cardName) {
+        var card = _.find(this.visible, function(card) {
+          return card.name === cardName;
+        });
+        console.log('{PlayerModel} :: getCardByCardName :: card found=', card);
+        return card;
       },
 
       addToDrawPile: function(card) {

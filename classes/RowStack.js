@@ -5,6 +5,17 @@ function RowStack() {
 
 };
 
+RowStack.prototype.addCard = function(cardName)
+{
+  this.cards.push(cardName);
+};
+
+RowStack.prototype.removeCard = function(cardName)
+{
+  var cardIndex = this.cards.indexOf(cardName);
+  this.cards.splice(cardIndex, 1);
+};
+
 RowStack.prototype.init = function() {
 
   this.cards = [];

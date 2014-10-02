@@ -11,4 +11,9 @@ AcePile.prototype.init = function() {
 
 };
 
+AcePile.prototype.addCard = function(cardName)
+{
+  this.cards.push(cardName);
+};
+
 module.exports = AcePile;

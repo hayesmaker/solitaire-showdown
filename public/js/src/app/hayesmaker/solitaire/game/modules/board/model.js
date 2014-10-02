@@ -143,9 +143,6 @@ define(
         card.setDropStacks(availableStacks);
         card.softEnableDrag();
 
-
-
-
       }
 
 

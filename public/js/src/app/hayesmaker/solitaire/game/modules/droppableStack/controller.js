@@ -46,6 +46,17 @@ define(
 
       },
 
+      setType: function(type)
+      {
+        console.log('{DroppableStack} :: type=', type);
+        this.model.type = type;
+      },
+
+      setIndex: function(index)
+      {
+        this.model.index = index;
+      },
+
       addCard: function(card) {
         this.model.cards.push(card);
       },

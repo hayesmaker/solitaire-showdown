@@ -61,19 +61,7 @@ cloak.configure({
 
   defaultRoomSize: 2,
 
-  roomLife: 3600000,
-
-  messages: {
-    foo: function(arg, user) {
-
-      console.log('Connection from user.id ' + user.id);
-      //console.log('Current Users: ' + cloak.getUsers());
-    },
-
-    sendMove: function(arg, user) {
-      console.log('{Cloak} sendMove :: card=', arg);
-    }
-  },
+  roomLife: null,
 
   room: {
     init: function() {
@@ -85,15 +73,11 @@ cloak.configure({
       console.log('**************');
       console.log('****GAME START ****');
       console.log('**************');
-
       console.log('game pack=', this.game.pack);
-
       user.message('gameStarted', {
         users: this.cloak.getUsers(true),
         gameData: this.game
       });
-
-      //this.cloak.messageAll('getAllMembers', this.cloak.getUsers(true));
     }
   },
 
@@ -103,8 +87,21 @@ cloak.configure({
       console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
       console.log('Lobby New Member :: Waiting for players', this.cloak.getUsers(true));
       console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+
+
       //this.cloak.messageAll('getAllMembers', this.cloak.getUsers(true));
       //user.cloak.getLobby().messageMembers('getAllMembers', user.cloak.getUsers());
+    }
+  },
+
+  messages: {
+
+    draw3Cards: function(arg, user) {
+      user.getRoom().game.draw3Cards(arg);
+    },
+
+    sendMove: function(arg, user) {
+      user.getRoom().game.move(arg);
     }
   }
 });

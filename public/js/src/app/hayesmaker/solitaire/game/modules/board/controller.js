@@ -30,7 +30,9 @@ define(
         BoardController.super.init.call(this, game);
 
         this.cloakService = cloakService;
-        this.cloakService.lobbyPlayerJoined.add(this.onLobbyPlayerJoined, this);
+        this.cloakService.roomPlayerJoined.add(this.onRoomPlayerJoined, this);
+        this.cloakService.gameMove.add(this.onGameMove, this);
+        this.cloakService.cardsDrawn.add(this.onCardsDrawn, this);
 
         this.player1 = new PlayerController({x: 100, y: 50});
         this.player1.init(game, this, 1);
@@ -52,6 +54,8 @@ define(
             height: 300
           };
           rowStack.init(game, box);
+          rowStack.setIndex(i);
+          rowStack.setType('rowStack');
           //this.rowStacks.push(rowStack);
           this.model.rowStacks.push(rowStack);
         }
@@ -65,6 +69,8 @@ define(
             height: 300
           };
           rowStack.init(game, box);
+          rowStack.setIndex(i);
+          rowStack.setType('rowStack');
           this.model.rowStacks.push(rowStack);
         }
 
@@ -77,11 +83,13 @@ define(
             height: 95
           };
           acePile.init(game, box);
+          acePile.setIndex(i);
+          acePile.setType('acePile');
           this.model.acePiles.push(acePile);
         }
       },
 
-      onLobbyPlayerJoined: function(user)
+      onRoomPlayerJoined: function(user, i, currentUser)
       {
         console.log('{BoardController} :: onLobbyPlayerJoined :: user=', user);
 
@@ -98,6 +106,41 @@ define(
           case 2 :
             console.warn('{BoardController} :: max players Joined');
             break;
+        }
+      },
+
+      onGameMove: function(data)
+      {
+        var playerIsMe = this.cloakService.user.isMeByPlayerNum(data.player);
+        console.log('{BoardController} :: onGameMove :: data, playerIsMe', data, playerIsMe);
+        // {cardName: "7d", player: 1, dropStackIndexFrom: -1, dropStackIndexTo: 1, type: "rowStack"}
+        if (!playerIsMe)
+        {
+          if (data.dropStackIndexFrom === -1) {
+            if (data.player === 1) {
+              this.player1.moveCard(data);
+            } else if (data.player === 2) {
+              this.player2.moveCard(data);
+            }
+          }
+        }
+      },
+
+      onCardsDrawn: function(data)
+      {
+        var playerIsMe = this.cloakService.user.isMeByPlayerNum(data);
+        console.log('{BoardController} :: onCardsDrawn :: playerIsMe, data=', playerIsMe, data);
+        if (!playerIsMe)
+        {
+          switch(data.playerNum)
+          {
+            case 1 :
+              this.player1.draw3Cards();
+              break;
+            case 2 :
+              this.player2.draw3Cards();
+              break;
+          }
         }
       },
 
@@ -122,8 +165,8 @@ define(
        * startGame!
        */
       startGame: function() {
-        this.player1.startGame();
-        this.player2.startGame();
+        this.player1.startGame(this.cloakService.user.isMeByPlayerNum(1));
+        this.player2.startGame(this.cloakService.user.isMeByPlayerNum(2));
       },
 
       /**
@@ -131,13 +174,12 @@ define(
        * @param cards
        */
       initialCardsDealt: function(cards, specialDeck) {
-        console.log('[BoardController] :: initialCardsDealt :: cards=', cards, 'specialDeck=', specialDeck);
         var self = this;
         _.each(cards, function(card, i) {
           card.cardLanded.add(self.onCardLanded, self);
           card.cardThrown.add(self.onCardThrown, self);
+
           //add test
-          console.log('cards', cards.length);
           if (i % 2 === 0) {
             card.isPlayer1 = true;
             card.refreshAvailableDropStacks.add(self.player1.onRefreshAvailableDropStacks, self.player1);
@@ -193,9 +235,6 @@ define(
       },
 
       getAllAcePileDropPoints: function() {
-
-        console.log('[BoardController] getAllAcePileDropPoints :: this.model.acePiles=', this.model.acePiles);
-
         var dropPoints = [];
         for (var i = 0; i < this.model.acePiles.length; i++) {
           dropPoints.push(this.model.acePiles[i].model.dropPoint);
@@ -204,16 +243,38 @@ define(
         return dropPoints;
       },
 
+      onDrawPileClicked: function(data)
+      {
+        console.log('{BoardController} onDrawPileClicked :: data', data);
+        this.cloakService.draw3Cards(data);
+      },
+
       onCardThrown: function(card) {
         var player = card.isPlayer1? 1 : 2;
         var stack = card.droppedStack;
-        this.cloakService.sendMove(stack, card, player);
+        var originStack = card.originalStack;
+
+        var fromType = card.isSpecial? 'special' : 'draw';
+
+        this.cloakService.sendMove(card.name, player, originStack ? originStack.model.index : -1, fromType, stack.model.index, stack.model.type);
       },
 
       onCardLanded: function(card) {
         console.log('[BoardController] onCardLanded :: card=', card);
         if (card.dropSuccessful) {
           card.addToStack();
+        }
+      },
+
+      getStackByIndex: function(index, type, player)
+      {
+        console.log('{BoardController} getStackByIndex :: index, type, player', index, type, player)
+        if (type === 'acePile')
+        {
+          return this.model.acePiles[index];
+        } else if (type === 'rowStack')
+        {
+          return this.model.rowStacks[index + (player === 1)? 0 : 4];
         }
       }
 

@@ -29,7 +29,6 @@ define(
        */
       init: function(game) {
         RulesController.super.init.call(this, game);
-
         this.onInitialCardsDealt = new Signal();
       },
 
@@ -45,7 +44,6 @@ define(
         _.each(specialDeck, function(cardName) {
           self.model.specialDeck.push(new Card(cardName, false));
         });
-
       },
 
       /**

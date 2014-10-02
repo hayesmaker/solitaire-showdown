@@ -96,7 +96,7 @@ define(['class', 'jasmineSignals', 'signals'], function(Class, spyOnSignal, Sign
 
       mockCloak: {
 
-        lobbyPlayerJoined: new Signal(),
+        roomPlayerJoined: new Signal(),
         gameStarted: new Signal()
 
       },

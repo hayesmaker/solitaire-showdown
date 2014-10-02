@@ -16,22 +16,24 @@ define(
         this.origin = origin;
       },
 
-      dealCard: function(card) {
-        card.init(this.game, this.origin);
+      enableDrawPileClick: function(card) {
         card.enableClick();
         card.drawerPileClicked.add(this.controller.onDrawerPileClicked, this.controller);
       },
 
-      draw3Cards: function(cards) {
+      dealCard: function(card) {
+        card.init(this.game, this.origin);
+      },
 
+      draw3Cards: function(cards, isMe) {
         _.each(cards, function(card, i) {
-
           card.drawCard(i);
           card.disableClick();
-
-          if (i === 2) {
-            card.enableDrag();
-            card.setNextCards([cards[0], cards[1]]);
+          if (isMe) {
+            if (i === 2) {
+              card.enableDrag();
+              card.setNextCards([cards[0], cards[1]]);
+            }
           }
         });
       }

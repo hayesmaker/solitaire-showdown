@@ -3,16 +3,21 @@ define(
     'lodash',
     'class',
     'cloak',
-    'signals'
+    'signals',
+    'components/user'
   ],
-  function(_, Class, cloak, Signal) {
+  function(_, Class, cloak, Signal, User) {
 
     var socketService = Class.extend({
 
       constructor: function(){
-        this.lobbyPlayers = [];
-        this.lobbyPlayerJoined = new Signal();
+
+        this.user = new User();
+        this.roomPlayers = [];
+        this.roomPlayerJoined = new Signal();
         this.gameStarted = new Signal();
+        this.gameMove = new Signal();
+        this.cardsDrawn = new Signal();
       },
 
       init: function() {
@@ -22,22 +27,44 @@ define(
         cloak.configure({
 
           messages: {
-
             gameStarted: function(data)
             {
-              console.log('{Cloak} :: gameStarted :: ', data);
+              var currentUser = cloak.currentUser();
+              console.log('{Cloak} :: gameStarted :: cloak.currentUser=', currentUser);
               var i, len = data.users.length;
+              self.user.setId(currentUser);
+
               for (i = 0; i < len; i++)
               {
-                if (self.lobbyPlayers.indexOf(data.users[i].id) < 0)
+                if (self.roomPlayers.indexOf(data.users[i].id) < 0)
                 {
-                  self.lobbyPlayers.push(data.users[i]);
-                  self.lobbyPlayerJoined.dispatch(data.users[i]);
+                  self.roomPlayers.push(data.users[i]);
+                  if (data.users[i].id === currentUser)
+                  {
+                    console.log('{Cloak} :: setting Player Number: ', (i+1));
+                    self.user.setPlayerNum(i+1);
+                  }
+
+                  self.roomPlayerJoined.dispatch(data.users[i], i, currentUser);
                 }
               }
               self.gameStarted.dispatch(data.gameData);
+            },
+
+            gameMove: function(data)
+            {
+              console.log('{Cloak} :: gameMove :: data=', data);
+              self.gameMove.dispatch(data);
+            },
+
+            drawCards: function(data)
+            {
+              console.log('{Cloak} :: drawCards :: data=', data);
+              self.cardsDrawn.dispatch(data);
             }
           },
+
+
 
           serverEvents: {
             connecting: function() {
@@ -58,20 +85,40 @@ define(
 
             error: function(err) {
               console.log('{Cloak} :: Error ::', err);
+            },
+
+            joinedRoom: function(room)
+            {
+              console.log('{Cloak} :: joinedRoom :: room=', room);
             }
 
           }
         });
       },
 
-      sendMove: function(dropStack, card, player) {
-        console.log('{Cloak} sendMove : ', card, player);
-        cloak.message('sendMove', card.name + "::" + player + "::" + dropStack.index);
+      /**
+       *
+       * @param name
+       * @param player
+       * @param dropStackIndexFrom
+       * @param fromType
+       * @param dropStackIndexTo
+       * @param type
+       */
+      sendMove: function(name, player, dropStackIndexFrom, fromType, dropStackIndexTo, type) {
+        cloak.message('sendMove', name + '::' + player + '::' + dropStackIndexFrom + '::' + fromType + '::' + dropStackIndexTo + '::' + type);
       },
+
+      draw3Cards: function(data) {
+        console.log('{Cloak} :: SEND :: draw3 ::', data.player);
+        cloak.message('draw3Cards', data.player);
+      },
+
 
       connect: function() {
         cloak.run('http://localhost:3000');
       }
+
     });
 
     return socketService;
