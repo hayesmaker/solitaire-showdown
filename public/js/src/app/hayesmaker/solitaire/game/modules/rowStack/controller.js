@@ -38,7 +38,7 @@ define(
           this.setDropZoneEnabled(true);
         } else {
           var lastCard = this.model.getLastCard();
-          //console.log('[RowStackController] checkAvailable :: model.cards is not empty... checking rules to decide if available');
+          console.log('[RowStackController] checkAvailable :: model.cards is not empty... checking rules to decide if available');
           if (card.value === lastCard.value - 1 && ((card.isRed && lastCard.isBlack) || (card.isBlack && lastCard.isRed))) {
               this.setDropZoneEnabled(true);
           } else {

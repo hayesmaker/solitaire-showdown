@@ -58,7 +58,8 @@ define(
       },
 
       addCard: function(card) {
-        this.model.cards.push(card);
+        this.model.addCard(card);
+
       },
 
       removeCard: function(card) {

@@ -21,20 +21,12 @@ define(
         this.name = name;
         this.autoTurn = autoTurn;
         this.sprite = null;
+
         this.drawerPileClicked = new Signal();
-        /**
-         * @deprecated
-         * @type {signals}
-         */
-        this.detectAvailableSlots = new Signal();
-        /**
-         * untested
-         * unmocked
-         * @type {signals}
-         */
-        this.refreshAvailableDropStacks = new Signal();
+        this.cardPicked = new Signal();
         this.cardThrown = new Signal();
         this.cardLanded = new Signal();
+
         this.isAce = name[0] === 'a';
         this.isSpecial = false;
         this.originPos = {x: 0, y: 0};
@@ -45,6 +37,7 @@ define(
 
         this.isPlayer1 = false;
         this.isPlayer2 = false;
+        this.id = "none set";
 
         if (name.indexOf('a') > -1) {
           this.value = 1;
@@ -89,6 +82,9 @@ define(
         }
 
         this.nextCards = [];
+        this.pileCards = [];
+
+        this.isUsed = false;
 
 
       },
@@ -115,17 +111,8 @@ define(
       addToStack: function() {
         this.droppedStack.addCard(this);
         this.originalStack = this.droppedStack;
-
         console.log('[Card] addToStack :: this=', this);
-
         this.resetCardVars();
-        this.disableDrag();
-        this.enableNextCard();
-        /*
-         card.resetCardVars();
-         card.disableDrag();
-         card.enableNextCard();
-         */
       },
 
       setDropStacks: function(dropStacks) {
@@ -144,14 +131,14 @@ define(
       },
 
       enableDrag: function() {
-        console.log('[Card] :: enableDrag :: detectAvailableSlots dispatch');
+        console.log('[Card] :: enableDrag :: this.name=', this.name);
         //this.setDropPoints(dropPoints? dropPoints : [{x:0, y:0}] );
         this.sprite.input.enableDrag(false, true);
         this.sprite.events.onDragStop.add(this.onDragStop, this);
         this.sprite.events.onDragStart.add(this.onDragStart, this);
         this.originPos = {x: this.sprite.x, y: this.sprite.y};
 
-        this.refreshAvailableDropStacks.dispatch();
+        //this.refreshAvailableDropStacks.dispatch();
       },
 
       softEnableDrag: function() {
@@ -159,6 +146,7 @@ define(
       },
 
       disableDrag: function() {
+        console.log('{Card} disableDrag :: name=', this.name);
         this.sprite.input.disableDrag();
 
       },
@@ -170,6 +158,7 @@ define(
       },
 
       disableClick: function() {
+        console.log('{Card} disableClick :: name=', this.name);
         this.canClick = false;
         this.sprite.events.onInputUp.remove(this.onMouseUp, this);
         this.sprite.events.onInputDown.remove(this.onMouseDown, this);
@@ -181,8 +170,30 @@ define(
       },
 
       onDragStart: function(sprite) {
-        this.sprite.bringToTop();
+        console.log('{Card} onDragStart :: pileCardsLen=', this.pileCards.length);
         var self = this;
+        //this.sprite.bringToTop();
+
+        var i, piledCard, len;
+        len = this.pileCards.length;
+        for (i = 0; i < len; i++)
+        {
+          piledCard = this.pileCards[i];
+
+          console.log('{Card} onDragStart :: pileCardName= ', piledCard.name);
+          piledCard.disableClick();
+          piledCard.disableDrag();
+          //piledCard.sprite.bringToTop();
+
+          var sp = piledCard.sprite;
+          this.sprite.addChild(sp);
+          sp.x = 0;
+          sp.y = 17 + (i * 17);
+
+        }
+
+        self.cardPicked.dispatch(self);
+
         this.dragInterval = setInterval(function() {
           self.onDragUpdate(sprite);
         }, 100);
@@ -242,11 +253,7 @@ define(
           y: y
         });
 
-
-        console.log("[Card] :: closestDropPoint=", closestDropPoint);
-
         this.droppedStack = closestDropPoint.stack;
-
 
         TweenMax.to(sprite, tweenDuration, {
           throwProps:{
@@ -277,18 +284,14 @@ define(
         console.log('**************************************');
         console.log('{Card} :: onThrowTweenCompleted :: ', card.name, ' originalStack.index=', card.originalStack);
         console.log('**************************************');
-
         if (card.originalStack)
         {
           card.originalStack.removeCard(card);
           card.originalStack = null;
         }
-
-        card.dropSuccessful = true;
         card.cardLanded.dispatch(card);
-        //todo test
-        card.refreshAvailableDropStacks.dispatch();
-        card.dropSuccessful = false;
+        card.addToStack();
+        card.isUsed = true;
       },
 
       onMouseDown: function(sprite) {
@@ -300,8 +303,6 @@ define(
       },
 
       resetCardVars: function() {
-        console.log('{Card} :: resetCardVars');
-        //this.dropSuccessful = false;
         // Could give a default drop point to the array so it is not empty, but then change test to show it.
         this.layoutHelper.dropPoints = [];
         this.layoutHelper.dropStacks = [];
@@ -314,17 +315,12 @@ define(
       },
 
       /**
-       * this is for draw cards only... Special pile cards are all enabled already... not the best
+       *
        */
       enableNextCard: function() {
-        console.log('[Card] :: enableNextCard :: ', this.nextCards);
-
         if (this.nextCards.length) {
-
           var nextCard = this.nextCards.pop();
-
-          console.log('[Card] enableNextCard :: nextCard=', nextCard);
-
+          console.log('[Card] enableNextCard :: nextCard.name=', nextCard.name);
           nextCard.enableDrag();
           nextCard.setNextCards(this.nextCards);
         } else {

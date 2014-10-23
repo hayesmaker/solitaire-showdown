@@ -109,23 +109,49 @@ define(
         }
       },
 
+      /**
+       * FROM SERVER
+       * onGameMove
+       * @param data :
+          cardName: "qd"
+          dropStackFromType: "draw"
+          dropStackIndexFrom: -1
+          dropStackIndexTo: 0
+          player: 2
+          type: "rowStack"
+       *
+       */
       onGameMove: function(data)
       {
         var playerIsMe = this.cloakService.user.isMeByPlayerNum(data.player);
-        console.log('{BoardController} :: onGameMove :: data, playerIsMe', data, playerIsMe);
-        // {cardName: "7d", player: 1, dropStackIndexFrom: -1, dropStackIndexTo: 1, type: "rowStack"}
-        if (!playerIsMe)
+
+        if (playerIsMe) {
+          return;
+        }
+
+        //todo: get card here and send to moveCard in all cases;
+        var card = null, stackFrom;
+
+        if (data.dropStackIndexFrom >= 0)
         {
-          if (data.dropStackIndexFrom === -1) {
-            if (data.player === 1) {
-              this.player1.moveCard(data);
-            } else if (data.player === 2) {
-              this.player2.moveCard(data);
-            }
-          }
+          stackFrom = this.getStackByIndex(data.dropStackIndexFrom, 'rowStack', data.player);
+          card = stackFrom.model.getCardByName(data.cardName);
+          stackFrom.removeCard(card);
+        }
+
+        console.log('{BoardController} :: onGameMove :: data, playerIsMe', data, playerIsMe);
+        if (data.player === 1) {
+          this.player1.moveCard(data, card);
+        } else if (data.player === 2) {
+          this.player2.moveCard(data, card);
         }
       },
 
+      /**
+       * FROM SERVER
+       * onCardsDrawn
+       * @param data
+       */
       onCardsDrawn: function(data)
       {
         var playerIsMe = this.cloakService.user.isMeByPlayerNum(data);
@@ -176,35 +202,34 @@ define(
       initialCardsDealt: function(cards, specialDeck) {
         var self = this;
         _.each(cards, function(card, i) {
-          card.cardLanded.add(self.onCardLanded, self);
+          //card.cardLanded.add(self.onCardLanded, self);
           card.cardThrown.add(self.onCardThrown, self);
+          card.cardPicked.add(self.onCardPicked, self);
 
           //add test
           if (i % 2 === 0) {
             card.isPlayer1 = true;
-            card.refreshAvailableDropStacks.add(self.player1.onRefreshAvailableDropStacks, self.player1);
             self.player1.dealCard(card);
           } else {
             card.isPlayer2 = true;
-            card.refreshAvailableDropStacks.add(self.player2.onRefreshAvailableDropStacks, self.player2);
             self.player2.dealCard(card);
           }
         });
 
         _.each(specialDeck, function(card, i) {
           card.isSpecial = true;
-          card.cardLanded.add(self.onCardLanded, self);
+          //card.cardLanded.add(self.onCardLanded, self);
           card.cardThrown.add(self.onCardThrown, self);
+          card.cardPicked.add(self.onCardPicked, self);
+
           //add test
           if (i < 26) {
             if (i % 2 === 0) {
               card.isPlayer1 = true;
-              card.refreshAvailableDropStacks.add(self.player1.onRefreshAvailableDropStacks, self.player1);
-              self.player1.dealSpecialCard(card);
+              self.player1.dealSpecialCard(card, (i===24));
             } else {
               card.isPlayer2 = true;
-              card.refreshAvailableDropStacks.add(self.player2.onRefreshAvailableDropStacks, self.player2);
-              self.player2.dealSpecialCard(card);
+              self.player2.dealSpecialCard(card, (i===25));
             }
           }
         });
@@ -247,22 +272,38 @@ define(
       {
         console.log('{BoardController} onDrawPileClicked :: data', data);
         this.cloakService.draw3Cards(data);
+
+        /*
+        var obj = {
+          someArg: 1,
+          someOtherArg: [1,1,2,3]
+        };
+        this.cloakService.testSendObject(obj);
+        */
+      },
+
+      onCardPicked: function(card) {
+
+        console.log('{BoardController} :: onCardPicked :: card.name=', card.name);
+        this.model.checkAvailableStacks(card);
+
       },
 
       onCardThrown: function(card) {
         var player = card.isPlayer1? 1 : 2;
         var stack = card.droppedStack;
         var originStack = card.originalStack;
-
         var fromType = card.isSpecial? 'special' : 'draw';
-
-        this.cloakService.sendMove(card.name, player, originStack ? originStack.model.index : -1, fromType, stack.model.index, stack.model.type);
-      },
-
-      onCardLanded: function(card) {
-        console.log('[BoardController] onCardLanded :: card=', card);
-        if (card.dropSuccessful) {
-          card.addToStack();
+        if (originStack)
+        {
+          fromType = 'draw';
+        }
+        console.log('{BoardController} :: onCardThrown :: originalStack=', originStack);
+        this.cloakService.sendMove(card.name, player, (originStack ? originStack.model.index : -1), fromType, stack.model.index, stack.model.type, card.pileCards.length);
+        var playerIsMe = this.cloakService.user.isMeByPlayerNum(player);
+        if (playerIsMe)
+        {
+          card.enableNextCard();
         }
       },
 
@@ -274,7 +315,7 @@ define(
           return this.model.acePiles[index];
         } else if (type === 'rowStack')
         {
-          return this.model.rowStacks[index + (player === 1)? 0 : 4];
+          return this.model.rowStacks[index + ((player === 1)? 0 : 4)];
         }
       }
 

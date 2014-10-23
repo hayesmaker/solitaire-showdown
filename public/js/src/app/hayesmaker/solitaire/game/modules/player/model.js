@@ -24,7 +24,10 @@ define(
         len = this.unused.length;
         for (i=0; i < len; i++)
         {
-          this.unused[i].disableDrag();
+          if (!this.unused[i].isUsed)
+          {
+            this.unused[i].disableDrag();
+          }
         }
         this.unused = [];
         len = this.drawPile.length >= 3 ? 3 : this.drawPile.length;

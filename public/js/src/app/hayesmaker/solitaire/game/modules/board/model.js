@@ -141,7 +141,7 @@ define(
         });
 
         card.setDropStacks(availableStacks);
-        card.softEnableDrag();
+        //card.softEnableDrag();
 
       }
 

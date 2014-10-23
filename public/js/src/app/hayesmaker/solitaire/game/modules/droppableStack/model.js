@@ -50,6 +50,27 @@ define(
         return this.cards[this.cards.length-1];
       },
 
+      getCardByName: function(name) {
+        var card = _.find(this.cards, function(card) {
+          return card.name === name;
+        });
+        return card;
+      },
+
+      addCard: function(card)
+      {
+        var i, existingCard, len;
+        len = this.cards.length;
+
+        for (i = 0; i < len; i++)
+        {
+          existingCard = this.cards[i];
+          existingCard.pileCards.push(card);
+          console.log('{DroppableStack} :: existingCard,pileCardsLen=', existingCard.name, existingCard.pileCards.length);
+        }
+        this.cards.push(card);
+      },
+
       removeCard: function(card)
       {
         var cardIndex = this.cards.indexOf(card);

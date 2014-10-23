@@ -37,11 +37,6 @@ define(
         this.specialPile.drawStack();
       },
 
-      setIsMe: function(val)
-      {
-        this.model.isMe = val;
-      },
-
       setId: function(id)
       {
         console.log('{PlayerController} setId :: player,id=', this.player, id);
@@ -67,9 +62,22 @@ define(
       /**
        * @param card
        */
-      dealSpecialCard: function(card) {
+      dealSpecialCard: function(card, isLastCard) {
+        console.log('{PlayerController} :: dealSpecialCard :: cardName, isMe, isLastCard=', card.name, this.isPlayer, isLastCard);
         this.specialPile.addCard(card);
+        if (this.isPlayer && isLastCard)
+        {
+          var nextSpecialCards = [];
+          var len = this.specialPile.model.cards.length;
 
+          console.log('{PlayerController} :: dealSpecialCard :: setNextCards=', this.specialPile.model.cards);
+          for (var i = 0; i < len - 1; i++)
+          {
+            nextSpecialCards.push(this.specialPile.model.cards[i]);
+          }
+          card.setNextCards(nextSpecialCards);
+          card.enableDrag();
+        }
       },
 
       draw3Cards: function()
@@ -80,7 +88,7 @@ define(
 
       onDrawerPileClicked: function(card) {
         console.log('{PlayerController} :: onDrawerPileClicked');
-        this.draw3Cards();
+        //this.draw3Cards();
         this.boardController.onDrawPileClicked({
           player: this.player
         });
@@ -90,22 +98,29 @@ define(
        * @param data
        * {cardName: "7d", player: 1, dropStackIndexFrom: -1, dropStackFromType: 'special': dropStackIndexTo: 1, type: "rowStack"}
        */
-      moveCard: function(data) {
-
+      moveCard: function(data, boardCard) {
         console.log('{PlayerController} :: moveCard :: data=', data);
         var card;
         if (data.dropStackFromType === 'special') {
           card = this.specialPile.model.getCardByCardName(data.cardName);
         } else if (data.dropStackFromType === 'draw') {
           card = this.model.getCardByCardName(data.cardName);
+        } else if (data.dropStackFromType === 'rowStack') {
+          card = boardCard;
         }
-        var targetStack = this.boardController.getStackByIndex(data.dropStackIndexTo, data.type, data.player);
-        var dropPosition = targetStack.model.dropPoint;
 
+        var targetStack = this.boardController.getStackByIndex(data.dropStackIndexTo, data.type, data.player);
+        console.log('{PlayerController} :: moveCard :: targetStack=', targetStack);
+        var dropPosition = targetStack.model.dropPoint;
         TweenMax.to(card.sprite, 0.5, {x: dropPosition.x, y: dropPosition.y});
+        targetStack.addCard(card);
       },
 
+      /**
+       * @deprecated
+       */
       onRefreshAvailableDropStacks: function() {
+        /*
         console.log('>>>>>>>>>>>>>>>>>>>>>>>>');
         var topSpecialCard = this.specialPile.getTopSpecialCard();
         var topVisibleDrawCard = this.model.getNextVisibleDrawCard();
@@ -124,6 +139,7 @@ define(
 
 
         this.boardController.model.checkAllDrawPilesForMoves(this.player);
+        */
 
 
       },

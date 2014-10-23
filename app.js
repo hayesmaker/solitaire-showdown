@@ -95,13 +95,18 @@ cloak.configure({
   },
 
   messages: {
+    sendMove: function(arg, user) {
+      console.log('{RECEIVED} sendMoveObj ::', arg);
+      user.getRoom().game.move(arg);
+
+    },
 
     draw3Cards: function(arg, user) {
       user.getRoom().game.draw3Cards(arg);
     },
 
-    sendMove: function(arg, user) {
-      user.getRoom().game.move(arg);
+    sendObj: function(arg, user) {
+      console.log('{RECEIVED} sendObj ::', arg);
     }
   }
 });

@@ -44,7 +44,7 @@ define(
         card.init(this.game, this.origin);
         card.showFace();
         //controller?
-        card.enableDrag();
+        //card.enableDrag();
       },
 
       removeCard: function() {

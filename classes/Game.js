@@ -54,21 +54,22 @@ Game.prototype.draw3Cards = function(arg) {
 };
 
 /**
- *
+ * name: '5c',
+   player: 1,
+   dropFromIndex: -1,
+   dropFromType: 'draw',
+   dropToIndex: 1,
+   dropToType: 'rowStack',
+   includePile: 0 }
  * @param arg
- * @arg cardName::player::dropStackIndex::type
- * @example 4d::1::0::rowStack
- *
  */
 Game.prototype.move = function(arg) {
-  var arguments = arg.split('::');
-  var cardName = arguments[0];
-  var player = parseInt(arguments[1], 10);
-  var dropStackIndexFrom = parseInt(arguments[2], 10);
-  var dropStackFromType = arguments[3];
-  var dropStackIndexTo = parseInt(arguments[4], 10);
-  var type = arguments[5];
-  console.log('{Game} move :: cardName,player,indexFrom,indexTo,type=', cardName, player, dropStackIndexFrom, dropStackIndexTo, type);
+  var cardName = arg.name;
+  var player = arg.player;
+  var dropStackIndexFrom = arg.dropFromIndex;
+  var dropStackFromType = arg.dropFromType;
+  var dropStackIndexTo = arg.dropToIndex;
+  var type = arg.dropToType;
   if (type === 'acePile') {
     this.acePiles[dropStackIndexTo].addCard(cardName);
   } else if (type === 'rowStack') {

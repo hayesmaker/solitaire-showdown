@@ -105,13 +105,31 @@ define(
        * @param dropStackIndexTo
        * @param type
        */
-      sendMove: function(name, player, dropStackIndexFrom, fromType, dropStackIndexTo, type) {
-        cloak.message('sendMove', name + '::' + player + '::' + dropStackIndexFrom + '::' + fromType + '::' + dropStackIndexTo + '::' + type);
+      sendMove: function(name, player, dropStackIndexFrom, fromType, dropStackIndexTo, toType, hasPile) {
+        //cloak.message('sendMove', name + '::' + player + '::' + dropStackIndexFrom + '::' + fromType + '::' + dropStackIndexTo + '::' + toType);
+
+        var obj = {
+          name: name,
+          player: player,
+          dropFromIndex: dropStackIndexFrom,
+          dropFromType: fromType,
+          dropToIndex: dropStackIndexTo,
+          dropToType: toType,
+          includePile: hasPile
+        };
+
+        cloak.message('sendMove', obj);
+
       },
 
       draw3Cards: function(data) {
         console.log('{Cloak} :: SEND :: draw3 ::', data.player);
         cloak.message('draw3Cards', data.player);
+      },
+
+      testSendObject: function(arg) {
+        console.log('{Cloak} :: SEND :: testSendObject :: ', arg);
+        cloak.message('sendObj', arg);
       },
 
 
