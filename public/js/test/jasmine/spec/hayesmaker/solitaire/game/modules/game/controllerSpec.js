@@ -77,12 +77,6 @@ define(
             spy5 = spyOn(controller.rulesController, 'dealCards');
           });
 
-
-          it("When startGame is called, dealCards is called on the rules module", function() {
-            controller.startGame();
-            expect(spy5).toHaveBeenCalled();
-          });
-
           it("onInitialCardsDealt signal is being listened to by the game controller:", function() {
             expect(controller.rulesController.onInitialCardsDealt.getNumListeners()).toBe(1);
           });

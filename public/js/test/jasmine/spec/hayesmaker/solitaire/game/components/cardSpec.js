@@ -66,10 +66,6 @@ define(
         expect(card.drawerPileClicked).toBeDefined();
       });
 
-      it("detectAvailableSlots signal is created", function() {
-        expect(card.detectAvailableSlots).toBeDefined();
-      });
-
       it("cardLanded signal is created", function() {
         expect(card.cardLanded).toBeDefined();
       });
@@ -407,26 +403,6 @@ define(
         });
 
         //todo onDragStopTest
-
-
-        it("onThrowTweenCompleted: when card lands dispatch cardLanded signal with it's row stack index", function() {
-
-          var signal = spyOnSignal(card.cardLanded);
-
-          card.onThrowTweenCompleted(card);
-
-          expect(signal).toHaveBeenDispatchedWith(card);
-
-        });
-
-        it("onMouseUp: when mouse button is released when it is clickable dispatch drawerPileClicked signal", function() {
-          var signal = spyOnSignal(card.drawerPileClicked);
-
-          card.onMouseUp(card);
-
-          expect(signal).toHaveBeenDispatchedWith(card);
-
-        });
 
         /*
         it("resetCardVars: dropSuccessful is reset when called", function() {

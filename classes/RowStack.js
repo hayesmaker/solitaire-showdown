@@ -13,7 +13,7 @@ RowStack.prototype.addCard = function(cardName)
 RowStack.prototype.removeCard = function(cardName)
 {
   var cardIndex = this.cards.indexOf(cardName);
-  this.cards.splice(cardIndex, 1);
+  this.cards.splice(cardIndex);
 };
 
 RowStack.prototype.init = function() {

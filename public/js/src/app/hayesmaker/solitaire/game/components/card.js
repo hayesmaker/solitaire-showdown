@@ -34,6 +34,7 @@ define(
         this.dropSuccessful = false;
         this.droppedStack = null;
         this.originalStack = null;
+        this.originalPosition = {x:0, y:0};
 
         this.isPlayer1 = false;
         this.isPlayer2 = false;
@@ -99,13 +100,14 @@ define(
       cardIsSameSuitAndOneHigher: function(card) {
 
         console.log('{Card} :: cardIsSameSuitAndOneHigher :: this.value + 1 =', this.value + 1);
-
-        if (card.suit === this.suit && card.value === this.value + 1)
+        return (card.suit === this.suit && card.value === this.value + 1);
+        /*
         {
           return true;
         } else {
           return false;
         }
+        */
       },
 
       addToStack: function() {
@@ -113,6 +115,10 @@ define(
         this.originalStack = this.droppedStack;
         console.log('[Card] addToStack :: this=', this);
         this.resetCardVars();
+      },
+
+      addToPileCards: function(card) {
+        this.pileCards.push(card);
       },
 
       setDropStacks: function(dropStacks) {
@@ -172,31 +178,42 @@ define(
       onDragStart: function(sprite) {
         console.log('{Card} onDragStart :: pileCardsLen=', this.pileCards.length);
         var self = this;
-        //this.sprite.bringToTop();
+        if (this.pileCards.length) {
+          this.attachPiledCards();
+        }
+        self.cardPicked.dispatch(self);
+        this.dragInterval = setInterval(function() {
+          self.onDragUpdate(sprite);
+        }, 100);
+      },
 
+      attachPiledCards: function() {
         var i, piledCard, len;
         len = this.pileCards.length;
         for (i = 0; i < len; i++)
         {
           piledCard = this.pileCards[i];
-
           console.log('{Card} onDragStart :: pileCardName= ', piledCard.name);
           piledCard.disableClick();
           piledCard.disableDrag();
-          //piledCard.sprite.bringToTop();
-
           var sp = piledCard.sprite;
           this.sprite.addChild(sp);
           sp.x = 0;
           sp.y = 17 + (i * 17);
-
         }
+      },
 
-        self.cardPicked.dispatch(self);
-
-        this.dragInterval = setInterval(function() {
-          self.onDragUpdate(sprite);
-        }, 100);
+      deattachPiledCards: function() {
+        var i, piledCard, len;
+        len = this.pileCards.length;
+        for (i = 0; i < len; i++)
+        {
+          piledCard = this.pileCards[i];
+          var sp = piledCard.sprite;
+          this.game.stage.addChild(sp);
+          sp.x = sp.x + this.sprite.position.x;
+          sp.y = sp.y + this.sprite.position.y;
+        }
       },
 
       onDragStop: function(sprite) {
@@ -289,6 +306,11 @@ define(
           card.originalStack.removeCard(card);
           card.originalStack = null;
         }
+
+        if (card.pileCards.length) {
+          card.deattachPiledCards();
+        }
+
         card.cardLanded.dispatch(card);
         card.addToStack();
         card.isUsed = true;

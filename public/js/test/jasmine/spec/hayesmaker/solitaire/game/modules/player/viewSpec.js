@@ -53,7 +53,7 @@ define(
         var card2 = jasmine.createSpyObj('card', ['init', 'drawCard', 'enableDrag', 'disableClick', 'setNextCards']);
         var card3 = jasmine.createSpyObj('card', ['init', 'drawCard', 'enableDrag', 'disableClick', 'setNextCards']);
         var cards = [card1, card2, card3];
-        view.draw3Cards(cards);
+        view.draw3Cards(cards, true);
         expect(card2.enableDrag).not.toHaveBeenCalled();
       });
 
@@ -62,9 +62,10 @@ define(
         var card2 = jasmine.createSpyObj('card', ['init', 'drawCard', 'enableDrag', 'disableClick', 'setNextCards']);
         var card3 = jasmine.createSpyObj('card', ['init', 'drawCard', 'enableDrag', 'disableClick', 'setNextCards']);
         var cards = [card1, card2, card3];
-        view.draw3Cards(cards);
+        view.draw3Cards(cards, true);
         expect(card3.enableDrag).toHaveBeenCalled();
       });
+
 
     });
 

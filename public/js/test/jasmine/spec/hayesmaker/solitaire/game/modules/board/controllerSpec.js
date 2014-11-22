@@ -97,54 +97,6 @@ define(
               cards = null;
             });
 
-            it("When initialCardsDealt is called, player 1 receives 13 cards to his special deck", function() {
-
-              var spy = spyOn(controller.player1, 'dealSpecialCard');
-
-              controller.initialCardsDealt([], cards);
-
-              expect(spy.calls.length).toBe(13);
-            });
-
-            it("When initialCardsDealt is called, player 2 receives 13 cards to his special deck", function() {
-
-              var spy = spyOn(controller.player2, 'dealSpecialCard');
-
-              controller.initialCardsDealt([], cards);
-
-              expect(spy.calls.length).toBe(13);
-
-            });
-
-            it("When initialCardsDealt is called, special cards are set to special", function() {
-
-              controller.initialCardsDealt([], cards);
-
-              expect(cards[0].isSpecial).toBe(true);
-
-            });
-
-            it("When normal cards are dealt, card cardLanded signal listener is registered", function() {
-
-              controller.initialCardsDealt(cards, []);
-
-              _.each(cards, function(card) {
-                card.cardLanded.dispatch(card);
-              });
-
-              expect(onCardLandedSpy.calls.length).toBe(52);
-            });
-
-            it("When special cards are dealt, card cardLanded signal listener is registered", function() {
-
-              controller.initialCardsDealt([], cards);
-
-              _.each(cards, function(card) {
-                card.cardLanded.dispatch(card);
-              });
-
-              expect(onCardLandedSpy.calls.length).toBe(52);
-            });
 
           });
 
@@ -204,33 +156,6 @@ define(
             expect(dropPoints[7]).toEqual({x: 930, y: 380});
 
           });
-        });
-
-        describe("When cards are thrown", function() {
-
-          it("When a card is thrown, and the drop was successful, onCardLanded should add the card to the dropped stack", function() {
-
-            var card = Mocks.getCard("ah");
-            card.dropSuccessful = true;
-
-            controller.onCardLanded(card);
-
-            expect(card.addToStack).toHaveBeenCalled();
-
-          });
-
-          it("When a card is thrown, and landed successfully, add dropStacks should be rechecked for available cards", function() {
-
-            var card = Mocks.getCard("ah");
-            card.dropSuccessful = true;
-
-            controller.onCardLanded(card);
-
-
-
-
-          });
-
         });
 
       });

@@ -112,6 +112,11 @@ define(
         var targetStack = this.boardController.getStackByIndex(data.dropStackIndexTo, data.type, data.player);
         console.log('{PlayerController} :: moveCard :: targetStack=', targetStack);
         var dropPosition = targetStack.model.dropPoint;
+
+        if (data.includePile) {
+          card.attachPiledCards();
+        }
+
         TweenMax.to(card.sprite, 0.5, {x: dropPosition.x, y: dropPosition.y});
         targetStack.addCard(card);
       },
@@ -119,6 +124,7 @@ define(
       /**
        * @deprecated
        */
+      /*
       onRefreshAvailableDropStacks: function() {
         /*
         console.log('>>>>>>>>>>>>>>>>>>>>>>>>');
@@ -139,10 +145,11 @@ define(
 
 
         this.boardController.model.checkAllDrawPilesForMoves(this.player);
-        */
+
 
 
       },
+      */
 
       reCheckAvailableStacks: function(card) {
         this.boardController.model.checkAvailableStacks(card);

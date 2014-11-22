@@ -65,7 +65,7 @@ define(
         for (i = 0; i < len; i++)
         {
           existingCard = this.cards[i];
-          existingCard.pileCards.push(card);
+          existingCard.addToPileCards(card);
           console.log('{DroppableStack} :: existingCard,pileCardsLen=', existingCard.name, existingCard.pileCards.length);
         }
         this.cards.push(card);
@@ -74,9 +74,9 @@ define(
       removeCard: function(card)
       {
         var cardIndex = this.cards.indexOf(card);
-
+        var pileLen = 1 + card.pileCards.length;
         if (cardIndex >= 0) {
-          this.cards.splice(cardIndex, 1);
+          this.cards.splice(cardIndex, pileLen);
           console.log('{DroppableStack} removeCard :: cardIndex', cardIndex, ' cards=', this.cards);
         }
       }

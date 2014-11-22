@@ -54,15 +54,7 @@ define(
       });
 
       describe("3.  Cards are drawn 3 at a time from the draw pile when a player clicks on it.", function() {
-        it("When onDrawerPileClicked is called, view is instructed to draw 3 cards with the top 3 cards in drawer pile", function() {
 
-          var spy = spyOn(controller.view, 'draw3Cards');
-          controller.model.addToDrawPile(mockCard);
-          controller.model.addToDrawPile(mockCard);
-          controller.model.addToDrawPile(mockCard);
-          controller.onDrawerPileClicked(mockCard);
-          expect(spy).toHaveBeenCalled();
-        });
 
         it("If less than 3 cards are available in draw pile, then draw only those remaining cards.", function() {
           controller.model.addToDrawPile(mockCard);

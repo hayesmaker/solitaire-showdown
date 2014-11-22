@@ -19,8 +19,8 @@ define(
         this.dropPoint.y += 17;
       },
 
-      removeCardHeightFromDropPoint: function() {
-        this.dropPoint.y -= 17;
+      removeCardHeightFromDropPoint: function(numCards) {
+        this.dropPoint.y -= 17 * numCards;
       }
 
 

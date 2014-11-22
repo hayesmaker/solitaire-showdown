@@ -83,7 +83,7 @@ requirejs(
     cloakService.connect();
 
     var game = new Phaser.Game(width, height, Phaser.CANVAS, 'solitaire-showdown');
-    game.state.add('lobby', lobbyStateConfig)
+    game.state.add('lobby', lobbyStateConfig);
     game.state.add('main', mainStateConfig);
     gameMain.init(game, cloakService);
     lobbyMain.init(game, cloakService);

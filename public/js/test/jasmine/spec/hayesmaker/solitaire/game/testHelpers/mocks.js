@@ -11,6 +11,8 @@ define(['class', 'jasmineSignals', 'signals'], function(Class, spyOnSignal, Sign
         drawerPileClicked: new Signal(),
         cardLanded: new Signal(),
         detectAvailableSlots: new Signal(),
+        cardPicked: new Signal(),
+        cardThrown: new Signal(),
         showFace: jasmine.createSpy('showFace spy'),
         enableDrag: jasmine.createSpy('enableDrag spy'),
         onDragStop: jasmine.createSpy('onDragStop spy'),
@@ -97,7 +99,9 @@ define(['class', 'jasmineSignals', 'signals'], function(Class, spyOnSignal, Sign
       mockCloak: {
 
         roomPlayerJoined: new Signal(),
-        gameStarted: new Signal()
+        gameStarted: new Signal(),
+        gameMove: new Signal(),
+        cardsDrawn: new Signal()
 
       },
 

@@ -69,7 +69,9 @@ Game.prototype.move = function(arg) {
   var dropStackIndexFrom = arg.dropFromIndex;
   var dropStackFromType = arg.dropFromType;
   var dropStackIndexTo = arg.dropToIndex;
+  var includePile = arg.includePile;
   var type = arg.dropToType;
+
   if (type === 'acePile') {
     this.acePiles[dropStackIndexTo].addCard(cardName);
   } else if (type === 'rowStack') {
@@ -98,7 +100,9 @@ Game.prototype.move = function(arg) {
     dropStackIndexFrom: dropStackIndexFrom,
     dropStackFromType: dropStackFromType,
     dropStackIndexTo: dropStackIndexTo,
-    type: type
+    type: type,
+    includePile: includePile
+
   });
 };
 

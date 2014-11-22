@@ -28,7 +28,8 @@ define(
       removeCard: function(card) {
         console.log('{RowStackController} :: removeCard :: ', card.name);
         RowStackController.super.removeCard.call(this, card);
-        this.model.removeCardHeightFromDropPoint();
+        var numCards = 1 + card.pileCards.length;
+        this.model.removeCardHeightFromDropPoint(numCards);
       },
 
       checkAvailable: function(card) {
