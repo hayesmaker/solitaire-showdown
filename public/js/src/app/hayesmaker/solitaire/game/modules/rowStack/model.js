@@ -19,9 +19,15 @@ define(
         this.dropPoint.y += 17;
       },
 
-      removeCardHeightFromDropPoint: function(numCards) {
-        this.dropPoint.y -= 17 * numCards;
+      getCorrectYPosition: function() {
+        var y = this.origin.y;
+        y += this.cards.length * 17;
+
+        console.log('{RowStackModel} getCorrectYPosition :: origin, y, cards.len', this.origin.y, y, this.cards.length);
+
+        return y;
       }
+
 
 
     });

@@ -22,7 +22,6 @@ define(
       constructor: function() {
         this.model = new Model(this);
         this.view = new View(this);
-
       },
 
       init: function(game, box) {
@@ -31,8 +30,28 @@ define(
         this.model.setBox(box.x, box.y, box.width, box.height);
       },
 
+      onMouseDown: function() {
+        //console.log('onMouseDown', this);
+      },
+
+      onMouseUp: function(sprite) {
+
+        var rowCards = _.map(this.model.cards, 'name');
+        console.log('** HEALTH CHECK ROW ***', rowCards);
+        var pileCards = _.map(this.model.cards, 'pileCards');
+
+        var i, len = rowCards.length, c;
+        for (i = 0; i < len; i++)
+        {
+          c = rowCards[i];
+          console.log('DroppableStackView :: Card', i, c, _.map(pileCards[i], 'name'));
+        }
+      },
+
+
       renderView: function() {
-        this.view.drawStack(this.model.box);
+        //this.view.drawStack(this.model.box);
+        this.view.renderView(this.model.box);
       },
 
       setDropZoneEnabled: function(bool) {
@@ -41,19 +60,14 @@ define(
 
       checkAvailable: function(cardName) {
 
-
-
-
       },
 
-      setType: function(type)
-      {
+      setType: function(type) {
         console.log('{DroppableStack} :: type=', type);
         this.model.type = type;
       },
 
-      setIndex: function(index)
-      {
+      setIndex: function(index) {
         this.model.index = index;
       },
 

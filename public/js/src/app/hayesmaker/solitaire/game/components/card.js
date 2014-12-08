@@ -30,11 +30,11 @@ define(
         this.isAce = name[0] === 'a';
         this.isSpecial = false;
         this.originPos = {x: 0, y: 0};
+        this.isPiledCard = false;
 
         this.dropSuccessful = false;
         this.droppedStack = null;
         this.originalStack = null;
-        this.originalPosition = {x:0, y:0};
 
         this.isPlayer1 = false;
         this.isPlayer2 = false;
@@ -84,30 +84,19 @@ define(
 
         this.nextCards = [];
         this.pileCards = [];
-
         this.isUsed = false;
-
-
       },
 
       init: function(game, point) {
         this.game = game;
         this.sprite = this.game.add.sprite(point.x, point.y, 'atlas');
         this.sprite.frameName = this.backface;
-        this.sprite.inputEnabled = true;
+        this.sprite.inputEnabled = true; 
       },
 
       cardIsSameSuitAndOneHigher: function(card) {
-
         console.log('{Card} :: cardIsSameSuitAndOneHigher :: this.value + 1 =', this.value + 1);
         return (card.suit === this.suit && card.value === this.value + 1);
-        /*
-        {
-          return true;
-        } else {
-          return false;
-        }
-        */
       },
 
       addToStack: function() {
@@ -117,8 +106,29 @@ define(
         this.resetCardVars();
       },
 
+      //check card isn't already in the pileCards to prevent adding pileCard to already piled card bug
       addToPileCards: function(card) {
-        this.pileCards.push(card);
+        var fuckingPileCardsNames = _.map(this.pileCards, 'name');
+        if (fuckingPileCardsNames.indexOf(card.name) < 0) {
+          this.pileCards.push(card);
+          card.isPiledCard = true;
+        }
+      },
+
+      removeAllPiledCardsFromThisCardDown: function(card) {
+        console.log('{Card} removeAllPiledCardsFrom this card:, pileCards', this.name, _.map(this.pileCards, 'name'), 'remove from this card down;', card.name);
+        var i, len, c;
+        len = this.pileCards.length;
+        var newPileCards = [];
+        var remove = false;
+        for (i = 0; i < len; i++) {
+          c = this.pileCards[i];
+          if (c.name === card.name) {
+            break;
+          }
+          newPileCards.push(c)
+        }
+        this.pileCards = newPileCards;
       },
 
       setDropStacks: function(dropStacks) {
@@ -139,21 +149,22 @@ define(
       enableDrag: function() {
         console.log('[Card] :: enableDrag :: this.name=', this.name);
         //this.setDropPoints(dropPoints? dropPoints : [{x:0, y:0}] );
-        this.sprite.input.enableDrag(false, true);
+        this.sprite.input.enableDrag(false, true, true);
         this.sprite.events.onDragStop.add(this.onDragStop, this);
         this.sprite.events.onDragStart.add(this.onDragStart, this);
         this.originPos = {x: this.sprite.x, y: this.sprite.y};
-
         //this.refreshAvailableDropStacks.dispatch();
       },
 
       softEnableDrag: function() {
         this.sprite.input.enableDrag();
+        //this.sprite.tint = 0xff0000;
       },
 
       disableDrag: function() {
         console.log('{Card} disableDrag :: name=', this.name);
         this.sprite.input.disableDrag();
+        //this.sprite.tint = 0xffffff;
 
       },
 
@@ -181,6 +192,7 @@ define(
         if (this.pileCards.length) {
           this.attachPiledCards();
         }
+        sprite.bringToTop();
         self.cardPicked.dispatch(self);
         this.dragInterval = setInterval(function() {
           self.onDragUpdate(sprite);
@@ -193,11 +205,13 @@ define(
         for (i = 0; i < len; i++)
         {
           piledCard = this.pileCards[i];
-          console.log('{Card} onDragStart :: pileCardName= ', piledCard.name);
+          console.log('{Card} attachPiledCards :: pileCardName= ', piledCard.name);
           piledCard.disableClick();
           piledCard.disableDrag();
           var sp = piledCard.sprite;
           this.sprite.addChild(sp);
+          this.sprite.tint = 0.2 * 0xff0000;
+          //sp.tint = 0.5 * 0xff0000;
           sp.x = 0;
           sp.y = 17 + (i * 17);
         }
@@ -206,6 +220,7 @@ define(
       deattachPiledCards: function() {
         var i, piledCard, len;
         len = this.pileCards.length;
+        console.log('{Card} deattachPiledCards :: len', len);
         for (i = 0; i < len; i++)
         {
           piledCard = this.pileCards[i];
@@ -213,6 +228,9 @@ define(
           this.game.stage.addChild(sp);
           sp.x = sp.x + this.sprite.position.x;
           sp.y = sp.y + this.sprite.position.y;
+          //  sp.tint = 0xffffff;
+          this.sprite.tint = 0xffffff;
+          piledCard.softEnableDrag();
         }
       },
 
@@ -317,7 +335,7 @@ define(
       },
 
       onMouseDown: function(sprite) {
-
+        console.log('{Card} onMouseDown :: name=', this.name);
       },
 
       onMouseUp: function(sprite) {

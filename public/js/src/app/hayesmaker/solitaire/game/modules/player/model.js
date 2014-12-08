@@ -10,7 +10,8 @@ define(
 
     var PlayerModel = Class.extend({
 
-      constructor: function() {
+      constructor: function(controller) {
+        this.controller = controller;
         this.drawPile = [];
         this.visible = [];
         this.unused = [];
@@ -54,8 +55,14 @@ define(
       },
 
       removeFromVisibleDrawPile: function(card) {
-        console.log('{PlayerModel} :: removeFromVisibleDrawPile :: ', card);
         this.visible.pop();
+        this.unused.pop();
+        if (!this.unused.length && this.controller.isPlayer) {
+          var nextVisibleCard = this.getNextVisibleDrawCard();
+          if (nextVisibleCard) {
+            nextVisibleCard.softEnableDrag();
+          }
+        }
         card.cardLanded.remove(this.removeFromVisibleDrawPile,this);
       },
 

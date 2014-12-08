@@ -117,39 +117,11 @@ define(
           card.attachPiledCards();
         }
 
+        card.sprite.bringToTop();
         TweenMax.to(card.sprite, 0.5, {x: dropPosition.x, y: dropPosition.y});
         targetStack.addCard(card);
       },
 
-      /**
-       * @deprecated
-       */
-      /*
-      onRefreshAvailableDropStacks: function() {
-        /*
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>');
-        var topSpecialCard = this.specialPile.getTopSpecialCard();
-        var topVisibleDrawCard = this.model.getNextVisibleDrawCard();
-        console.log('{PlayerController} onRefreshAvailableDrawStacks :: topSpecial=', topSpecialCard && topSpecialCard.name, 'topVisible=', topVisibleDrawCard && topVisibleDrawCard.name);
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>');
-
-        if (topSpecialCard)
-        {
-          this.reCheckAvailableStacks(topSpecialCard);
-        }
-
-        if (topVisibleDrawCard)
-        {
-          this.reCheckAvailableStacks(topVisibleDrawCard);
-        }
-
-
-        this.boardController.model.checkAllDrawPilesForMoves(this.player);
-
-
-
-      },
-      */
 
       reCheckAvailableStacks: function(card) {
         this.boardController.model.checkAvailableStacks(card);

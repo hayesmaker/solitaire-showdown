@@ -14,7 +14,6 @@ define(
     var RowStackController = DroppableStackController.extend({
 
       constructor: function() {
-        //RowStackController.super.constructor.call(this);
         this.model = new RowStackModel(this);
         this.view = new RowStackView(this);
       },
@@ -22,14 +21,32 @@ define(
       addCard: function(card) {
         console.log('[RowStackController] addCard :: card.name=', card.name);
         RowStackController.super.addCard.call(this, card);
+        var i, c;
+        var len = card.pileCards.length;
+        for (i = 0; i < len; i++) {
+          c = card.pileCards[i];
+          this.model.addCard(c);
+        }
         this.model.addCardHeightToDropPoint();
+
+        //this.view.addCard(card);
       },
 
       removeCard: function(card) {
-        console.log('{RowStackController} :: removeCard :: ', card.name);
+        console.log('{RowStackController} :: removeCard :: ', card.name, this.model.index);
         RowStackController.super.removeCard.call(this, card);
-        var numCards = 1 + card.pileCards.length;
-        this.model.removeCardHeightFromDropPoint(numCards);
+        var i, len, c;
+        if (card.isPiledCard) {
+          console.log('{RowStackController} :: piledCardRemoved is:', card.name, card.droppedStack.model.index, card.originalStack.model.index);
+          //get current cards in this stack and remove piledCards from this card down.
+          len = this.model.cards.length;
+          for (i = 0; i < len; i++) {
+            c = this.model.cards[i];
+            console.log('the cards here are:', i, c.name, c.pileCards.length);
+            c.removeAllPiledCardsFromThisCardDown(card);
+          }
+        }
+        this.model.dropPoint.y = this.model.getCorrectYPosition();
       },
 
       checkAvailable: function(card) {

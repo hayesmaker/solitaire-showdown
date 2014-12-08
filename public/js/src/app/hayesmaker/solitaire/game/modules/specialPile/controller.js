@@ -56,34 +56,12 @@ define(
       },
 
       specialCardPlaced: function(card) {
-        console.log('{SpecialPileController} :: specialCardPlaced', card.name, card.dropSuccessful);
-        if (!card.dropSuccessful)
-        {
-          return;
-        } else {
-          var card = this.model.removeCard();
-          //card.isSpecial = false;
-
-          console.log('{SpecialPileController} :: specialCardPlaced :: card=', card);
-
+        if (card.isSpecial) {
+          console.log('{SpecialPileController} :: specialCardPlaced', card.name, card.dropSuccessful);
+          card.isSpecial = false;
           this.view.removeCard();
+          this.model.removeCard();
         }
-
-
-
-
-        /*
-        if (!card.dropSuccessful)
-        {
-          return;
-        }
-        else {
-          if (card.isSpecial) {
-            card.isSpecial = false;
-            this.view.removeCard();
-          }
-        }
-        */
       },
 
       getTopSpecialCard: function() {

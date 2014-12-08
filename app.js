@@ -45,6 +45,9 @@ app.get('/', routes.index);
 app.get('/solitaire', function(req, res) {
   res.render('docs', { title: 'Solitaire Showdown' });
 });
+app.get('/test', function(req, res) {
+  
+});
 
 
 

@@ -272,21 +272,11 @@ define(
       {
         console.log('{BoardController} onDrawPileClicked :: data', data);
         this.cloakService.draw3Cards(data);
-
-        /*
-        var obj = {
-          someArg: 1,
-          someOtherArg: [1,1,2,3]
-        };
-        this.cloakService.testSendObject(obj);
-        */
       },
 
       onCardPicked: function(card) {
-
         console.log('{BoardController} :: onCardPicked :: card.name=', card.name);
         this.model.checkAvailableStacks(card);
-
       },
 
       onCardThrown: function(card) {

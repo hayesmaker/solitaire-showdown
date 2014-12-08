@@ -28,6 +28,11 @@ define(
           y: 0
         };
 
+        this.origin = {
+          x: 0,
+          y: 0
+        }
+
         this.index = null;
         this.type = null;
         this.cards = [];
@@ -42,8 +47,8 @@ define(
         this.box.y = y;
         this.box.width = width;
         this.box.height = height;
-        this.dropPoint.x = x;
-        this.dropPoint.y = y;
+        this.dropPoint.x = this.origin.x = x;
+        this.dropPoint.y = this.origin.y = y;
       },
 
       getLastCard: function() {
@@ -57,22 +62,19 @@ define(
         return card;
       },
 
-      addCard: function(card)
-      {
+      //TODO fix bug here
+      addCard: function(card) {
         var i, existingCard, len;
         len = this.cards.length;
-
-        for (i = 0; i < len; i++)
-        {
+        console.log('{DroppableStackModel} :: addCard :: cardName,this.cards.length=', card.name, len);
+        for (i = 0; i < len; i++) {
           existingCard = this.cards[i];
           existingCard.addToPileCards(card);
-          console.log('{DroppableStack} :: existingCard,pileCardsLen=', existingCard.name, existingCard.pileCards.length);
         }
         this.cards.push(card);
       },
 
-      removeCard: function(card)
-      {
+      removeCard: function(card) {
         var cardIndex = this.cards.indexOf(card);
         var pileLen = 1 + card.pileCards.length;
         if (cardIndex >= 0) {
