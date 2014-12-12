@@ -2,9 +2,9 @@ requirejs.config({
   baseUrl: 'js/src/',
   paths: {
     'class' : 'lib/classjs/js/Class',
-    'phaser': 'lib/phaserNew/phaser-no-libs',
+    'phaser': 'lib/phaser/phaser-no-libs2.2.1',
     'signals': 'lib/signals/js/signals',
-    'pixijs' : 'lib/phaserNew/pixi',
+    'pixijs' : 'lib/phaser/pixi2.2.0',
     'TweenMax' : 'lib/greensocks/uncompressed/TweenMax',
     'TweenPlugins' : 'lib/greensocks/uncompressed/plugins',
     'lodash' : 'lib/lodash/js/lodash',

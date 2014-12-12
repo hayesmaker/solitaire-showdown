@@ -14,12 +14,12 @@ define(
 
       constructor: function() {
         console.log('app entry point');
-
         this.gameController = new GameController();
       },
 
       init: function(game, cloakService) {
         this.game = game;
+        this.game.scale = Phaser.ScaleManager.SHOW_ALL;
         this.game.state.start('main');
 
         this.game.controller = this.gameController;
@@ -27,6 +27,7 @@ define(
       },
 
       preload: function() {
+
         this.game.controller.preload();
       },
 

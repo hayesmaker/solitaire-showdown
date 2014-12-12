@@ -147,7 +147,7 @@ define(
       },
 
       enableDrag: function() {
-        console.log('[Card] :: enableDrag :: this.name=', this.name);
+        console.warn('[Card] :: enableDrag :: this.name=', this.name);
         //this.setDropPoints(dropPoints? dropPoints : [{x:0, y:0}] );
         this.sprite.input.enableDrag(false, true, true);
         this.sprite.events.onDragStop.add(this.onDragStop, this);
@@ -157,25 +157,35 @@ define(
       },
 
       softEnableDrag: function() {
-        this.sprite.input.enableDrag();
-        //this.sprite.tint = 0xff0000;
+        console.warn('[Card] :: soft enableDrag :: this.name=', this.name);
+        /*
+        //this.sprite.input.enableDrag(false, true, true);
+        this.enableDrag();
+        this.sprite.tint = 0xff0000;
+        */
       },
 
       disableDrag: function() {
-        console.log('{Card} disableDrag :: name=', this.name);
+
+        console.warn('{Card} disableDrag :: name=', this.name);
+        /*
         this.sprite.input.disableDrag();
-        //this.sprite.tint = 0xffffff;
+        this.sprite.events.onDragStop.removeAll();
+        this.sprite.events.onDragStart.removeAll();
+        this.sprite.tint = 0xffffff;
+        */
 
       },
 
       enableClick: function() {
+        console.warn('{Card} enableClick :: name=', this.name);
         this.sprite.events.onInputUp.add(this.onMouseUp, this);
         this.sprite.events.onInputDown.add(this.onMouseDown, this);
         this.sprite.input.useHandCursor = true;
       },
 
       disableClick: function() {
-        console.log('{Card} disableClick :: name=', this.name);
+        console.warn('{Card} disableClick :: name=', this.name);
         this.canClick = false;
         this.sprite.events.onInputUp.remove(this.onMouseUp, this);
         this.sprite.events.onInputDown.remove(this.onMouseDown, this);
@@ -190,7 +200,7 @@ define(
         console.log('{Card} onDragStart :: pileCardsLen=', this.pileCards.length);
         var self = this;
         if (this.pileCards.length) {
-          this.attachPiledCards();
+          //this.attachPiledCards();
         }
         sprite.bringToTop();
         self.cardPicked.dispatch(self);
@@ -206,8 +216,8 @@ define(
         {
           piledCard = this.pileCards[i];
           console.log('{Card} attachPiledCards :: pileCardName= ', piledCard.name);
-          piledCard.disableClick();
-          piledCard.disableDrag();
+          //piledCard.disableClick();
+          //piledCard.disableDrag();
           var sp = piledCard.sprite;
           this.sprite.addChild(sp);
           this.sprite.tint = 0.2 * 0xff0000;
@@ -220,6 +230,7 @@ define(
       deattachPiledCards: function() {
         var i, piledCard, len;
         len = this.pileCards.length;
+        this.sprite.removeChildren();
         console.log('{Card} deattachPiledCards :: len', len);
         for (i = 0; i < len; i++)
         {
@@ -228,8 +239,7 @@ define(
           this.game.stage.addChild(sp);
           sp.x = sp.x + this.sprite.position.x;
           sp.y = sp.y + this.sprite.position.y;
-          //  sp.tint = 0xffffff;
-          this.sprite.tint = 0xffffff;
+          //this.sprite.tint = 0xffffff;
           piledCard.softEnableDrag();
         }
       },
@@ -326,7 +336,7 @@ define(
         }
 
         if (card.pileCards.length) {
-          card.deattachPiledCards();
+          //card.deattachPiledCards();
         }
 
         card.cardLanded.dispatch(card);
@@ -349,6 +359,7 @@ define(
       },
 
       setNextCards: function(cards) {
+        console.log('{Card} setNextCards :: cards=', cards);
         for (var i = 0; i < cards.length; i++) {
           this.nextCards.push(cards[i]);
         }
