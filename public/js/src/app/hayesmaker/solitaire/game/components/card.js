@@ -149,7 +149,7 @@ define(
       enableDrag: function() {
         console.warn('[Card] :: enableDrag :: this.name=', this.name);
         //this.setDropPoints(dropPoints? dropPoints : [{x:0, y:0}] );
-        this.sprite.input.enableDrag(false, true, true);
+        this.sprite.input.enableDrag(false, false, true);
         this.sprite.events.onDragStop.add(this.onDragStop, this);
         this.sprite.events.onDragStart.add(this.onDragStart, this);
         this.originPos = {x: this.sprite.x, y: this.sprite.y};
@@ -192,57 +192,35 @@ define(
         this.sprite.input.useHandCursor = false;
       },
 
-      onDragUpdate: function(sprite) {
-        ThrowPropsPlugin.track(sprite, 'x,y');
+      onDragUpdate: function() {
+        this.groupCardsFollow();
+        ThrowPropsPlugin.track(this.sprite, 'x,y');
       },
 
       onDragStart: function(sprite) {
         console.log('{Card} onDragStart :: pileCardsLen=', this.pileCards.length);
         var self = this;
-        if (this.pileCards.length) {
+        //if (this.pileCards.length) {
           //this.attachPiledCards();
-        }
-        sprite.bringToTop();
+        //}
+        //sprite.bringToTop();
         self.cardPicked.dispatch(self);
         this.dragInterval = setInterval(function() {
-          self.onDragUpdate(sprite);
-        }, 100);
+          self.onDragUpdate(self);
+        }, 10);
       },
 
-      attachPiledCards: function() {
-        var i, piledCard, len;
+      groupCardsFollow: function() {
+        var i, groupCard, len;
         len = this.pileCards.length;
-        for (i = 0; i < len; i++)
-        {
-          piledCard = this.pileCards[i];
-          console.log('{Card} attachPiledCards :: pileCardName= ', piledCard.name);
-          //piledCard.disableClick();
-          //piledCard.disableDrag();
-          var sp = piledCard.sprite;
-          this.sprite.addChild(sp);
-          this.sprite.tint = 0.2 * 0xff0000;
-          //sp.tint = 0.5 * 0xff0000;
-          sp.x = 0;
-          sp.y = 17 + (i * 17);
+        for (i = 0; i < len; i++) {
+          groupCard = this.pileCards[i];
+          groupCard.sprite.position.x = this.sprite.position.x;
+          groupCard.sprite.position.y = this.sprite.position.y + 17 * (i + 1);
+          //groupCard.sprite.bringToTop();
         }
       },
 
-      deattachPiledCards: function() {
-        var i, piledCard, len;
-        len = this.pileCards.length;
-        this.sprite.removeChildren();
-        console.log('{Card} deattachPiledCards :: len', len);
-        for (i = 0; i < len; i++)
-        {
-          piledCard = this.pileCards[i];
-          var sp = piledCard.sprite;
-          this.game.stage.addChild(sp);
-          sp.x = sp.x + this.sprite.position.x;
-          sp.y = sp.y + this.sprite.position.y;
-          //this.sprite.tint = 0xffffff;
-          piledCard.softEnableDrag();
-        }
-      },
 
       onDragStop: function(sprite) {
         var tweenDuration = 0.5;
@@ -316,6 +294,8 @@ define(
               end:closestDropPoint.point.y
             }
           },
+          onUpdate: this.onThrowUpdate,
+          onUpdateParams: [this],
           onComplete: this.onThrowTweenCompleted,
           onCompleteParams: [this],
           ease:Power3.easeOut
@@ -323,6 +303,10 @@ define(
 
         this.cardThrown.dispatch(this);
 
+      },
+
+      onThrowUpdate: function(card) {
+        card.groupCardsFollow();
       },
 
       onThrowTweenCompleted: function(card) {
@@ -333,10 +317,6 @@ define(
         {
           card.originalStack.removeCard(card);
           card.originalStack = null;
-        }
-
-        if (card.pileCards.length) {
-          //card.deattachPiledCards();
         }
 
         card.cardLanded.dispatch(card);
