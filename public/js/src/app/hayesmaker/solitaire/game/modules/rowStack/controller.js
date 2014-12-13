@@ -33,13 +33,14 @@ define(
       },
 
       removeCard: function(card) {
-        console.log('{RowStackController} :: removeCard :: ', card.name, this.model.index);
+        console.warn('{RowStackController} :: removeCard :: ', card.name, this.model.index, 'isPileCard=', card.isPiledCard);
         RowStackController.super.removeCard.call(this, card);
         var i, len, c;
         if (card.isPiledCard) {
           console.log('{RowStackController} :: piledCardRemoved is:', card.name, card.droppedStack.model.index, card.originalStack.model.index);
           //get current cards in this stack and remove piledCards from this card down.
           len = this.model.cards.length;
+          console.log('{RowStackController} :: removePiledCards from model.cards.len=', len);
           for (i = 0; i < len; i++) {
             c = this.model.cards[i];
             console.log('the cards here are:', i, c.name, c.pileCards.length);
@@ -54,13 +55,16 @@ define(
         //console.log('[RowStackController] checkAvailable :: model.cards=', this.model.cards, 'model.dropZoneEnabled=', this.model.dropZoneEnabled);
         if (!this.model.cards.length) {
           this.setDropZoneEnabled(true);
+          this.view.highlight(true);
         } else {
           var lastCard = this.model.getLastCard();
           console.log('[RowStackController] checkAvailable :: model.cards is not empty... checking rules to decide if available');
           if (card.value === lastCard.value - 1 && ((card.isRed && lastCard.isBlack) || (card.isBlack && lastCard.isRed))) {
               this.setDropZoneEnabled(true);
+              this.view.highlight(true);
           } else {
             this.setDropZoneEnabled(false);
+            this.view.highlight(false);
           }
         }
       }

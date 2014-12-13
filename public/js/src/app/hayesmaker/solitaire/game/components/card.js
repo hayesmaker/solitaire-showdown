@@ -100,8 +100,14 @@ define(
       },
 
       addToStack: function() {
+        var self = this;
         this.droppedStack.addCard(this);
         this.originalStack = this.droppedStack;
+
+        _.each(this.pileCards, function(card) {
+          card.originalStack = self.droppedStack;
+        });
+
         console.log('[Card] addToStack :: this=', this);
         this.resetCardVars();
       },
@@ -321,6 +327,9 @@ define(
 
         card.cardLanded.dispatch(card);
         card.addToStack();
+
+
+
         card.isUsed = true;
       },
 

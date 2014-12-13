@@ -236,6 +236,12 @@ define(
 
       },
 
+      deActivateHighlight: function() {
+        _.each(this.model.rowStacks, function(rowStack){
+          rowStack.view.highlight(false);
+        });
+      },
+
       enableAllRowStacks: function() {
         for (var i = 0; i < this.model.rowStacks.length; i++) {
           var rowStack = this.model.rowStacks[i];
@@ -295,6 +301,10 @@ define(
         {
           card.enableNextCard();
         }
+        if (originStack) {
+          originStack.removeCard(card);
+        }
+        this.deActivateHighlight();
       },
 
       getStackByIndex: function(index, type, player)
