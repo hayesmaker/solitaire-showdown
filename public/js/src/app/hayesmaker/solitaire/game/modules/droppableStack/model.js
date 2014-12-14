@@ -62,7 +62,7 @@ define(
         return card;
       },
 
-      //TODO fix bug here
+      //TODO fix bug here??
       addCard: function(card) {
         var i, existingCard, len;
         len = this.cards.length;

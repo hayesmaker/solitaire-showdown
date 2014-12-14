@@ -101,18 +101,19 @@ define(
 
       addToStack: function() {
         var self = this;
+        this.isUsed = true;
         this.droppedStack.addCard(this);
         this.originalStack = this.droppedStack;
-
         _.each(this.pileCards, function(card) {
           card.originalStack = self.droppedStack;
         });
-
-        console.log('[Card] addToStack :: this=', this);
         this.resetCardVars();
       },
 
-      //check card isn't already in the pileCards to prevent adding pileCard to already piled card bug
+      /**
+       * check card isn't already in the pileCards to prevent adding pileCard to already piled card bug
+       * @param card
+       */
       addToPileCards: function(card) {
         var fuckingPileCardsNames = _.map(this.pileCards, 'name');
         if (fuckingPileCardsNames.indexOf(card.name) < 0) {
@@ -132,7 +133,7 @@ define(
           if (c.name === card.name) {
             break;
           }
-          newPileCards.push(c)
+          newPileCards.push(c);
         }
         this.pileCards = newPileCards;
       },
@@ -184,14 +185,12 @@ define(
       },
 
       enableClick: function() {
-        console.warn('{Card} enableClick :: name=', this.name);
         this.sprite.events.onInputUp.add(this.onMouseUp, this);
         this.sprite.events.onInputDown.add(this.onMouseDown, this);
         this.sprite.input.useHandCursor = true;
       },
 
       disableClick: function() {
-        console.warn('{Card} disableClick :: name=', this.name);
         this.canClick = false;
         this.sprite.events.onInputUp.remove(this.onMouseUp, this);
         this.sprite.events.onInputDown.remove(this.onMouseDown, this);
@@ -204,12 +203,15 @@ define(
       },
 
       onDragStart: function(sprite) {
-        console.log('{Card} onDragStart :: pileCardsLen=', this.pileCards.length);
         var self = this;
-        //if (this.pileCards.length) {
-          //this.attachPiledCards();
-        //}
-        //sprite.bringToTop();
+
+        sprite.bringToTop();
+
+        _.each(this.pileCards, function(c, i) {
+          console.log('{Card} each card=', i, c.name, ' :: bringToTop');
+          c.sprite.bringToTop();
+        });
+
         self.cardPicked.dispatch(self);
         this.dragInterval = setInterval(function() {
           self.onDragUpdate(self);
@@ -223,19 +225,20 @@ define(
           groupCard = this.pileCards[i];
           groupCard.sprite.position.x = this.sprite.position.x;
           groupCard.sprite.position.y = this.sprite.position.y + 17 * (i + 1);
-          //groupCard.sprite.bringToTop();
         }
       },
 
 
       onDragStop: function(sprite) {
+
         var tweenDuration = 0.5;
+        var dragSuccesful = false;
 
         if (!this.layoutHelper.dropStacks.length) {
-          //this.layoutHelper.dropStacks = [this.originPos];
-          throw new Error("drop not succesful");
+          console.warn('{Card} onDragStop :: card Not Thrown');
+          //this.sprite.position = this.originPos;
         } else {
-          //this.dropSuccessful = true;
+          dragSuccesful = true;
         }
 
         var seekerTween = new TweenMax(sprite, tweenDuration, {
@@ -282,7 +285,24 @@ define(
           y: y
         });
 
-        this.droppedStack = closestDropPoint.stack;
+        if (!dragSuccesful) {
+          closestDropPoint = {
+            stack: null,
+            point: {
+              x: this.originPos.x,
+              y: this.originPos.y
+            }
+          }
+        } else {
+          this.droppedStack = closestDropPoint.stack;
+          if (this.droppedStack === this.originalStack) {
+            closestDropPoint.y = this.droppedStack.getResetDropPointY(this);
+          }
+        }
+
+        console.warn('{DragSTOP} :: closestDropPoint=', closestDropPoint);
+
+
 
         TweenMax.to(sprite, tweenDuration, {
           throwProps:{
@@ -301,18 +321,23 @@ define(
             }
           },
           onUpdate: this.onThrowUpdate,
-          onUpdateParams: [this],
+          onUpdateParams: [this, dragSuccesful],
           onComplete: this.onThrowTweenCompleted,
           onCompleteParams: [this],
           ease:Power3.easeOut
         });
 
-        this.cardThrown.dispatch(this);
+        if (dragSuccesful) {
+          this.cardThrown.dispatch(this);
+        }
+
 
       },
 
-      onThrowUpdate: function(card) {
-        card.groupCardsFollow();
+      onThrowUpdate: function(card, dragSuccesful) {
+        if (dragSuccesful) {
+          card.groupCardsFollow();
+        }
       },
 
       onThrowTweenCompleted: function(card) {
@@ -322,15 +347,15 @@ define(
         if (card.originalStack)
         {
           card.originalStack.removeCard(card);
-          card.originalStack = null;
+          //card.originalStack = null;
         }
 
-        card.cardLanded.dispatch(card);
-        card.addToStack();
+        if (card.droppedStack) {
+          card.cardLanded.dispatch(card);
+          card.addToStack();
+        }
 
 
-
-        card.isUsed = true;
       },
 
       onMouseDown: function(sprite) {

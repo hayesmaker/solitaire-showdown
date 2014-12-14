@@ -15,6 +15,16 @@ define(
         RowStackModel.super.constructor.call(this, controller);
       },
 
+      resetDropPointY: function() {
+
+        this.dropPoint.y = this.origin.y;
+
+      },
+
+      getNumCardsNotIncludingDraggingPile: function(pileLen) {
+        return this.cards.length - pileLen;
+      },
+
       addCardHeightToDropPoint: function() {
         this.dropPoint.y += 17;
       },
